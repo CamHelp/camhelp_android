@@ -17,8 +17,7 @@ import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 
 /**
- * 登录界面
- * 从本地数据库进行用户名和密码判断
+ * 登录
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 

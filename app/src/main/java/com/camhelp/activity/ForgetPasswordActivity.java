@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.camhelp.R;
 
+/**
+ * 找回密码activity
+ */
 public class ForgetPasswordActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ImageView top_return;

@@ -17,6 +17,8 @@ import com.camhelp.R;
  * to handle interaction events.
  * Use the {@link PublishFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * 发布fragment
  */
 public class PublishFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match

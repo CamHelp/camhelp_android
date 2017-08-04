@@ -17,6 +17,8 @@ import com.camhelp.R;
  * to handle interaction events.
  * Use the {@link CategoryFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * 分类fragment
  */
 public class CategoryFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match

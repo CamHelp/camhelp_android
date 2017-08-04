@@ -26,6 +26,8 @@ import com.camhelp.common.CommonGlobal;
  * to handle interaction events.
  * Use the {@link MineFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * 个人主页fragment
  */
 public class MineFragment extends Fragment implements View.OnClickListener{
 

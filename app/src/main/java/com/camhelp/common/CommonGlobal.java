@@ -2,6 +2,7 @@ package com.camhelp.common;
 
 /**
  * Created by storm on 2017-08-03.
+ * 一些常量
  */
 
 public class CommonGlobal {

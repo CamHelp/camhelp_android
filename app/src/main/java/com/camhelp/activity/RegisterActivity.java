@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.camhelp.R;
 
+/**
+ * 注册activity
+ */
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView top_return;
