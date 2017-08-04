@@ -70,7 +70,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 login("admin", "admin1");
                 break;
             case R.id.tv_register:
-                Toast.makeText(this, "待完成", Toast.LENGTH_SHORT).show();
+                Intent registerIntent = new Intent(this,RegisterActivity.class);
+                startActivity(registerIntent);
                 break;
             case R.id.tv_forget:
                 Toast.makeText(this, "待完成", Toast.LENGTH_SHORT).show();

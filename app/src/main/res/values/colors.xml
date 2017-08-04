@@ -187,6 +187,9 @@
     <color name="colorPrimary">#1A1A1A</color>
     <color name="colorPrimaryBlew">#6a6a6a</color>
     <color name="colorPrimaryDark">#3A3A3A</color>
+    <!--<color name="colorPrimary">#ffffff</color>-->
+    <!--<color name="colorPrimaryBlew">#f2f2f2</color>-->
+    <!--<color name="colorPrimaryDark">#e2e2e2</color>-->
 
     <!--用户注销btn_selector-->
     <drawable name="clr_normal">#ff6501</drawable>
