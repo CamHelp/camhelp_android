@@ -74,7 +74,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(registerIntent);
                 break;
             case R.id.tv_forget:
-                Toast.makeText(this, "待完成", Toast.LENGTH_SHORT).show();
+                Intent forgetIntent = new Intent(this,ForgetPasswordActivity.class);
+                startActivity(forgetIntent);
                 break;
             default:
                 break;

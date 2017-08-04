@@ -1,14 +1,23 @@
 package com.camhelp.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.camhelp.R;
+import com.camhelp.activity.LoginActivity;
+import com.camhelp.common.CommonGlobal;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +27,16 @@ import com.camhelp.R;
  * Use the {@link MineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MineFragment extends Fragment {
+public class MineFragment extends Fragment implements View.OnClickListener{
+
+    TextView tv_username, tv_intro;
+    LinearLayout ll_check_version_update, ll_exit_system,ll_personal,ll_log_out,
+            ll_feedback;
+    Button btn_log_out;
+
+    private Dialog choosedialog = null;//确认框
+    private int EXITORLOGOUT = -1;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,6 +85,100 @@ public class MineFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_mine, container, false);
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initview();
+        useInit();
+    }
+
+    public void initview() {
+        tv_username = (TextView) getActivity().findViewById(R.id.tv_username);
+        tv_intro = (TextView) getActivity().findViewById(R.id.tv_intro);
+
+        ll_check_version_update = (LinearLayout) getActivity().findViewById(R.id.ll_check_version_update);
+        ll_exit_system = (LinearLayout) getActivity().findViewById(R.id.ll_exit_system);
+        btn_log_out = (Button) getActivity().findViewById(R.id.btn_log_out);
+        ll_personal = (LinearLayout) getActivity().findViewById(R.id.ll_personal);
+        ll_log_out = (LinearLayout) getActivity().findViewById(R.id.ll_log_out);
+        ll_feedback = (LinearLayout) getActivity().findViewById(R.id.ll_feedback);
+
+        ll_check_version_update.setOnClickListener(this);
+        ll_exit_system.setOnClickListener(this);
+        btn_log_out.setOnClickListener(this);
+        ll_personal.setOnClickListener(this);
+        ll_log_out.setOnClickListener(this);
+        ll_feedback.setOnClickListener(this);
+    }
+
+    /**
+     * 获取用户
+     */
+    public void useInit() {
+
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_personal://个人信息
+                break;
+            case R.id.ll_check_version_update://检查更新
+                break;
+            case R.id.ll_feedback://反馈
+                break;
+            case R.id.ll_exit_system://退出系统
+                EXITORLOGOUT = 0;
+                showchoosedialog(view, "退出系统");
+                break;
+            case R.id.ll_log_out://注销用户
+                EXITORLOGOUT = 1;
+                showchoosedialog(view, "注销");
+                break;
+            case R.id.btn_log_out://注销用户(隐藏)
+                EXITORLOGOUT = 1;
+                showchoosedialog(view, "注销");
+                break;
+            case R.id.no:
+                choosedialog.dismiss();
+                break;
+            case R.id.yes:
+                if (EXITORLOGOUT == 0) {
+                    System.exit(0);
+                } else if (EXITORLOGOUT == 1) {
+                    CommonGlobal.autoLogin = false; //恢复各初始值
+                    CommonGlobal.loginUserId = -1;
+                    Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(loginIntent);//注销后跳转到登录界面重新登录
+                    getActivity().finish();
+                }
+                choosedialog.dismiss();
+                break;
+        }
+    }
+
+
+    public void showchoosedialog(View view, String hint) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setTitle("提示").setMessage("确定" + hint).setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (EXITORLOGOUT == 0) {
+                            System.exit(0);
+                        } else if (EXITORLOGOUT == 1) {
+                            CommonGlobal.autoLogin = false; //回复各初始值
+                            CommonGlobal.loginUserId = -1;
+                            Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(loginIntent);//注销后跳转到登录界面重新登录
+                            getActivity().finish();
+                        }
+                    }
+                }).setNegativeButton("取消", null);
+        alert.create();
+        alert.show();
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
