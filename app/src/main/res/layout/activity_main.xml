@@ -11,14 +11,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         android:gravity="center">
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="校园帮"
-            android:textColor="@color/white"
+            android:textColor="@color/deepblack"
             android:textSize="26sp"
             android:textStyle="bold"/>
     </LinearLayout>
@@ -30,22 +30,18 @@
         android:layout_height="match_parent">
     </FrameLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@android:color/darker_gray"
-        />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/white">
 
         <com.ashokvarma.bottomnavigation.BottomNavigationBar
             android:layout_gravity="bottom"
             android:id="@+id/bottom_navigation_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@color/white"/>
 
     </LinearLayout>
 

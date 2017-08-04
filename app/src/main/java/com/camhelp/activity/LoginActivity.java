@@ -22,11 +22,13 @@ import com.camhelp.common.CommonGlobal;
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnLogin, btnLoginAdmin;
+    private Button btnLogin;
     private EditText etUsername;
     private EditText etPassword;
     private TextView tvResultLabel;
     private CheckBox checkboxAutologin;
+    private TextView tv_register, tv_forget;
+    private TextView btnLoginAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initView() {
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(this);
-        btnLoginAdmin = (Button) findViewById(R.id.btn_login_admin);
+        btnLoginAdmin = (TextView) findViewById(R.id.btn_login_admin);
         btnLoginAdmin.setOnClickListener(this);
 
         etUsername = (EditText) findViewById(R.id.et_username);
@@ -49,6 +51,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         checkboxAutologin = (CheckBox) findViewById(R.id.checkbox_autologin);
 
+        tv_register = (TextView) findViewById(R.id.tv_register);
+        tv_forget = (TextView) findViewById(R.id.tv_forget);
+        tv_register.setOnClickListener(this);
+        tv_forget.setOnClickListener(this);
     }
 
     @Override
@@ -58,13 +64,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 tvResultLabel.setText(null);
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
-
                 login(username, password);
                 break;
             case R.id.btn_login_admin:
                 login("admin", "admin1");
                 break;
+            case R.id.tv_register:
+                Toast.makeText(this, "待完成", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_forget:
+                Toast.makeText(this, "待完成", Toast.LENGTH_SHORT).show();
+                break;
             default:
+                break;
         }
     }
 
@@ -83,9 +95,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         /**
          * 处理登陆
          * */
-
         String rePassword = "admin1";
         int reId = 0;             //得到用户id
+
         if (password.equals(rePassword)) {                                   //密码正确
             if (checkboxAutologin.isChecked()) {                           //自动登录验证
                 CommonGlobal.autoLogin = true;
@@ -95,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
             Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
             this.finish();
-        }else {
+        } else {
             tvResultLabel.setText("用户名或密码错误！");
         }
     }

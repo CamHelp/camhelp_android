@@ -1,12 +1,7 @@
 package com.camhelp.activity;
 
-import android.Manifest;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,8 +20,6 @@ import com.camhelp.fragment.QueryFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
 
-    private static final int MY_PERMISSIONS_REQUEST_TAKE_PHOTO = 4;
-    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 5;
     private BottomNavigationBar bottomNavigationBar;
     int lastSelectedPosition = 0;
     private String TAG = MainActivity.class.getSimpleName();
@@ -42,12 +35,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initview();
-        setDefaultFragment();
-        requestPermission();
-    }
-
-    private void initview() {
         tvTitle = (TextView) findViewById(R.id.tv_title);
         bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
 
@@ -61,47 +48,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 .initialise();
 
         bottomNavigationBar.setTabSelectedListener(this);
-    }
-
-    /**
-     * 请求获取权限,目前只申请了获取照相权限和写入tf卡权限
-     */
-    private void requestPermission() {
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-
-            //权限还没有授予，需要在这里写申请权限的代码
-        } else if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.CAMERA},
-                    MY_PERMISSIONS_REQUEST_TAKE_PHOTO);
-        } else {
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
-
-                }
-                break;
-            case MY_PERMISSIONS_REQUEST_TAKE_PHOTO:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
+        bottomNavigationBar.setBarBackgroundColor(R.color.white);
+        setDefaultFragment();
     }
 
     /**
@@ -184,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();
-                System.exit(0);
+                MainActivity.this.finish();
             }
             return true;
         }
