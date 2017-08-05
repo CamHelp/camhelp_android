@@ -1,26 +1,50 @@
 package com.camhelp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.camhelp.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CategoryFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CategoryFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
  * 分类fragment
  */
-public class CategoryFragment extends Fragment {
+public class CategoryFragment extends Fragment implements View.OnClickListener {
+    CategoryClubFragment tab01;
+    CategoryProblemFragment tab02;
+    CategoryLoseFragment tab03;
+    CategoryPickFragment tab04;
+
+    public ViewPager mViewPager;
+    private FragmentPagerAdapter mAdapter;
+    private List<Fragment> mDatas;
+
+    private TextView tv_01, tv_02, tv_03, tv_04;
+    private LinearLayout ll_tab1, ll_tab2, ll_tab3, ll_tab4;//顶部四个选项栏
+
+    private ImageView mTabline;
+    private int mScreen1_3;
+
+    private int mCurrentPageIndex;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,11 +87,201 @@ public class CategoryFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initTabLine();
+        initView();
+    }
+
+    private void initTabLine() {
+        mTabline = (ImageView) getActivity().findViewById(R.id.id_iv_tabline);
+        Display display = getActivity().getWindow().getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        mScreen1_3 = outMetrics.widthPixels / 4;
+        ViewGroup.LayoutParams lp = mTabline.getLayoutParams();
+        lp.width = mScreen1_3;
+        mTabline.setLayoutParams(lp);
+    }
+
+    private void initView() {
+        mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager_category);
+        tv_01 = (TextView) getActivity().findViewById(R.id.id_tv_club);
+        tv_02 = (TextView) getActivity().findViewById(R.id.id_tv_problem);
+        tv_03 = (TextView) getActivity().findViewById(R.id.id_tv_lose);
+        tv_04 = (TextView) getActivity().findViewById(R.id.id_tv_pickup);
+
+        ll_tab1 = (LinearLayout) getActivity().findViewById(R.id.ll_tab1);
+        ll_tab2 = (LinearLayout) getActivity().findViewById(R.id.ll_tab2);
+        ll_tab3 = (LinearLayout) getActivity().findViewById(R.id.ll_tab3);
+        ll_tab4 = (LinearLayout) getActivity().findViewById(R.id.ll_tab4);
+
+        ll_tab1.setOnClickListener(this);
+        ll_tab2.setOnClickListener(this);
+        ll_tab3.setOnClickListener(this);
+        ll_tab4.setOnClickListener(this);
+
+        mDatas = new ArrayList<Fragment>();
+
+        tab01 = new CategoryClubFragment();
+        tab02 = new CategoryProblemFragment();
+        tab03 = new CategoryLoseFragment();
+        tab04 = new CategoryPickFragment();
+
+        mDatas.add(tab01);
+        mDatas.add(tab02);
+        mDatas.add(tab03);
+        mDatas.add(tab04);
+
+        /**
+         * 解决viewpager滑动数据未保存问题
+         * blog地址：http://blog.csdn.net/w372426096/article/details/49951317
+         * */
+        mAdapter = new FragmentPagerAdapter(getActivity().getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                Fragment fragment = null;
+                fragment = mDatas.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", "" + position);
+                fragment.setArguments(bundle);
+                return fragment;
+            }
+
+            @Override
+            public int getCount() {
+                return mDatas.size();
+            }
+
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                Fragment fragment = (Fragment)super.instantiateItem(container, position);
+                getActivity().getSupportFragmentManager().beginTransaction().show(fragment).commit();
+                return fragment;
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                Fragment fragment = mDatas.get(position);
+                getActivity().getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+            }
+        };
+
+        mViewPager.setAdapter(mAdapter);
+
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                resetTextView();
+                switch (position) {
+                    case 0:
+                        tv_01.setTextColor(Color.parseColor("#008000"));
+                        break;
+                    case 1:
+                        tv_02.setTextColor(Color.parseColor("#008000"));
+                        break;
+                    case 2:
+                        tv_03.setTextColor(Color.parseColor("#008000"));
+                        break;
+                    case 3:
+                        tv_04.setTextColor(Color.parseColor("#008000"));
+                        break;
+
+                }
+
+                mCurrentPageIndex = position;
+
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPx) {
+                Log.e("TAG", position + " , " + positionOffset + " , "
+                        + positionOffsetPx);
+
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabline
+                        .getLayoutParams();
+
+                if (mCurrentPageIndex == 0 && position == 0)// 0->1
+                {
+                    lp.leftMargin = (int) (positionOffset * mScreen1_3 + mCurrentPageIndex
+                            * mScreen1_3);
+                } else if (mCurrentPageIndex == 1 && position == 0)// 1->0
+                {
+                    lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + (positionOffset - 1)
+                            * mScreen1_3);
+                } else if (mCurrentPageIndex == 1 && position == 1) // 1->2
+                {
+                    lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + positionOffset
+                            * mScreen1_3);
+                } else if (mCurrentPageIndex == 2 && position == 1) // 2->1
+                {
+                    lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + (positionOffset - 1)
+                            * mScreen1_3);
+                }else if (mCurrentPageIndex == 2 && position == 2) // 2->3
+                {
+                    lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + positionOffset
+                            * mScreen1_3);
+                } else if (mCurrentPageIndex == 3 && position == 2) // 3->2
+                {
+                    lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + (positionOffset - 1)
+                            * mScreen1_3);
+                }
+                mTabline.setLayoutParams(lp);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+
+            }
+        });
+
+    }
+
+    protected void resetTextView() {
+        tv_01.setTextColor(Color.BLACK);
+        tv_02.setTextColor(Color.BLACK);
+        tv_03.setTextColor(Color.BLACK);
+        tv_04.setTextColor(Color.BLACK);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_tab1:
+                mViewPager.setCurrentItem(0);
+                break;
+            case R.id.ll_tab2:
+                mViewPager.setCurrentItem(1);
+                break;
+            case R.id.ll_tab3:
+                mViewPager.setCurrentItem(2);
+                break;
+            case R.id.ll_tab4:
+                mViewPager.setCurrentItem(3);
+                break;
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        tab01.onActivityResult(requestCode, resultCode, data);
+        tab02.onActivityResult(requestCode, resultCode, data);
+        tab03.onActivityResult(requestCode, resultCode, data);
+        tab04.onActivityResult(requestCode, resultCode, data);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

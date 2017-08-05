@@ -4,29 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.camhelp.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PublishFragment.OnFragmentInteractionListener} interface
+ * {@link CategoryLoseFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link PublishFragment#newInstance} factory method to
+ * Use the {@link CategoryLoseFragment#newInstance} factory method to
  * create an instance of this fragment.
- * <p>
- * 发布fragment
  */
-public class PublishFragment extends Fragment implements View.OnClickListener {
-
-    private LinearLayout ll_publish_01, ll_publish_02, ll_publish_03,
-            ll_publish_04, ll_publish_05, ll_publish_06;
-
+public class CategoryLoseFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,7 +30,7 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
 
-    public PublishFragment() {
+    public CategoryLoseFragment() {
         // Required empty public constructor
     }
 
@@ -48,11 +40,11 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PublishFragment.
+     * @return A new instance of fragment CategoryLoseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PublishFragment newInstance(String param1, String param2) {
-        PublishFragment fragment = new PublishFragment();
+    public static CategoryLoseFragment newInstance(String param1, String param2) {
+        CategoryLoseFragment fragment = new CategoryLoseFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -73,29 +65,7 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_publish, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        initview();
-    }
-
-    public void initview() {
-        ll_publish_01 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_01);
-        ll_publish_02 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_02);
-        ll_publish_03 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_03);
-        ll_publish_04 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_04);
-        ll_publish_05 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_05);
-        ll_publish_06 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_06);
-
-        ll_publish_01.setOnClickListener(this);
-        ll_publish_02.setOnClickListener(this);
-        ll_publish_03.setOnClickListener(this);
-        ll_publish_04.setOnClickListener(this);
-        ll_publish_05.setOnClickListener(this);
-        ll_publish_06.setOnClickListener(this);
+        return inflater.inflate(R.layout.fragment_category_lose, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -110,24 +80,6 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.ll_publish_01:
-                break;
-            case R.id.ll_publish_02:
-                break;
-            case R.id.ll_publish_03:
-                break;
-            case R.id.ll_publish_04:
-                break;
-            case R.id.ll_publish_05:
-                break;
-            case R.id.ll_publish_06:
-                break;
-        }
     }
 
     /**

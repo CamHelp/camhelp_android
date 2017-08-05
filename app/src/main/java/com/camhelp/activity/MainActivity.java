@@ -1,7 +1,7 @@
 package com.camhelp.activity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
      * 设置默认的
      */
     private void setDefaultFragment() {
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         homeFragment = homeFragment.newInstance("HOME", "");
         transaction.replace(R.id.tabs, homeFragment);
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     public void onTabSelected(int position) {
         Log.d(TAG, "onTabSelected() called with: " + "position = [" + position + "]");
-        FragmentManager fm = this.getFragmentManager();
+        FragmentManager fm = this.getSupportFragmentManager();
         //开启事务
         FragmentTransaction transaction = fm.beginTransaction();
         switch (position) {
