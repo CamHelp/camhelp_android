@@ -17,10 +17,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="#666" />
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="#666" />-->
 
             <!--个人头像和信息-->
             <LinearLayout
@@ -70,10 +70,10 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/dividing_line" />
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/dividing_line" />-->
 
             <!--我发布的-->
             <LinearLayout
@@ -179,8 +179,8 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/dividing_line" />
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryBlew" />
 
             <!--检查更新-->
             <LinearLayout

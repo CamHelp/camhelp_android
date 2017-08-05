@@ -4,9 +4,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.camhelp.R;
 
@@ -17,10 +19,14 @@ import com.camhelp.R;
  * to handle interaction events.
  * Use the {@link PublishFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
+ * <p>
  * 发布fragment
  */
-public class PublishFragment extends Fragment {
+public class PublishFragment extends Fragment implements View.OnClickListener {
+
+    private LinearLayout ll_publish_01, ll_publish_02, ll_publish_03,
+            ll_publish_04, ll_publish_05, ll_publish_06;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -70,6 +76,28 @@ public class PublishFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_publish, container, false);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initview();
+    }
+
+    public void initview() {
+        ll_publish_01 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_01);
+        ll_publish_02 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_02);
+        ll_publish_03 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_03);
+        ll_publish_04 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_04);
+        ll_publish_05 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_05);
+        ll_publish_06 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_06);
+
+        ll_publish_01.setOnClickListener(this);
+        ll_publish_02.setOnClickListener(this);
+        ll_publish_03.setOnClickListener(this);
+        ll_publish_04.setOnClickListener(this);
+        ll_publish_05.setOnClickListener(this);
+        ll_publish_06.setOnClickListener(this);
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -82,6 +110,24 @@ public class PublishFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_publish_01:
+                break;
+            case R.id.ll_publish_02:
+                break;
+            case R.id.ll_publish_03:
+                break;
+            case R.id.ll_publish_04:
+                break;
+            case R.id.ll_publish_05:
+                break;
+            case R.id.ll_publish_06:
+                break;
+        }
     }
 
     /**
