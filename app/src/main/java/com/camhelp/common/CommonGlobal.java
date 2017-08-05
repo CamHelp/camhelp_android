@@ -1,5 +1,7 @@
 package com.camhelp.common;
 
+import com.camhelp.R;
+
 /**
  * Created by storm on 2017-08-03.
  * 一些常量

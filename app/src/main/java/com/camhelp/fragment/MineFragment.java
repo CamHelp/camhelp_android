@@ -1,5 +1,6 @@
 package com.camhelp.fragment;
 
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.camhelp.R;
 import com.camhelp.activity.LoginActivity;
+import com.camhelp.activity.MainActivity;
 import com.camhelp.common.CommonGlobal;
 
 /**
@@ -159,6 +161,9 @@ public class MineFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    public class MyApp extends Application {
+        public int theme = 0;
+    }
 
     public void showchoosedialog(View view, String hint) {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());

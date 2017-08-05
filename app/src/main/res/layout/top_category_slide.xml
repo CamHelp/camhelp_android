@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:background="#eee"
+    android:background="@color/colorPrimaryBlew"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="活动"
-                android:textColor="#008000" />
+                android:textColor="#00FF00" />
         </LinearLayout>
 
         <LinearLayout
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="问题"
-                android:textColor="#000000" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -52,7 +52,7 @@
                 android:id="@+id/id_tv_lose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:text="失物" />
         </LinearLayout>
 
@@ -68,7 +68,7 @@
                 android:id="@+id/id_tv_pickup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:text="捡物" />
         </LinearLayout>
 

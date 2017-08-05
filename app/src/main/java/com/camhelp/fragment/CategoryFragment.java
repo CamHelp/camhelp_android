@@ -184,16 +184,16 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 resetTextView();
                 switch (position) {
                     case 0:
-                        tv_01.setTextColor(Color.parseColor("#008000"));
+                        tv_01.setTextColor(Color.parseColor("#00FF00"));
                         break;
                     case 1:
-                        tv_02.setTextColor(Color.parseColor("#008000"));
+                        tv_02.setTextColor(Color.parseColor("#00FF00"));
                         break;
                     case 2:
-                        tv_03.setTextColor(Color.parseColor("#008000"));
+                        tv_03.setTextColor(Color.parseColor("#00FF00"));
                         break;
                     case 3:
-                        tv_04.setTextColor(Color.parseColor("#008000"));
+                        tv_04.setTextColor(Color.parseColor("#00FF00"));
                         break;
 
                 }
@@ -249,10 +249,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     }
 
     protected void resetTextView() {
-        tv_01.setTextColor(Color.BLACK);
-        tv_02.setTextColor(Color.BLACK);
-        tv_03.setTextColor(Color.BLACK);
-        tv_04.setTextColor(Color.BLACK);
+        tv_01.setTextColor(Color.WHITE);
+        tv_02.setTextColor(Color.WHITE);
+        tv_03.setTextColor(Color.WHITE);
+        tv_04.setTextColor(Color.WHITE);
     }
 
 
@@ -311,5 +311,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

@@ -1,5 +1,6 @@
 package com.camhelp.activity;
 
+import android.app.Application;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.camhelp.R;
+import com.camhelp.common.CommonGlobal;
 import com.camhelp.fragment.CategoryFragment;
 import com.camhelp.fragment.HomeFragment;
 import com.camhelp.fragment.MineFragment;
@@ -137,5 +139,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
