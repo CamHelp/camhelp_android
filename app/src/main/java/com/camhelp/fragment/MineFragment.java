@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.camhelp.R;
 import com.camhelp.activity.LoginActivity;
 import com.camhelp.activity.MainActivity;
+import com.camhelp.activity.SetupActivity;
 import com.camhelp.common.CommonGlobal;
 
 /**
@@ -28,14 +30,15 @@ import com.camhelp.common.CommonGlobal;
  * to handle interaction events.
  * Use the {@link MineFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
+ * <p>
  * 个人主页fragment
  */
-public class MineFragment extends Fragment implements View.OnClickListener{
+public class MineFragment extends Fragment implements View.OnClickListener {
+    private LinearLayout ll_base;
 
     TextView tv_username, tv_intro;
-    LinearLayout ll_check_version_update, ll_exit_system,ll_personal,ll_log_out,
-            ll_feedback;
+    LinearLayout ll_setup;
+    LinearLayout  ll_exit_system, ll_personal, ll_log_out;
     Button btn_log_out;
 
     private Dialog choosedialog = null;//确认框
@@ -98,22 +101,23 @@ public class MineFragment extends Fragment implements View.OnClickListener{
     }
 
     public void initview() {
+        ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
+        ll_base.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+
         tv_username = (TextView) getActivity().findViewById(R.id.tv_username);
         tv_intro = (TextView) getActivity().findViewById(R.id.tv_intro);
 
-        ll_check_version_update = (LinearLayout) getActivity().findViewById(R.id.ll_check_version_update);
         ll_exit_system = (LinearLayout) getActivity().findViewById(R.id.ll_exit_system);
         btn_log_out = (Button) getActivity().findViewById(R.id.btn_log_out);
         ll_personal = (LinearLayout) getActivity().findViewById(R.id.ll_personal);
         ll_log_out = (LinearLayout) getActivity().findViewById(R.id.ll_log_out);
-        ll_feedback = (LinearLayout) getActivity().findViewById(R.id.ll_feedback);
+        ll_setup = (LinearLayout) getActivity().findViewById(R.id.ll_setup);
 
-        ll_check_version_update.setOnClickListener(this);
         ll_exit_system.setOnClickListener(this);
         btn_log_out.setOnClickListener(this);
         ll_personal.setOnClickListener(this);
         ll_log_out.setOnClickListener(this);
-        ll_feedback.setOnClickListener(this);
+        ll_setup.setOnClickListener(this);
     }
 
     /**
@@ -122,14 +126,15 @@ public class MineFragment extends Fragment implements View.OnClickListener{
     public void useInit() {
 
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.ll_setup://设置
+                Intent setupIntent = new Intent(getActivity(), SetupActivity.class);
+                startActivity(setupIntent);
+                break;
             case R.id.ll_personal://个人信息
-                break;
-            case R.id.ll_check_version_update://检查更新
-                break;
-            case R.id.ll_feedback://反馈
                 break;
             case R.id.ll_exit_system://退出系统
                 EXITORLOGOUT = 0;

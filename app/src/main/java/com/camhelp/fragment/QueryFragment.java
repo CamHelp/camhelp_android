@@ -1,6 +1,7 @@
 package com.camhelp.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import com.camhelp.R;
+import com.camhelp.common.CommonGlobal;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +28,8 @@ import com.camhelp.R;
  * 搜索fragment
  */
 public class QueryFragment extends Fragment implements View.OnClickListener{
+
+    private LinearLayout ll_base;
 
     private EditText et_search;
     private Button bt_search;
@@ -85,6 +90,9 @@ public class QueryFragment extends Fragment implements View.OnClickListener{
     }
 
     public void initview(){
+        ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
+        ll_base.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+
         et_search = (EditText) getActivity().findViewById(R.id.et_search);
         bt_search = (Button) getActivity().findViewById(R.id.bt_search);
 

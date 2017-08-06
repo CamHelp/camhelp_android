@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.camhelp.R;
+import com.camhelp.common.CommonGlobal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     CategoryLoseFragment tab03;
     CategoryPickFragment tab04;
 
+    private LinearLayout ll_category_toptab;
     public ViewPager mViewPager;
     private FragmentPagerAdapter mAdapter;
     private List<Fragment> mDatas;
@@ -104,6 +106,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private void initTabLine() {
         mTabline = (ImageView) getActivity().findViewById(R.id.id_iv_tabline);
+        mTabline.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_ACCENT));
         Display display = getActivity().getWindow().getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
@@ -114,6 +117,9 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initView() {
+        ll_category_toptab = (LinearLayout) getActivity().findViewById(R.id.ll_category_toptab);
+        ll_category_toptab.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY_BLEW));
+
         mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager_category);
         tv_01 = (TextView) getActivity().findViewById(R.id.id_tv_club);
         tv_02 = (TextView) getActivity().findViewById(R.id.id_tv_problem);

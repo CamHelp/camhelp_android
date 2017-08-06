@@ -1,5 +1,6 @@
 package com.camhelp.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,16 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.camhelp.R;
+import com.camhelp.common.CommonGlobal;
 
 /**
  * 注册activity
  */
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private RelativeLayout top_rl_title;
     private ImageView top_return;
     private TextView top_title;
 
@@ -33,6 +37,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void inittitle() {
+        top_rl_title = (RelativeLayout) findViewById(R.id.top_rl_title);
+        top_rl_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+
         top_return = (ImageView) findViewById(R.id.top_return);
         top_title = (TextView) findViewById(R.id.top_title);
 

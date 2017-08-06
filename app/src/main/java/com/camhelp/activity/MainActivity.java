@@ -1,12 +1,14 @@
 package com.camhelp.activity;
 
 import android.app.Application;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import com.camhelp.fragment.QueryFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
 
+    private LinearLayout top_ll_title;
     private BottomNavigationBar bottomNavigationBar;
     int lastSelectedPosition = 0;
     private String TAG = MainActivity.class.getSimpleName();
@@ -37,23 +40,37 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initview();
+
+        setDefaultFragment();
+    }
+
+    public void initview(){
+        top_ll_title = (LinearLayout) findViewById(R.id.top_ll_title);
+        top_ll_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+
         tvTitle = (TextView) findViewById(R.id.tv_title);
         bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
 
+        /*记得一定把模式和背景样式设置在获取Item前面，否则会不生效*/
+        //设置BottomNavigationBar的模式
+        bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
+        //设置BottomNavigationBar的背景风格
+        bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+        bottomNavigationBar.setBarBackgroundColor(CommonGlobal.MYCOLOR_PRIMARY);
+
         bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.drawable.icon_home, "首页").setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.drawable.icon_query, "搜索").setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.drawable.icon_publish, "发布").setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.drawable.icon_category, "分类").setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.drawable.icon_mine, "我的").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.drawable.icon_home, "首页").setActiveColorResource(R.color.white))
+                .addItem(new BottomNavigationItem(R.drawable.icon_query, "搜索").setActiveColorResource(R.color.white))
+                .addItem(new BottomNavigationItem(R.drawable.icon_publish, "发布").setActiveColorResource(R.color.white))
+                .addItem(new BottomNavigationItem(R.drawable.icon_category, "分类").setActiveColorResource(R.color.white))
+                .addItem(new BottomNavigationItem(R.drawable.icon_mine, "我的").setActiveColorResource(R.color.white))
                 .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise();
 
         bottomNavigationBar.setTabSelectedListener(this);
-        bottomNavigationBar.setBarBackgroundColor(R.color.white);
-        setDefaultFragment();
     }
-
     /**
      * 设置默认的
      */

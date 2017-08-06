@@ -1,6 +1,7 @@
 package com.camhelp.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.camhelp.R;
+import com.camhelp.common.CommonGlobal;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +26,7 @@ import com.camhelp.R;
  */
 public class PublishFragment extends Fragment implements View.OnClickListener {
 
+    private LinearLayout ll_base;
     private LinearLayout ll_publish_01, ll_publish_02, ll_publish_03,
             ll_publish_04, ll_publish_05, ll_publish_06;
 
@@ -83,6 +86,9 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
     }
 
     public void initview() {
+        ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
+        ll_base.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+
         ll_publish_01 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_01);
         ll_publish_02 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_02);
         ll_publish_03 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_03);
