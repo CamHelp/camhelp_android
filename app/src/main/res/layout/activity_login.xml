@@ -101,7 +101,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@drawable/textview_textcolorchange001"
-            android:text="调试默认登录"/>
+            android:text="调试默认登录"
+            android:clickable="true"/>
 
         <FrameLayout
             android:layout_marginTop="18dp"
@@ -112,14 +113,16 @@
                 android:layout_marginLeft="18dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="注  册"/>
+                android:text="注  册"
+                android:clickable="true"/>
             <TextView
                 android:id="@+id/tv_forget"
                 android:layout_marginRight="18dp"
                 android:layout_gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="忘记密码"/>
+                android:text="忘记密码"
+                android:clickable="true"/>
         </FrameLayout>
 
     </LinearLayout>

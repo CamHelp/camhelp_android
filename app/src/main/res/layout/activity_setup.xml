@@ -10,8 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/dimgrey02">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/ll_scroll_content"
@@ -37,7 +36,7 @@
                         android:layout_height="26dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="18dp"
-                        android:src="@drawable/mine_colorchange" />
+                        android:src="@drawable/setup_color" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -47,7 +46,6 @@
                         android:layout_weight="1"
                         android:gravity="center|left"
                         android:text="改变主题色"
-                        android:textColor="@color/white"
                         android:textSize="16dp" />
                 </LinearLayout>
 
@@ -71,7 +69,7 @@
                         android:layout_height="26dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="18dp"
-                        android:src="@drawable/mine_update" />
+                        android:src="@drawable/setup_update" />
 
                     <TextView
                         android:id="@+id/textView3"
@@ -82,7 +80,6 @@
                         android:layout_weight="1"
                         android:gravity="center|left"
                         android:text="检查更新"
-                        android:textColor="@color/white"
                         android:textSize="16dp" />
 
                     <TextView
@@ -92,7 +89,6 @@
                         android:layout_marginRight="18dp"
                         android:gravity="center"
                         android:text="当前版本v1.0.0"
-                        android:textColor="@color/white"
                         android:textSize="12dp" />
                 </LinearLayout>
 
@@ -116,7 +112,7 @@
                         android:layout_height="26dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="18dp"
-                        android:src="@drawable/mine_feedback" />
+                        android:src="@drawable/setup_feedback" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -126,7 +122,6 @@
                         android:layout_weight="1"
                         android:gravity="center|left"
                         android:text="反馈"
-                        android:textColor="@color/white"
                         android:textSize="16dp" />
                 </LinearLayout>
 
@@ -139,8 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:background="@drawable/ll_item_selector"
-                android:clickable="true"
-                android:visibility="gone">
+                android:clickable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -151,7 +145,7 @@
                         android:layout_height="26dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="18dp"
-                        android:src="@drawable/mine_exit" />
+                        android:src="@drawable/setup_exit" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -161,7 +155,6 @@
                         android:layout_weight="1"
                         android:gravity="center|left"
                         android:text="退出系统"
-                        android:textColor="@color/white"
                         android:textSize="16dp" />
                 </LinearLayout>
             </LinearLayout>
@@ -172,8 +165,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:background="@drawable/ll_item_selector"
-                android:clickable="true"
-                android:visibility="gone">
+                android:clickable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -184,7 +176,7 @@
                         android:layout_height="26dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="18dp"
-                        android:src="@drawable/mine_loginout" />
+                        android:src="@drawable/setup_changeuser" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -194,7 +186,6 @@
                         android:layout_weight="1"
                         android:gravity="center|left"
                         android:text="用户注销"
-                        android:textColor="@color/white"
                         android:textSize="16dp" />
                 </LinearLayout>
 

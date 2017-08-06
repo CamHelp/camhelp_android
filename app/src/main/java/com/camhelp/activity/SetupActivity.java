@@ -18,9 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.camhelp.R;
+import com.camhelp.basic.ActivityCollector;
+import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 
-public class SetupActivity extends AppCompatActivity implements View.OnClickListener {
+public class SetupActivity extends BaseActivity implements View.OnClickListener {
 
     private RelativeLayout top_rl_title;
     private ImageView top_return;
@@ -79,6 +81,8 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
             case R.id.ll_feedback://反馈
                 break;
             case R.id.ll_color_change://改变主题色
+                Intent colorchange = new Intent(SetupActivity.this,SetupColorChangeActivity.class);
+                startActivity(colorchange);
                 break;
             case R.id.ll_exit_system://退出系统
                 EXITORLOGOUT = 0;
@@ -88,16 +92,14 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
                 EXITORLOGOUT = 1;
                 showchoosedialog(view, "注销");
                 break;
-            case R.id.btn_log_out://注销用户(隐藏)
-                EXITORLOGOUT = 1;
-                showchoosedialog(view, "注销");
-                break;
             case R.id.no:
                 choosedialog.dismiss();
                 break;
             case R.id.yes:
                 if (EXITORLOGOUT == 0) {
                     System.exit(0);
+                    ActivityCollector.finishAll();
+                    android.os.Process.killProcess(android.os.Process.myPid());
                 } else if (EXITORLOGOUT == 1) {
                     CommonGlobal.autoLogin = false; //恢复各初始值
                     CommonGlobal.loginUserId = -1;
@@ -131,4 +133,9 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
         alert.show();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        top_rl_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+    }
 }

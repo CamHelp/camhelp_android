@@ -220,4 +220,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ll_base.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+    }
 }

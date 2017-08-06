@@ -14,12 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.camhelp.R;
+import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 
 /**
  * 登录
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btnLogin;
     private EditText etUsername;

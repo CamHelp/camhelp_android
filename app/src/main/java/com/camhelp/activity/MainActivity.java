@@ -15,14 +15,16 @@ import android.widget.Toast;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.camhelp.R;
+import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.fragment.CategoryFragment;
 import com.camhelp.fragment.HomeFragment;
 import com.camhelp.fragment.MineFragment;
 import com.camhelp.fragment.PublishFragment;
 import com.camhelp.fragment.QueryFragment;
+import com.camhelp.utils.L;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
+public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
 
     private LinearLayout top_ll_title;
     private BottomNavigationBar bottomNavigationBar;
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
     @Override
     public void onTabSelected(int position) {
-        Log.d(TAG, "onTabSelected() called with: " + "position = [" + position + "]");
+//        Log.d(TAG, "onTabSelected() called with: " + "position = [" + position + "]");
         FragmentManager fm = this.getSupportFragmentManager();
         //开启事务
         FragmentTransaction transaction = fm.beginTransaction();
@@ -113,9 +115,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             case 3:
                 if (categoryFragment == null) {
                     categoryFragment = categoryFragment.newInstance("CATEGORY", "");
+                    L.d(TAG,"执行了分类！！！");
                 }
                 tvTitle.setText("分类");
                 transaction.replace(R.id.tabs, categoryFragment);
+                L.d(TAG,"执行了分类222！！！");
                 break;
             case 4:
                 if (mineFragment == null) {
@@ -161,5 +165,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     protected void onResume() {
         super.onResume();
+        top_ll_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+        bottomNavigationBar.setBarBackgroundColor(CommonGlobal.MYCOLOR_PRIMARY);
     }
 }

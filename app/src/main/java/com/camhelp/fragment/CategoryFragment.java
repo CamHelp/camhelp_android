@@ -152,7 +152,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
          * 解决viewpager滑动数据未保存问题
          * blog地址：http://blog.csdn.net/w372426096/article/details/49951317
          * */
-        mAdapter = new FragmentPagerAdapter(getActivity().getSupportFragmentManager()) {
+        mAdapter = new FragmentPagerAdapter(this.getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 Fragment fragment = null;
@@ -176,6 +176,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             }
 
             @Override
+            public int getItemPosition(Object object) {
+                return super.getItemPosition(object);
+            }
+
+            @Override
             public void destroyItem(ViewGroup container, int position, Object object) {
                 Fragment fragment = mDatas.get(position);
                 getActivity().getSupportFragmentManager().beginTransaction().hide(fragment).commit();
@@ -183,7 +188,6 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         };
 
         mViewPager.setAdapter(mAdapter);
-
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -201,11 +205,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                     case 3:
                         tv_04.setTextColor(Color.parseColor("#00FF00"));
                         break;
-
                 }
-
                 mCurrentPageIndex = position;
-
             }
 
             @Override
@@ -240,6 +241,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 } else if (mCurrentPageIndex == 3 && position == 2) // 3->2
                 {
                     lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + (positionOffset - 1)
+                            * mScreen1_3);
+                }else if (mCurrentPageIndex == 3 && position == 3) // 3->3
+                {
+                    lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + positionOffset
                             * mScreen1_3);
                 }
                 mTabline.setLayoutParams(lp);

@@ -14,12 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.camhelp.R;
+import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 
 /**
  * 注册activity
  */
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
     private RelativeLayout top_rl_title;
     private ImageView top_return;

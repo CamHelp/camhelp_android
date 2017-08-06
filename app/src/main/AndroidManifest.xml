@@ -33,6 +33,10 @@
         <activity
             android:name=".activity.SetupActivity"
             android:label="@string/title_activity_setup"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.SetupColorChangeActivity"
+            android:label="@string/title_activity_setup_color_change"
             android:theme="@style/AppTheme"></activity>
     </application>
 

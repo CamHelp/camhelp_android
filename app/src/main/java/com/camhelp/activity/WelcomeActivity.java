@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.camhelp.R;
+import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 
 /**
@@ -16,7 +17,7 @@ import com.camhelp.common.CommonGlobal;
  * 第一次使用或未记录用户名密码，会跳转到登录页面
  * 记住用户名和密码后会自动登录，直接跳转到主界面
  * */
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
