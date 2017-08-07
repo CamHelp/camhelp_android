@@ -44,7 +44,7 @@
             android:name=".activity.MineCenterActivity"
             android:label="@string/title_activity_mine_center"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.MinePublishedActivity"
             android:label="@string/title_activity_mine_published"
@@ -60,7 +60,33 @@
         <activity
             android:name=".activity.SetupFeedbackActivity"
             android:label="@string/title_activity_setup_feedback"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PublishClubActivity"
+            android:label="@string/title_activity_publish_club"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PublishProblemActivity"
+            android:label="@string/title_activity_publish_problem"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PublishLoseActivity"
+            android:label="@string/title_activity_publish_lose"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PublishPickupActivity"
+            android:label="@string/title_activity_publish_pickup"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PublishRepairActivity"
+            android:label="@string/title_activity_publish_repair"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PublishElectricityActivity"
+            android:label="@string/title_activity_publish_electricity"
+            android:theme="@style/AppTheme"/>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>

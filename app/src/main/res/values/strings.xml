@@ -12,4 +12,10 @@
     <string name="title_activity_mine_collection">MineCollectionActivity</string>
     <string name="title_activity_mine_focus">MineFocusActivity</string>
     <string name="title_activity_setup_feedback">SetupFeedbackActivity</string>
+    <string name="title_activity_publish_club">PublishClubActivity</string>
+    <string name="title_activity_publish_problem">PublishProblemActivity</string>
+    <string name="title_activity_publish_lose">PublishLoseActivity</string>
+    <string name="title_activity_publish_pickup">PublishPickupActivity</string>
+    <string name="title_activity_publish_repair">PublishRepairActivity</string>
+    <string name="title_activity_publish_electricity">PublishElectricityActivity</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.camhelp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
@@ -14,6 +15,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.camhelp.R;
+import com.camhelp.activity.PublishClubActivity;
+import com.camhelp.activity.PublishElectricityActivity;
+import com.camhelp.activity.PublishLoseActivity;
+import com.camhelp.activity.PublishPickupActivity;
+import com.camhelp.activity.PublishProblemActivity;
+import com.camhelp.activity.PublishRepairActivity;
 import com.camhelp.common.CommonGlobal;
 
 /**
@@ -144,16 +151,28 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_publish_01:
+                Intent publishClub = new Intent(getActivity(), PublishClubActivity.class);
+                startActivity(publishClub);
                 break;
             case R.id.ll_publish_02:
+                Intent publishProblem = new Intent(getActivity(), PublishProblemActivity.class);
+                startActivity(publishProblem);
                 break;
             case R.id.ll_publish_03:
+                Intent publishPickup = new Intent(getActivity(), PublishPickupActivity.class);
+                startActivity(publishPickup);
                 break;
             case R.id.ll_publish_04:
+                Intent publishLose = new Intent(getActivity(), PublishLoseActivity.class);
+                startActivity(publishLose);
                 break;
             case R.id.ll_publish_05:
+                Intent publishRepair = new Intent(getActivity(), PublishRepairActivity.class);
+                startActivity(publishRepair);
                 break;
             case R.id.ll_publish_06:
+                Intent publishElectricity = new Intent(getActivity(), PublishElectricityActivity.class);
+                startActivity(publishElectricity);
                 break;
         }
     }
