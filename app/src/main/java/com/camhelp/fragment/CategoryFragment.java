@@ -34,7 +34,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private String colorPrimary,colorPrimaryBlew,colorPrimaryDark,colorAccent;
+    private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
     CategoryClubFragment tab01;
     CategoryProblemFragment tab02;
@@ -115,16 +115,16 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
 
     /*获取主题色*/
-    public void initcolor(){
-        String defaultColorPrimary = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimary));
-        String defaultColorPrimaryBlew = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
-        String defaultColorPrimaryDark = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
-        String defaultColorAccent = "#"+Integer.toHexString(getResources().getColor(R.color.colorAccent));
+    public void initcolor() {
+        String defaultColorPrimary = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimary));
+        String defaultColorPrimaryBlew = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
+        String defaultColorPrimaryDark = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
+        String defaultColorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent));
 
-        colorPrimary = pref.getString(CommonGlobal.colorPrimary,defaultColorPrimary);
-        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew,defaultColorPrimaryBlew);
-        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark,defaultColorPrimaryDark);
-        colorAccent = pref.getString(CommonGlobal.colorAccent,defaultColorAccent);
+        colorPrimary = pref.getString(CommonGlobal.colorPrimary, defaultColorPrimary);
+        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew, defaultColorPrimaryBlew);
+        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark, defaultColorPrimaryDark);
+        colorAccent = pref.getString(CommonGlobal.colorAccent, defaultColorAccent);
     }
 
     private void initTabLine() {
@@ -193,7 +193,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                Fragment fragment = (Fragment)super.instantiateItem(container, position);
+                Fragment fragment = (Fragment) super.instantiateItem(container, position);
                 getActivity().getSupportFragmentManager().beginTransaction().show(fragment).commit();
                 return fragment;
             }
@@ -257,7 +257,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 {
                     lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + (positionOffset - 1)
                             * mScreen1_3);
-                }else if (mCurrentPageIndex == 2 && position == 2) // 2->3
+                } else if (mCurrentPageIndex == 2 && position == 2) // 2->3
                 {
                     lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + positionOffset
                             * mScreen1_3);
@@ -265,7 +265,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 {
                     lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + (positionOffset - 1)
                             * mScreen1_3);
-                }else if (mCurrentPageIndex == 3 && position == 3) // 3->3
+                } else if (mCurrentPageIndex == 3 && position == 3) // 3->3
                 {
                     lp.leftMargin = (int) (mCurrentPageIndex * mScreen1_3 + positionOffset
                             * mScreen1_3);
@@ -288,7 +288,6 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         tv_03.setTextColor(Color.WHITE);
         tv_04.setTextColor(Color.WHITE);
     }
-
 
     @Override
     public void onClick(View view) {

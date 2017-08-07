@@ -30,6 +30,8 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
+    public static SetupActivity mInstace = null;//用于其他activity关闭此activity
+
     private RelativeLayout top_rl_title;
     private ImageView top_return;
     private TextView top_title;
@@ -46,6 +48,7 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+        mInstace =this;
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         initcolor();
         inittitle();

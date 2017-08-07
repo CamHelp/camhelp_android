@@ -1,5 +1,6 @@
 package com.camhelp.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -110,17 +111,14 @@ public class SetupColorChangeActivity extends BaseActivity implements View.OnCli
         String checkcolorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent));
         editor = pref.edit();
         if (cb_color_01.isChecked()) {
-//            CommonGlobal.MY_COLOR_CHOSN = 1;
             editor.putInt(CommonGlobal.myColorChosn,1);
         } else if (cb_color_02.isChecked()) {
-//            CommonGlobal.MY_COLOR_CHOSN = 2;
             editor.putInt(CommonGlobal.myColorChosn,2);
             checkcolorPrimary = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimary2));
             checkcolorPrimaryBlew = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew2));
             checkcolorPrimaryDark = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark2));
             checkcolorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent2));
         } else if (cb_color_03.isChecked()) {
-//            CommonGlobal.MY_COLOR_CHOSN = 3;
             editor.putInt(CommonGlobal.myColorChosn,3);
             checkcolorPrimary = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimary3));
             checkcolorPrimaryBlew = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew3));
@@ -128,16 +126,18 @@ public class SetupColorChangeActivity extends BaseActivity implements View.OnCli
             checkcolorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent3));
         }
 
-//        CommonGlobal.MYCOLOR_PRIMARY = checkcolorPrimary;
-//        CommonGlobal.MYCOLOR_PRIMARY_BLEW = checkcolorPrimaryBlew;
-//        CommonGlobal.MYCOLOR_PRIMARY_DARK = checkcolorPrimaryDark;
-//        CommonGlobal.MYCOLOR_ACCENT = checkcolorAccent;
         editor.putString(CommonGlobal.colorPrimary,checkcolorPrimary);
         editor.putString(CommonGlobal.colorPrimaryBlew,checkcolorPrimaryBlew);
         editor.putString(CommonGlobal.colorPrimaryDark,checkcolorPrimaryDark);
         editor.putString(CommonGlobal.colorAccent,checkcolorAccent);
 
         editor.apply();
+
+        /*改变主题色后跳转到MainActivity，并关闭其他的activity*/
+        Intent refreshIntent = new Intent(SetupColorChangeActivity.this, MainActivity.class);
+        startActivity(refreshIntent);
+        SetupActivity.mInstace.finish();
+        MainActivity.mInstace.finish();
         finish();
     }
 
