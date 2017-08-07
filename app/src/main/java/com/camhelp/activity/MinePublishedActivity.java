@@ -1,18 +1,23 @@
 package com.camhelp.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 
@@ -22,9 +27,6 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
-    private RelativeLayout top_rl_title;
-    private ImageView top_return;
-    private TextView top_title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +51,17 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     }
 
     public void inittitle() {
-        top_rl_title = (RelativeLayout) findViewById(R.id.top_rl_title);
-        top_rl_title.setBackgroundColor(Color.parseColor(colorPrimary));
-
-        top_return = (ImageView) findViewById(R.id.top_return);
-        top_title = (TextView) findViewById(R.id.top_title);
-
-        top_title.setText("我发布的");
-        top_return.setOnClickListener(this);
+        String fruitName = "fruitname";
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        ImageView fruitImageView = (ImageView) findViewById(R.id.fruit_image_view);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        collapsingToolbar.setTitle(fruitName);
+        Glide.with(this).load(R.drawable.mine_center_back).into(fruitImageView);
     }
 
     public void initview() {
@@ -66,9 +71,16 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.top_return:
-                finish();
-                break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
