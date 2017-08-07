@@ -40,8 +40,8 @@
 
                 <ImageView
                     android:id="@+id/btn_activity"
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/publish_club" />
 
                 <TextView
@@ -64,8 +64,8 @@
 
                 <ImageView
                     android:id="@+id/btn_question"
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/publish_problem" />
 
                 <TextView
@@ -88,8 +88,8 @@
 
                 <ImageView
                     android:id="@+id/btn_pickup"
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/publish_pickup" />
 
                 <TextView
@@ -120,8 +120,8 @@
 
                 <ImageView
                     android:id="@+id/btn_lose"
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/publish_lose" />
 
                 <TextView
@@ -144,8 +144,8 @@
 
                 <ImageView
                     android:id="@+id/btn_dormitory"
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/publish_repair" />
 
                 <TextView
@@ -168,8 +168,8 @@
 
                 <ImageView
                     android:id="@+id/btn_electric"
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/publish_power" />
 
                 <TextView

@@ -20,8 +20,11 @@ import android.widget.TextView;
 import com.camhelp.R;
 import com.camhelp.activity.LoginActivity;
 import com.camhelp.activity.MainActivity;
+import com.camhelp.activity.MineCenterActivity;
 import com.camhelp.activity.SetupActivity;
 import com.camhelp.common.CommonGlobal;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +43,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     LinearLayout ll_setup;
     LinearLayout  ll_exit_system, ll_personal, ll_log_out;
     Button btn_log_out;
+    private CircleImageView mine_cimg_avatar;
 
     private Dialog choosedialog = null;//确认框
     private int EXITORLOGOUT = -1;
@@ -101,6 +105,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     }
 
     public void initview() {
+        mine_cimg_avatar = (CircleImageView) getActivity().findViewById(R.id.mine_cimg_avatar);
+        mine_cimg_avatar.setOnClickListener(this);
         ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
         ll_base.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
 
@@ -130,6 +136,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.mine_cimg_avatar:
+                Intent minecenter = new Intent(getActivity(), MineCenterActivity.class);
+                startActivity(minecenter);
+                break;
             case R.id.ll_setup://设置
                 Intent setupIntent = new Intent(getActivity(), SetupActivity.class);
                 startActivity(setupIntent);

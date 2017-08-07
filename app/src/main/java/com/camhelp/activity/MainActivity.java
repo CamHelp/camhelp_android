@@ -26,6 +26,8 @@ import com.camhelp.utils.L;
 
 public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
 
+    public static MainActivity mInstace = null;
+
     private LinearLayout top_ll_title;
     private BottomNavigationBar bottomNavigationBar;
     int lastSelectedPosition = 0;
@@ -42,6 +44,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mInstace = this;
 
         initview();
 
@@ -115,17 +119,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             case 3:
                 if (categoryFragment == null) {
                     categoryFragment = categoryFragment.newInstance("CATEGORY", "");
-                    L.d(TAG,"执行了分类！！！");
                 }
                 tvTitle.setText("分类");
                 transaction.replace(R.id.tabs, categoryFragment);
-                L.d(TAG,"执行了分类222！！！");
                 break;
             case 4:
                 if (mineFragment == null) {
                     mineFragment = mineFragment.newInstance("MINE", "");
                 }
-                tvTitle.setText("个人主页");
+                tvTitle.setText("个人中心");
                 transaction.replace(R.id.tabs, mineFragment);
                 break;
             default:
@@ -166,6 +168,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     protected void onResume() {
         super.onResume();
         top_ll_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
-        bottomNavigationBar.setBarBackgroundColor(CommonGlobal.MYCOLOR_PRIMARY);
     }
+
 }

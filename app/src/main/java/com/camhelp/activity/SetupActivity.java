@@ -105,7 +105,8 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
                     CommonGlobal.loginUserId = -1;
                     Intent loginIntent = new Intent(this, LoginActivity.class);
                     startActivity(loginIntent);//注销后跳转到登录界面重新登录
-                    finish();
+                    MainActivity.mInstace.finish();
+//                    this.finish();
                 }
                 choosedialog.dismiss();
                 break;

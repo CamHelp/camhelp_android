@@ -7,4 +7,5 @@
     <string name="title_activity_forget_password">ForgetPasswordActivity</string>
     <string name="title_activity_setup">SetupActivity</string>
     <string name="title_activity_setup_color_change">SetupColorChange</string>
+    <string name="title_activity_mine_center">MineCenterActivity</string>
 </resources>

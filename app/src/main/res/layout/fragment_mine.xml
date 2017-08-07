@@ -24,6 +24,7 @@
                 android:layout_height="140dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/mine_cimg_avatar"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_gravity="center"

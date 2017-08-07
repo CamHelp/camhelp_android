@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,6 +39,10 @@
         <activity
             android:name=".activity.SetupColorChangeActivity"
             android:label="@string/title_activity_setup_color_change"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.MineCenterActivity"
+            android:label="@string/title_activity_mine_center"
             android:theme="@style/AppTheme"></activity>
     </application>
 
