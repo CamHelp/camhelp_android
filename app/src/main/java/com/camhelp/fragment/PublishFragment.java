@@ -1,6 +1,5 @@
 package com.camhelp.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -15,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.camhelp.R;
-import com.camhelp.activity.PublishClubActivity;
+import com.camhelp.activity.PublishExperienceActivity;
 import com.camhelp.activity.PublishElectricityActivity;
 import com.camhelp.activity.PublishLoseActivity;
 import com.camhelp.activity.PublishPickupActivity;
@@ -131,6 +130,9 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
         ll_publish_04.setOnClickListener(this);
         ll_publish_05.setOnClickListener(this);
         ll_publish_06.setOnClickListener(this);
+
+        ll_publish_05.setVisibility(View.INVISIBLE);
+        ll_publish_06.setVisibility(View.INVISIBLE);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -151,7 +153,7 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_publish_01:
-                Intent publishClub = new Intent(getActivity(), PublishClubActivity.class);
+                Intent publishClub = new Intent(getActivity(), PublishExperienceActivity.class);
                 startActivity(publishClub);
                 break;
             case R.id.ll_publish_02:

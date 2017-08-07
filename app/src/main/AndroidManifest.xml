@@ -62,21 +62,25 @@
             android:label="@string/title_activity_setup_feedback"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activity.PublishClubActivity"
+            android:name=".activity.PublishExperienceActivity"
             android:label="@string/title_activity_publish_club"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.PublishProblemActivity"
             android:label="@string/title_activity_publish_problem"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.PublishLoseActivity"
             android:label="@string/title_activity_publish_lose"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan"  />
         <activity
             android:name=".activity.PublishPickupActivity"
             android:label="@string/title_activity_publish_pickup"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.PublishRepairActivity"
             android:label="@string/title_activity_publish_repair"
@@ -88,5 +92,8 @@
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
