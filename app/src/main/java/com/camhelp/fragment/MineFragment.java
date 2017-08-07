@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -37,12 +39,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 个人主页fragment
  */
 public class MineFragment extends Fragment implements View.OnClickListener {
+
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private String colorPrimary,colorPrimaryBlew,colorPrimaryDark,colorAccent;
+
     private LinearLayout ll_base;
 
     TextView tv_username, tv_intro;
     LinearLayout ll_setup;
-    LinearLayout  ll_exit_system, ll_personal, ll_log_out;
-    Button btn_log_out;
+    LinearLayout ll_personal;
     private CircleImageView mine_cimg_avatar;
 
     private Dialog choosedialog = null;//确认框
@@ -100,29 +106,39 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        initcolor();
         initview();
         useInit();
+    }
+
+
+    /*获取主题色*/
+    public void initcolor(){
+        String defaultColorPrimary = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimary));
+        String defaultColorPrimaryBlew = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
+        String defaultColorPrimaryDark = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
+        String defaultColorAccent = "#"+Integer.toHexString(getResources().getColor(R.color.colorAccent));
+
+        colorPrimary = pref.getString(CommonGlobal.colorPrimary,defaultColorPrimary);
+        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew,defaultColorPrimaryBlew);
+        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark,defaultColorPrimaryDark);
+        colorAccent = pref.getString(CommonGlobal.colorAccent,defaultColorAccent);
     }
 
     public void initview() {
         mine_cimg_avatar = (CircleImageView) getActivity().findViewById(R.id.mine_cimg_avatar);
         mine_cimg_avatar.setOnClickListener(this);
         ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
-        ll_base.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+        ll_base.setBackgroundColor(Color.parseColor(colorPrimary));
 
         tv_username = (TextView) getActivity().findViewById(R.id.tv_username);
         tv_intro = (TextView) getActivity().findViewById(R.id.tv_intro);
 
-        ll_exit_system = (LinearLayout) getActivity().findViewById(R.id.ll_exit_system);
-        btn_log_out = (Button) getActivity().findViewById(R.id.btn_log_out);
         ll_personal = (LinearLayout) getActivity().findViewById(R.id.ll_personal);
-        ll_log_out = (LinearLayout) getActivity().findViewById(R.id.ll_log_out);
         ll_setup = (LinearLayout) getActivity().findViewById(R.id.ll_setup);
 
-        ll_exit_system.setOnClickListener(this);
-        btn_log_out.setOnClickListener(this);
         ll_personal.setOnClickListener(this);
-        ll_log_out.setOnClickListener(this);
         ll_setup.setOnClickListener(this);
     }
 
@@ -146,61 +162,12 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.ll_personal://个人信息
                 break;
-            case R.id.ll_exit_system://退出系统
-                EXITORLOGOUT = 0;
-                showchoosedialog(view, "退出系统");
-                break;
-            case R.id.ll_log_out://注销用户
-                EXITORLOGOUT = 1;
-                showchoosedialog(view, "注销");
-                break;
-            case R.id.btn_log_out://注销用户(隐藏)
-                EXITORLOGOUT = 1;
-                showchoosedialog(view, "注销");
-                break;
-            case R.id.no:
-                choosedialog.dismiss();
-                break;
-            case R.id.yes:
-                if (EXITORLOGOUT == 0) {
-                    System.exit(0);
-                } else if (EXITORLOGOUT == 1) {
-                    CommonGlobal.autoLogin = false; //恢复各初始值
-                    CommonGlobal.loginUserId = -1;
-                    Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(loginIntent);//注销后跳转到登录界面重新登录
-                    getActivity().finish();
-                }
-                choosedialog.dismiss();
-                break;
         }
     }
 
     public class MyApp extends Application {
         public int theme = 0;
     }
-
-    public void showchoosedialog(View view, String hint) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setTitle("提示").setMessage("确定" + hint).setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (EXITORLOGOUT == 0) {
-                            System.exit(0);
-                        } else if (EXITORLOGOUT == 1) {
-                            CommonGlobal.autoLogin = false; //回复各初始值
-                            CommonGlobal.loginUserId = -1;
-                            Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
-                            startActivity(loginIntent);//注销后跳转到登录界面重新登录
-                            getActivity().finish();
-                        }
-                    }
-                }).setNegativeButton("取消", null);
-        alert.create();
-        alert.show();
-    }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -234,6 +201,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        ll_base.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+        ll_base.setBackgroundColor(Color.parseColor(colorPrimary));
     }
 }

@@ -1,9 +1,11 @@
 package com.camhelp.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +24,9 @@ import com.camhelp.common.CommonGlobal;
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+
     private Button btnLogin;
     private EditText etUsername;
     private EditText etPassword;
@@ -35,6 +40,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+
     }
 
     private void initView() {
@@ -100,18 +107,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String rePassword = "admin1";
         int reId = 0;             //得到用户id
 
+        editor = pref.edit();
         if (password.equals(rePassword)) {                                   //密码正确
             if (checkboxAutologin.isChecked()) {                           //自动登录验证
-                CommonGlobal.autoLogin = true;
+                editor.putBoolean(CommonGlobal.isAutoLogin,true);
             }
-            CommonGlobal.loginUserId = reId;                //记录用户id
+            editor.putInt(CommonGlobal.user_id,reId);
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
             this.finish();
         } else {
             tvResultLabel.setText("用户名或密码错误！");
+            editor.clear();
         }
+        editor.apply();
     }
 
 }

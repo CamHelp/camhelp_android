@@ -2,9 +2,11 @@ package com.camhelp.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -29,6 +31,11 @@ import java.util.List;
  * 分类fragment
  */
 public class CategoryFragment extends Fragment implements View.OnClickListener {
+
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private String colorPrimary,colorPrimaryBlew,colorPrimaryDark,colorAccent;
+
     CategoryClubFragment tab01;
     CategoryProblemFragment tab02;
     CategoryLoseFragment tab03;
@@ -100,13 +107,29 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        initcolor();
         initTabLine();
         initView();
     }
 
+
+    /*获取主题色*/
+    public void initcolor(){
+        String defaultColorPrimary = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimary));
+        String defaultColorPrimaryBlew = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
+        String defaultColorPrimaryDark = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
+        String defaultColorAccent = "#"+Integer.toHexString(getResources().getColor(R.color.colorAccent));
+
+        colorPrimary = pref.getString(CommonGlobal.colorPrimary,defaultColorPrimary);
+        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew,defaultColorPrimaryBlew);
+        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark,defaultColorPrimaryDark);
+        colorAccent = pref.getString(CommonGlobal.colorAccent,defaultColorAccent);
+    }
+
     private void initTabLine() {
         mTabline = (ImageView) getActivity().findViewById(R.id.id_iv_tabline);
-        mTabline.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_ACCENT));
+        mTabline.setBackgroundColor(Color.parseColor(colorAccent));
         Display display = getActivity().getWindow().getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
@@ -118,7 +141,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private void initView() {
         ll_category_toptab = (LinearLayout) getActivity().findViewById(R.id.ll_category_toptab);
-        ll_category_toptab.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY_BLEW));
+        ll_category_toptab.setBackgroundColor(Color.parseColor(colorPrimary));
 
         mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager_category);
         tv_01 = (TextView) getActivity().findViewById(R.id.id_tv_club);

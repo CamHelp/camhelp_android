@@ -1,9 +1,11 @@
 package com.camhelp.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -25,6 +27,10 @@ import com.camhelp.common.CommonGlobal;
  * 发布fragment
  */
 public class PublishFragment extends Fragment implements View.OnClickListener {
+
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private String colorPrimary,colorPrimaryBlew,colorPrimaryDark,colorAccent;
 
     private LinearLayout ll_base;
     private LinearLayout ll_publish_01, ll_publish_02, ll_publish_03,
@@ -82,12 +88,28 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        initcolor();
         initview();
+    }
+
+
+    /*获取主题色*/
+    public void initcolor(){
+        String defaultColorPrimary = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimary));
+        String defaultColorPrimaryBlew = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
+        String defaultColorPrimaryDark = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
+        String defaultColorAccent = "#"+Integer.toHexString(getResources().getColor(R.color.colorAccent));
+
+        colorPrimary = pref.getString(CommonGlobal.colorPrimary,defaultColorPrimary);
+        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew,defaultColorPrimaryBlew);
+        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark,defaultColorPrimaryDark);
+        colorAccent = pref.getString(CommonGlobal.colorAccent,defaultColorAccent);
     }
 
     public void initview() {
         ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
-        ll_base.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+        ll_base.setBackgroundColor(Color.parseColor(colorPrimary));
 
         ll_publish_01 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_01);
         ll_publish_02 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_02);

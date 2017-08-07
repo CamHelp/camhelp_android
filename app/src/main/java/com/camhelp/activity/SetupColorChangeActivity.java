@@ -1,7 +1,9 @@
 package com.camhelp.activity;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,11 @@ import com.camhelp.common.CommonGlobal;
 
 public class SetupColorChangeActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
+    private int myColorChosn;
+
     private RelativeLayout top_rl_title;
     private ImageView top_return;
     private TextView top_title;
@@ -31,13 +38,29 @@ public class SetupColorChangeActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_color_change);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        initcolor();
         inittitle();
         initview();
     }
 
+    /*获取主题色*/
+    public void initcolor() {
+        String defaultColorPrimary = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimary));
+        String defaultColorPrimaryBlew = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
+        String defaultColorPrimaryDark = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
+        String defaultColorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent));
+
+        colorPrimary = pref.getString(CommonGlobal.colorPrimary, defaultColorPrimary);
+        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew, defaultColorPrimaryBlew);
+        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark, defaultColorPrimaryDark);
+        colorAccent = pref.getString(CommonGlobal.colorAccent, defaultColorAccent);
+        myColorChosn = pref.getInt(CommonGlobal.myColorChosn,1);
+    }
+
     public void inittitle() {
         top_rl_title = (RelativeLayout) findViewById(R.id.top_rl_title);
-        top_rl_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+        top_rl_title.setBackgroundColor(Color.parseColor(colorPrimary));
 
         top_return = (ImageView) findViewById(R.id.top_return);
         top_title = (TextView) findViewById(R.id.top_title);
@@ -55,7 +78,7 @@ public class SetupColorChangeActivity extends BaseActivity implements View.OnCli
         cb_color_02.setOnCheckedChangeListener(this);
         cb_color_03.setOnCheckedChangeListener(this);
 
-        int chosn = CommonGlobal.MY_COLOR_CHOSN;
+        int chosn = myColorChosn;
         if (chosn == 1) {
             cb_color_01.setChecked(true);
         } else if (chosn == 2) {
@@ -81,32 +104,40 @@ public class SetupColorChangeActivity extends BaseActivity implements View.OnCli
     }
 
     public void colorsave() {
-        String colorPrimary = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimary));
-        String colorPrimaryBlew = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
-        String colorPrimaryDark = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
-        String colorAccent = "#"+Integer.toHexString(getResources().getColor(R.color.colorAccent));
-
+        String checkcolorPrimary = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimary));
+        String checkcolorPrimaryBlew = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
+        String checkcolorPrimaryDark = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
+        String checkcolorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent));
+        editor = pref.edit();
         if (cb_color_01.isChecked()) {
-            CommonGlobal.MY_COLOR_CHOSN = 1;
+//            CommonGlobal.MY_COLOR_CHOSN = 1;
+            editor.putInt(CommonGlobal.myColorChosn,1);
         } else if (cb_color_02.isChecked()) {
-            CommonGlobal.MY_COLOR_CHOSN = 2;
-            colorPrimary = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimary2));
-            colorPrimaryBlew = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew2));
-            colorPrimaryDark = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark2));
-            colorAccent = "#"+Integer.toHexString(getResources().getColor(R.color.colorAccent2));
+//            CommonGlobal.MY_COLOR_CHOSN = 2;
+            editor.putInt(CommonGlobal.myColorChosn,2);
+            checkcolorPrimary = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimary2));
+            checkcolorPrimaryBlew = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew2));
+            checkcolorPrimaryDark = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark2));
+            checkcolorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent2));
         } else if (cb_color_03.isChecked()) {
-            CommonGlobal.MY_COLOR_CHOSN = 3;
-            colorPrimary = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimary3));
-            colorPrimaryBlew = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew3));
-            colorPrimaryDark = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark3));
-            colorAccent = "#"+Integer.toHexString(getResources().getColor(R.color.colorAccent3));
+//            CommonGlobal.MY_COLOR_CHOSN = 3;
+            editor.putInt(CommonGlobal.myColorChosn,3);
+            checkcolorPrimary = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimary3));
+            checkcolorPrimaryBlew = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew3));
+            checkcolorPrimaryDark = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark3));
+            checkcolorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent3));
         }
 
-        CommonGlobal.MYCOLOR_PRIMARY = colorPrimary;
-        CommonGlobal.MYCOLOR_PRIMARY_BLEW= colorPrimaryBlew;
-        CommonGlobal.MYCOLOR_PRIMARY_DARK = colorPrimaryDark;
-        CommonGlobal.MYCOLOR_ACCENT = colorAccent;
+//        CommonGlobal.MYCOLOR_PRIMARY = checkcolorPrimary;
+//        CommonGlobal.MYCOLOR_PRIMARY_BLEW = checkcolorPrimaryBlew;
+//        CommonGlobal.MYCOLOR_PRIMARY_DARK = checkcolorPrimaryDark;
+//        CommonGlobal.MYCOLOR_ACCENT = checkcolorAccent;
+        editor.putString(CommonGlobal.colorPrimary,checkcolorPrimary);
+        editor.putString(CommonGlobal.colorPrimaryBlew,checkcolorPrimaryBlew);
+        editor.putString(CommonGlobal.colorPrimaryDark,checkcolorPrimaryDark);
+        editor.putString(CommonGlobal.colorAccent,checkcolorAccent);
 
+        editor.apply();
         finish();
     }
 

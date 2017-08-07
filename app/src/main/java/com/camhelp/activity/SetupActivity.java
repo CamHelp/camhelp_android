@@ -3,8 +3,10 @@ package com.camhelp.activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +26,10 @@ import com.camhelp.common.CommonGlobal;
 
 public class SetupActivity extends BaseActivity implements View.OnClickListener {
 
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
+
     private RelativeLayout top_rl_title;
     private ImageView top_return;
     private TextView top_title;
@@ -35,17 +41,33 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
 
     private Dialog choosedialog = null;//确认框
     private int EXITORLOGOUT = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        initcolor();
         inittitle();
         initview();
     }
 
+    /*获取主题色*/
+    public void initcolor() {
+        String defaultColorPrimary = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimary));
+        String defaultColorPrimaryBlew = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
+        String defaultColorPrimaryDark = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
+        String defaultColorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent));
+
+        colorPrimary = pref.getString(CommonGlobal.colorPrimary, defaultColorPrimary);
+        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew, defaultColorPrimaryBlew);
+        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark, defaultColorPrimaryDark);
+        colorAccent = pref.getString(CommonGlobal.colorAccent, defaultColorAccent);
+    }
+
     public void inittitle() {
         top_rl_title = (RelativeLayout) findViewById(R.id.top_rl_title);
-        top_rl_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+        top_rl_title.setBackgroundColor(Color.parseColor(colorPrimary));
 
         top_return = (ImageView) findViewById(R.id.top_return);
         top_title = (TextView) findViewById(R.id.top_title);
@@ -81,7 +103,7 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
             case R.id.ll_feedback://反馈
                 break;
             case R.id.ll_color_change://改变主题色
-                Intent colorchange = new Intent(SetupActivity.this,SetupColorChangeActivity.class);
+                Intent colorchange = new Intent(SetupActivity.this, SetupColorChangeActivity.class);
                 startActivity(colorchange);
                 break;
             case R.id.ll_exit_system://退出系统
@@ -91,24 +113,6 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
             case R.id.ll_log_out://注销用户
                 EXITORLOGOUT = 1;
                 showchoosedialog(view, "注销");
-                break;
-            case R.id.no:
-                choosedialog.dismiss();
-                break;
-            case R.id.yes:
-                if (EXITORLOGOUT == 0) {
-                    System.exit(0);
-                    ActivityCollector.finishAll();
-                    android.os.Process.killProcess(android.os.Process.myPid());
-                } else if (EXITORLOGOUT == 1) {
-                    CommonGlobal.autoLogin = false; //恢复各初始值
-                    CommonGlobal.loginUserId = -1;
-                    Intent loginIntent = new Intent(this, LoginActivity.class);
-                    startActivity(loginIntent);//注销后跳转到登录界面重新登录
-                    MainActivity.mInstace.finish();
-//                    this.finish();
-                }
-                choosedialog.dismiss();
                 break;
         }
     }
@@ -120,12 +124,16 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (EXITORLOGOUT == 0) {
-                            System.exit(0);
+                            MainActivity.mInstace.finish();
+                            finish();
                         } else if (EXITORLOGOUT == 1) {
-                            CommonGlobal.autoLogin = false; //回复各初始值
-                            CommonGlobal.loginUserId = -1;
+                            editor = pref.edit();
+                            editor.putBoolean(CommonGlobal.isAutoLogin, false);
+                            editor.putInt(CommonGlobal.user_id, -1);
+                            editor.apply();
                             Intent loginIntent = new Intent(SetupActivity.this, LoginActivity.class);
                             startActivity(loginIntent);//注销后跳转到登录界面重新登录
+                            MainActivity.mInstace.finish();
                             finish();
                         }
                     }
@@ -137,6 +145,7 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onResume() {
         super.onResume();
-        top_rl_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+        initcolor();
+        top_rl_title.setBackgroundColor(Color.parseColor(colorPrimary));
     }
 }

@@ -1,7 +1,9 @@
 package com.camhelp.activity;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -26,9 +28,12 @@ import com.camhelp.utils.L;
 
 public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
 
-    public static MainActivity mInstace = null;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private String colorPrimary,colorPrimaryBlew,colorPrimaryDark,colorAccent;
 
-    private LinearLayout top_ll_title;
+    public static MainActivity mInstace = null;//用于设置里关掉MainActivity，达到退出效果
+
     private BottomNavigationBar bottomNavigationBar;
     int lastSelectedPosition = 0;
     private String TAG = MainActivity.class.getSimpleName();
@@ -37,26 +42,33 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private PublishFragment publishFragment;
     private CategoryFragment categoryFragment;
     private MineFragment mineFragment;
-    private TextView tvTitle;
     private long exitTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        initcolor();
         mInstace = this;
-
         initview();
-
         setDefaultFragment();
     }
 
-    public void initview(){
-        top_ll_title = (LinearLayout) findViewById(R.id.top_ll_title);
-        top_ll_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+    /*获取主题色*/
+    public void initcolor(){
+        String defaultColorPrimary = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimary));
+        String defaultColorPrimaryBlew = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
+        String defaultColorPrimaryDark = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
+        String defaultColorAccent = "#"+Integer.toHexString(getResources().getColor(R.color.colorAccent));
 
-        tvTitle = (TextView) findViewById(R.id.tv_title);
+        colorPrimary = pref.getString(CommonGlobal.colorPrimary,defaultColorPrimary);
+        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew,defaultColorPrimaryBlew);
+        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark,defaultColorPrimaryDark);
+        colorAccent = pref.getString(CommonGlobal.colorAccent,defaultColorAccent);
+    }
+
+    public void initview(){
         bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
 
         /*记得一定把模式和背景样式设置在获取Item前面，否则会不生效*/
@@ -64,16 +76,20 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         //设置BottomNavigationBar的背景风格
         bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        bottomNavigationBar.setBarBackgroundColor(CommonGlobal.MYCOLOR_PRIMARY);
+
+        bottomNavigationBar.setActiveColor(R.color.white)//选中颜色
+                .setInActiveColor(colorPrimaryDark)//未选中颜色
+                .setBarBackgroundColor(colorPrimary);//背景色
 
         bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.drawable.icon_home, "首页").setActiveColorResource(R.color.white))
-                .addItem(new BottomNavigationItem(R.drawable.icon_query, "搜索").setActiveColorResource(R.color.white))
-                .addItem(new BottomNavigationItem(R.drawable.icon_publish, "发布").setActiveColorResource(R.color.white))
-                .addItem(new BottomNavigationItem(R.drawable.icon_category, "分类").setActiveColorResource(R.color.white))
-                .addItem(new BottomNavigationItem(R.drawable.icon_mine, "我的").setActiveColorResource(R.color.white))
+                .addItem(new BottomNavigationItem(R.drawable.icon_home, "首页"))
+                .addItem(new BottomNavigationItem(R.drawable.icon_query, "搜索"))
+                .addItem(new BottomNavigationItem(R.drawable.icon_publish, "发布"))
+                .addItem(new BottomNavigationItem(R.drawable.icon_category, "分类"))
+                .addItem(new BottomNavigationItem(R.drawable.icon_mine, "我的"))
                 .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise();
+
 
         bottomNavigationBar.setTabSelectedListener(this);
     }
@@ -99,35 +115,30 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 if (homeFragment == null) {
                     homeFragment = homeFragment.newInstance("HOME", "");
                 }
-                tvTitle.setText("校园帮");
                 transaction.replace(R.id.tabs, homeFragment);
                 break;
             case 1:
                 if (queryFragment == null) {
                     queryFragment = queryFragment.newInstance("QUERY", "");
                 }
-                tvTitle.setText("搜索");
                 transaction.replace(R.id.tabs, queryFragment);
                 break;
             case 2:
                 if (publishFragment == null) {
                     publishFragment = publishFragment.newInstance("PUBLISH", "");
                 }
-                tvTitle.setText("发布内容");
                 transaction.replace(R.id.tabs, publishFragment);
                 break;
             case 3:
                 if (categoryFragment == null) {
                     categoryFragment = categoryFragment.newInstance("CATEGORY", "");
                 }
-                tvTitle.setText("分类");
                 transaction.replace(R.id.tabs, categoryFragment);
                 break;
             case 4:
                 if (mineFragment == null) {
                     mineFragment = mineFragment.newInstance("MINE", "");
                 }
-                tvTitle.setText("个人中心");
                 transaction.replace(R.id.tabs, mineFragment);
                 break;
             default:
@@ -167,7 +178,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     protected void onResume() {
         super.onResume();
-        top_ll_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+        initcolor();
+        bottomNavigationBar.setActiveColor(R.color.white)//选中颜色
+                .setInActiveColor(colorPrimaryDark)//未选中颜色
+                .setBarBackgroundColor(colorPrimary);//背景色
+
     }
 
 }
