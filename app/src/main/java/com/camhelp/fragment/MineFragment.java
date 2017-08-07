@@ -23,6 +23,9 @@ import com.camhelp.R;
 import com.camhelp.activity.LoginActivity;
 import com.camhelp.activity.MainActivity;
 import com.camhelp.activity.MineCenterActivity;
+import com.camhelp.activity.MineCollectionActivity;
+import com.camhelp.activity.MineFocusActivity;
+import com.camhelp.activity.MinePublishedActivity;
 import com.camhelp.activity.SetupActivity;
 import com.camhelp.common.CommonGlobal;
 
@@ -47,6 +50,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private LinearLayout ll_base;
 
     TextView tv_username, tv_intro;
+    LinearLayout ll_my_published,ll_my_collection,ll_my_focus;
     LinearLayout ll_setup;
     LinearLayout ll_personal;
     private CircleImageView mine_cimg_avatar;
@@ -137,9 +141,15 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
         ll_personal = (LinearLayout) getActivity().findViewById(R.id.ll_personal);
         ll_setup = (LinearLayout) getActivity().findViewById(R.id.ll_setup);
+        ll_my_published = (LinearLayout) getActivity().findViewById(R.id.ll_my_published);
+        ll_my_collection = (LinearLayout) getActivity().findViewById(R.id.ll_my_collection);
+        ll_my_focus = (LinearLayout) getActivity().findViewById(R.id.ll_my_focus);
 
         ll_personal.setOnClickListener(this);
         ll_setup.setOnClickListener(this);
+        ll_my_published.setOnClickListener(this);
+        ll_my_collection.setOnClickListener(this);
+        ll_my_focus.setOnClickListener(this);
     }
 
     /**
@@ -156,11 +166,23 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 Intent minecenter = new Intent(getActivity(), MineCenterActivity.class);
                 startActivity(minecenter);
                 break;
+            case R.id.ll_personal://个人信息
+                break;
+            case R.id.ll_my_published://我的发布
+                Intent publishedIntent = new Intent(getActivity(), MinePublishedActivity.class);
+                startActivity(publishedIntent);
+                break;
+            case R.id.ll_my_collection://我的收藏
+                Intent collectionIntent = new Intent(getActivity(), MineCollectionActivity.class);
+                startActivity(collectionIntent);
+                break;
+            case R.id.ll_my_focus://我的关注
+                Intent focusIntent = new Intent(getActivity(), MineFocusActivity.class);
+                startActivity(focusIntent);
+                break;
             case R.id.ll_setup://设置
                 Intent setupIntent = new Intent(getActivity(), SetupActivity.class);
                 startActivity(setupIntent);
-                break;
-            case R.id.ll_personal://个人信息
                 break;
         }
     }

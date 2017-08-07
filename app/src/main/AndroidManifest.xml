@@ -43,6 +43,22 @@
         <activity
             android:name=".activity.MineCenterActivity"
             android:label="@string/title_activity_mine_center"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.MinePublishedActivity"
+            android:label="@string/title_activity_mine_published"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.MineCollectionActivity"
+            android:label="@string/title_activity_mine_collection"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.MineFocusActivity"
+            android:label="@string/title_activity_mine_focus"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.SetupFeedbackActivity"
+            android:label="@string/title_activity_setup_feedback"
             android:theme="@style/AppTheme"></activity>
     </application>
 

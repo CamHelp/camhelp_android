@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/ll_base"
     android:orientation="vertical"
-    tools:context="com.camhelp.fragment.MineFragment">
+    tools:context="com.camhelp.activity.SetupActivity">
 
     <include layout="@layout/top_returnandtitle"/>
 

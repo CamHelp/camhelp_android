@@ -8,4 +8,8 @@
     <string name="title_activity_setup">SetupActivity</string>
     <string name="title_activity_setup_color_change">SetupColorChange</string>
     <string name="title_activity_mine_center">MineCenterActivity</string>
+    <string name="title_activity_mine_published">MinePublishedActivity</string>
+    <string name="title_activity_mine_collection">MineCollectionActivity</string>
+    <string name="title_activity_mine_focus">MineFocusActivity</string>
+    <string name="title_activity_setup_feedback">SetupFeedbackActivity</string>
 </resources>

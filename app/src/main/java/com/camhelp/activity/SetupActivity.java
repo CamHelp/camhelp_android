@@ -104,6 +104,8 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
             case R.id.ll_check_version_update://检查更新
                 break;
             case R.id.ll_feedback://反馈
+                Intent feedback = new Intent(SetupActivity.this, SetupFeedbackActivity.class);
+                startActivity(feedback);
                 break;
             case R.id.ll_color_change://改变主题色
                 Intent colorchange = new Intent(SetupActivity.this, SetupColorChangeActivity.class);
