@@ -9,7 +9,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,7 +24,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
-    private RelativeLayout top_rl_title;
+    private LinearLayout top_rl_title;
     private ImageView top_return;
     private TextView top_title;
 
@@ -50,8 +52,8 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void inittitle() {
-        top_rl_title = (RelativeLayout) findViewById(R.id.top_rl_title);
-        top_rl_title.setBackgroundColor(Color.parseColor(colorPrimary));
+        top_rl_title = (LinearLayout) findViewById(R.id.top_rl_title);
+        top_rl_title.setBackgroundColor(Color.parseColor("#11E1E1E1"));//
 
         top_return = (ImageView) findViewById(R.id.top_return);
         top_title = (TextView) findViewById(R.id.top_title);

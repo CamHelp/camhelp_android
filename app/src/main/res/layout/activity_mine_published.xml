@@ -8,6 +8,27 @@
 
     <include layout="@layout/top_returnandtitle"/>
 
+
+    <!--背景和头像-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/mine_center_back" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/mine_cimg_avatar"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center|bottom"
+            android:src="@drawable/avatar" />
+    </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

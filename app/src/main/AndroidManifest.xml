@@ -43,7 +43,8 @@
         <activity
             android:name=".activity.MineCenterActivity"
             android:label="@string/title_activity_mine_center"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".activity.MinePublishedActivity"
             android:label="@string/title_activity_mine_published"

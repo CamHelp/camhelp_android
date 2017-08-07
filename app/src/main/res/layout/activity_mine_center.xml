@@ -1,12 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_base"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ll_base"
     android:orientation="vertical"
     tools:context="com.camhelp.activity.MineCenterActivity">
 
-    <include layout="@layout/top_returnandtitle"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,9 +16,167 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <!--背景和头像-->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp">
+
+                <ImageView
+                    android:id="@+id/iv_mine_back"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="24dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/mine_center_back" />
+
+                <include layout="@layout/top_return_title_tv" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/cimg_mine_avatar"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="center|bottom"
+                    android:src="@drawable/avatar" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginRight="6dp"
+                    android:text="点击图片更换"
+                    android:textSize="8dp"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="18dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="账号信息"/>
+                <!--昵称-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/mine_center_nick" />
+
+                    <EditText
+                        android:id="@+id/et_mine_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:maxLength="10"
+                        android:hint="昵称 (不超过10字)"
+                        android:padding="8dp"
+                        android:textSize="14dp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent" />
+
+                <!--简介-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/mine_center_intro" />
+
+                    <EditText
+                        android:id="@+id/et_mine_intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:maxLength="40"
+                        android:hint="简介 (不超过40字)"
+                        android:padding="8dp"
+                        android:textSize="14dp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent" />
 
 
+                <TextView
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="联系方式"/>
+                <!--电话-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp">
 
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/mine_center_phone" />
+
+                    <EditText
+                        android:id="@+id/et_mine_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:maxLength="11"
+                        android:inputType="phone"
+                        android:hint="电话"
+                        android:padding="8dp"
+                        android:textSize="14dp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent" />
+
+                <!--邮箱-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/mine_center_email" />
+
+                    <EditText
+                        android:id="@+id/et_mine_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:maxLength="30"
+                        android:inputType="textEmailAddress"
+                        android:hint="邮箱"
+                        android:padding="8dp"
+                        android:textSize="14dp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
