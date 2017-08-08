@@ -17,8 +17,10 @@ import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
@@ -26,7 +28,11 @@ import com.camhelp.adapter.MinePublishedAdapter;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.User;
+import com.camhelp.utils.FullyLinearLayoutManager;
 import com.camhelp.utils.L;
+import com.camhelp.utils.MyLinearLayoutManager;
+
+import org.litepal.crud.DataSupport;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -48,9 +54,9 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     private CircleImageView cimg_mine_avatar;
 
     MinePublishedAdapter minePublishedAdapter;
-    private LinearLayoutManager mLinearLayoutManager;
     private List<CommonProperty> commonPropertyList;
     private RecyclerView recycler_home_focus;
+    private LinearLayout ll_nodata,ll_recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +66,6 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         mUser = getUser();
         initcolor();
         inittitle();
-        initTestData();
         initview();
     }
 
@@ -104,8 +109,20 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     }
 
     public void initview() {
-        recycler_home_focus = (RecyclerView) findViewById(R.id.recycler_home_focus);
-        recycler_home_focus.setLayoutManager(mLinearLayoutManager);
+        ll_nodata = (LinearLayout) findViewById(R.id.ll_nodata);
+        ll_recyclerView = (LinearLayout) findViewById(R.id.ll_recyclerView);
+        ll_recyclerView.bringToFront();
+
+        recycler_home_focus = (RecyclerView) findViewById(R.id.recycler_mine_published);
+
+        commonPropertyList = DataSupport.findAll(CommonProperty.class);
+        if (commonPropertyList.size()==0){
+            ll_nodata.setVisibility(View.VISIBLE);
+        }
+//        recycler_home_focus.setLayoutManager(mLinearLayoutManager);
+        recycler_home_focus.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        recycler_home_focus.setNestedScrollingEnabled(false);
+
         minePublishedAdapter = new MinePublishedAdapter(commonPropertyList, this);
         recycler_home_focus.setAdapter(minePublishedAdapter);
     }
@@ -115,14 +132,6 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         switch (view.getId()) {
         }
     }
-
-    public void initTestData(){
-        for (int i = 0;i<10;i++){
-            CommonProperty commonProperty = new CommonProperty();
-            commonPropertyList.add(commonProperty);
-        }
-    }
-
 
     public User getUser() {
         String temp = pref.getString(CommonGlobal.userobj, "");

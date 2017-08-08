@@ -43,6 +43,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/ll_recyclerView"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -53,6 +54,8 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/ll_nodata"
+                    android:visibility="gone"
                     android:layout_marginTop="18dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,7 +74,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                         <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_home_focus"
+                            android:id="@+id/recycler_mine_published"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
