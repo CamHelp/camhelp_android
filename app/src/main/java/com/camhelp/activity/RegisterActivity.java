@@ -39,7 +39,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     public void inittitle() {
         top_rl_title = (RelativeLayout) findViewById(R.id.top_rl_title);
-        top_rl_title.setBackgroundColor(Color.parseColor(CommonGlobal.MYCOLOR_PRIMARY));
+        top_rl_title.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         top_return = (ImageView) findViewById(R.id.top_return);
         top_title = (TextView) findViewById(R.id.top_title);

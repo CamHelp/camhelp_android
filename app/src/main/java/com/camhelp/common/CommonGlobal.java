@@ -9,16 +9,9 @@ import com.camhelp.R;
 
 public class CommonGlobal {
 
-    public static String MYCOLOR_PRIMARY = "#1A1A1A";
-    public static String MYCOLOR_PRIMARY_BLEW = "#6a6a6a";
-    public static String MYCOLOR_PRIMARY_DARK = "#3A3A3A";
-    public static String MYCOLOR_ACCENT = "#9a9a9a";
-
-    public static int MY_COLOR_CHOSN = 1;
-
-
     /*一些SharedPreferences存取命名*/
     public static  String isAutoLogin = "isautologin";
+    public static final String userobj = "user";
     public static final String user_id = "userid";
     public static final String user_password = "userpassword";
 

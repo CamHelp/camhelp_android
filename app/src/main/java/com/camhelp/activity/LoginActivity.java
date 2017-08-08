@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,12 +20,21 @@ import android.widget.Toast;
 import com.camhelp.R;
 import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.entity.User;
+import com.camhelp.utils.L;
+import com.camhelp.utils.SharePrefUser;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * 登录
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
-
+    private String TAG = "LoginActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
@@ -112,6 +123,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             if (checkboxAutologin.isChecked()) {                           //自动登录验证
                 editor.putBoolean(CommonGlobal.isAutoLogin,true);
             }
+            inituser();
             editor.putInt(CommonGlobal.user_id,reId);
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
@@ -124,4 +136,49 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         editor.apply();
     }
 
+    private void inituser(){
+        User user = new User();
+        user.setUserID(0);
+        user.setAccount("18084938391");
+        user.setAvatar("http://www.stormstone.xin/img/avatar-storm.jpg");
+        user.setBgpicture("http://www.stormstone.xin/img/about-bg.jpg");
+        user.setBirthday("1997-03-10");
+        user.setEmail("stormstone@qq.com");
+        user.setTelephone("18883747347");
+        user.setNickname("石头人m");
+        user.setIntro("撵上一个时代");
+        user.setSex(1);
+        user.setAddress("swpu");
+        user.setRoleID(1);
+
+        saveUser(user);
+    }
+
+    public void saveUser(User user) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(user);
+            String temp = new String(Base64.encode(baos.toByteArray(), Base64.DEFAULT));
+            editor.putString(CommonGlobal.userobj, temp);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public User getUser() {
+        String temp = pref.getString(CommonGlobal.userobj, "");
+        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
+        User user = null;
+        try {
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            user = (User) ois.readObject();
+        } catch (IOException e) {
+            L.d(TAG, e.toString());
+        } catch (ClassNotFoundException e1) {
+            L.d(TAG, e1.toString());
+        }
+        return user;
+    }
 }

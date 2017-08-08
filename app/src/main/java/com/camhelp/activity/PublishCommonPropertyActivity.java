@@ -170,7 +170,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                 finish();
                 break;
             case R.id.top_tv_ok://保存
-                expsave();
+                comsave();
                 break;
             case R.id.btn_time_start://开始时间
                 Date date = new Date(System.currentTimeMillis());
@@ -239,7 +239,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     /**
      * 保存
      */
-    public void expsave() {
+    public void comsave() {
         title = et_title.getText().toString();
         intro = et_intro.getText().toString();
         content = et_content.getText().toString();

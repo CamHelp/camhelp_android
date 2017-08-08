@@ -1,11 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_base"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.camhelp.activity.MineCenterActivity">
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,8 +28,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/mine_center_back" />
 
-                <include layout="@layout/top_return_title_tv" />
-
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/cimg_mine_avatar"
                     android:layout_width="90dp"
@@ -44,7 +41,7 @@
                     android:layout_gravity="bottom|right"
                     android:layout_marginRight="6dp"
                     android:text="点击图片更换"
-                    android:textSize="8dp"/>
+                    android:textSize="8dp" />
             </FrameLayout>
 
             <LinearLayout
@@ -52,10 +49,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="18dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="账号信息"/>
+                    android:text="账号信息"
+                    android:layout_marginBottom="10dp"/>
                 <!--昵称-->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -74,15 +73,18 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@null"
-                        android:maxLines="1"
-                        android:maxLength="10"
                         android:hint="昵称 (不超过10字)"
+                        android:maxLength="10"
+                        android:maxLines="1"
                         android:padding="8dp"
                         android:textSize="14dp" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/colorAccent" />
 
                 <!--简介-->
@@ -103,22 +105,98 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@null"
-                        android:maxLength="40"
                         android:hint="简介 (不超过40字)"
+                        android:maxLength="40"
                         android:padding="8dp"
                         android:textSize="14dp" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/colorAccent" />
+
+                <!--性别-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/mine_center_sex" />
+                    <RadioGroup
+                        android:layout_marginLeft="18dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal">
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="男"/>
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="女"/>
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="保密"/>
+                    </RadioGroup>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/colorAccent" />
+
+                <!--生日-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/mine_center_birthday" />
+
+                    <Button
+                        android:id="@+id/btn_birthday"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:text="请选择日期"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/colorAccent" />
 
 
                 <TextView
-                    android:layout_marginTop="18dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="联系方式"/>
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="联系方式" />
                 <!--电话-->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -137,15 +215,18 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@null"
-                        android:maxLength="11"
-                        android:inputType="phone"
                         android:hint="电话"
+                        android:inputType="phone"
+                        android:maxLength="11"
                         android:padding="8dp"
                         android:textSize="14dp" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/colorAccent" />
 
                 <!--邮箱-->
@@ -166,17 +247,54 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@null"
-                        android:maxLength="30"
-                        android:inputType="textEmailAddress"
                         android:hint="邮箱"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="30"
                         android:padding="8dp"
                         android:textSize="14dp" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/colorAccent" />
+
+                <!--地址-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/mine_center_address" />
+
+                    <EditText
+                        android:id="@+id/et_mine_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:hint="地址"
+                        android:maxLength="40"
+                        android:padding="8dp"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/colorAccent" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <include layout="@layout/top_return_title_tv" />
+
+</FrameLayout>

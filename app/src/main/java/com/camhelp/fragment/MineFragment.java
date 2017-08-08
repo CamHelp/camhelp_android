@@ -12,13 +12,16 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.camhelp.R;
 import com.camhelp.activity.LoginActivity;
 import com.camhelp.activity.MainActivity;
@@ -28,6 +31,15 @@ import com.camhelp.activity.MineFocusActivity;
 import com.camhelp.activity.MinePublishedActivity;
 import com.camhelp.activity.SetupActivity;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.entity.User;
+import com.camhelp.utils.L;
+import com.camhelp.utils.SharePrefUser;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,10 +54,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 个人主页fragment
  */
 public class MineFragment extends Fragment implements View.OnClickListener {
-
+    private String TAG = "MineFragment";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary,colorPrimaryBlew,colorPrimaryDark,colorAccent;
+    User mUser = new User();
 
     private LinearLayout ll_base;
 
@@ -111,9 +124,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        userInit();
         initcolor();
         initview();
-        useInit();
     }
 
 
@@ -133,11 +146,18 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void initview() {
         mine_cimg_avatar = (CircleImageView) getActivity().findViewById(R.id.mine_cimg_avatar);
         mine_cimg_avatar.setOnClickListener(this);
+        Glide.with(this).load(mUser.getAvatar())
+                .error(R.drawable.avatar)
+                .placeholder(R.drawable.avatar)
+                .into(mine_cimg_avatar);
+
         ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
         ll_base.setBackgroundColor(Color.parseColor(colorPrimary));
 
         tv_username = (TextView) getActivity().findViewById(R.id.tv_username);
         tv_intro = (TextView) getActivity().findViewById(R.id.tv_intro);
+//        tv_username.setText(mUser.getNickname());
+//        tv_intro.setText(mUser.getIntro());
 
         ll_personal = (LinearLayout) getActivity().findViewById(R.id.ll_personal);
         ll_setup = (LinearLayout) getActivity().findViewById(R.id.ll_setup);
@@ -155,8 +175,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     /**
      * 获取用户
      */
-    public void useInit() {
-
+    public void userInit() {
+        mUser = getUser();
     }
 
     @Override
@@ -187,8 +207,20 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public class MyApp extends Application {
-        public int theme = 0;
+    public User getUser() {
+        String temp = pref.getString(CommonGlobal.userobj, "");
+        L.d(TAG,temp);
+        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
+        User user = null;
+        try {
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            user = (User) ois.readObject();
+        } catch (IOException e) {
+            L.d(TAG, e.toString());
+        } catch (ClassNotFoundException e1) {
+            L.d(TAG, e1.toString());
+        }
+        return user;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
