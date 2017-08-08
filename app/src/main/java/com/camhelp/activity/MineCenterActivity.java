@@ -87,7 +87,6 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_center);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = pref.edit();
         userInit();
         initcolor();
         inittitle();
@@ -246,6 +245,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
 
     /*设置用户对象*/
     public void saveUser(User user) {
+        editor = pref.edit();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             ObjectOutputStream oos = new ObjectOutputStream(baos);

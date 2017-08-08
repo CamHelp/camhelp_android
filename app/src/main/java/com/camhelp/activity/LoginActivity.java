@@ -131,7 +131,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             this.finish();
         } else {
             tvResultLabel.setText("用户名或密码错误！");
-            editor.clear();
         }
         editor.apply();
     }
@@ -165,6 +164,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        editor.commit();
+        editor.apply();
     }
 
     public User getUser() {
