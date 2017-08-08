@@ -156,8 +156,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
         tv_username = (TextView) getActivity().findViewById(R.id.tv_username);
         tv_intro = (TextView) getActivity().findViewById(R.id.tv_intro);
-//        tv_username.setText(mUser.getNickname());
-//        tv_intro.setText(mUser.getIntro());
+        tv_username.setText(mUser.getNickname());
+        tv_intro.setText(mUser.getIntro());
 
         ll_personal = (LinearLayout) getActivity().findViewById(R.id.ll_personal);
         ll_setup = (LinearLayout) getActivity().findViewById(R.id.ll_setup);
@@ -256,5 +256,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         ll_base.setBackgroundColor(Color.parseColor(colorPrimary));
+        userInit();
+        initcolor();
+        initview();
     }
 }

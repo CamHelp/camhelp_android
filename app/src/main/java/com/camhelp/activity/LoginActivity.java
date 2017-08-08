@@ -147,7 +147,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         user.setTelephone("18883747347");
         user.setNickname("石头人m");
         user.setIntro("撵上一个时代");
-        user.setSex(1);
+        user.setSex(0);
         user.setAddress("swpu");
         user.setRoleID(1);
 

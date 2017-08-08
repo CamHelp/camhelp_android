@@ -1,5 +1,6 @@
 package com.camhelp.activity;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,9 +22,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +38,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.entity.User;
+import com.camhelp.fragment.MineFragment;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
 
@@ -42,6 +48,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -64,20 +71,28 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     private TextView top_title, top_tv_ok;
 
     private String photo1path, photo2path;//背景图和头像
+    private String username, intro, phone, email, address, birthday;
+    private int sex;
+    private Date birthdayDate;
 
     private ImageView iv_mine_back;
     private CircleImageView cimg_mine_avatar;
-
+    private EditText et_mine_username, et_mine_intro, et_mine_phone, et_mine_email, et_mine_address;
+    private RadioGroup radiogroup_sex;
+    private RadioButton radiobtn_male, radiobtn_fmale, radiobtn_secret;
+    private Button btn_birthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_center);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = pref.edit();
         userInit();
         initcolor();
         inittitle();
         initview();
+        initdata();
     }
 
     /*获取主题色*/
@@ -109,16 +124,68 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     public void initview() {
         iv_mine_back = (ImageView) findViewById(R.id.iv_mine_back);
         cimg_mine_avatar = (CircleImageView) findViewById(R.id.cimg_mine_avatar);
-        Glide.with(this).load(mUser.getBgpicture())
-                .error(R.drawable.mine_center_back)
-                .placeholder(R.drawable.mine_center_back)
+        iv_mine_back.setOnClickListener(this);
+        cimg_mine_avatar.setOnClickListener(this);
+
+        et_mine_username = (EditText) findViewById(R.id.et_mine_username);
+        et_mine_intro = (EditText) findViewById(R.id.et_mine_intro);
+        et_mine_phone = (EditText) findViewById(R.id.et_mine_phone);
+        et_mine_email = (EditText) findViewById(R.id.et_mine_email);
+        et_mine_address = (EditText) findViewById(R.id.et_mine_address);
+        btn_birthday = (Button) findViewById(R.id.btn_birthday);
+        btn_birthday.setOnClickListener(this);
+
+        radiogroup_sex = (RadioGroup) findViewById(R.id.radiogroup_sex);
+        radiobtn_male = (RadioButton) findViewById(R.id.radiobtn_male);
+        radiobtn_fmale = (RadioButton) findViewById(R.id.radiobtn_fmale);
+        radiobtn_secret = (RadioButton) findViewById(R.id.radiobtn_secret);
+    }
+
+    public void initdata() {
+        photo1path = mUser.getBgpicture();
+        photo2path = mUser.getAvatar();
+        username = mUser.getNickname();
+        intro = mUser.getIntro();
+        phone = mUser.getTelephone();
+        email = mUser.getEmail();
+        address = mUser.getAddress();
+        birthday = mUser.getBirthday();
+        sex = mUser.getSex();
+
+        if (username != null || "".equals(username)) {
+            et_mine_username.setText(username);
+        }
+        if (intro != null || "".equals(intro)) {
+            et_mine_intro.setText(intro);
+        }
+        if (phone != null || "".equals(phone)) {
+            et_mine_phone.setText(phone);
+        }
+        if (email != null || "".equals(email)) {
+            et_mine_email.setText(email);
+        }
+        if (address != null || "".equals(address)) {
+            et_mine_address.setText(address);
+        }
+        if (birthday != null || "".equals(birthday)) {
+            btn_birthday.setText(birthday);
+        }
+        if (sex == 0) {
+            radiobtn_male.setChecked(true);
+        } else if (sex == 1) {
+            radiobtn_fmale.setChecked(true);
+        } else {
+            radiobtn_secret.setChecked(true);
+        }
+
+        Glide.with(this).load(photo1path)
+                .error(R.drawable.mine_bg)
+                .placeholder(R.drawable.mine_bg)
                 .into(iv_mine_back);
-        Glide.with(this).load(mUser.getAvatar())
+        Glide.with(this).load(photo2path)
                 .error(R.drawable.avatar)
                 .placeholder(R.drawable.avatar)
                 .into(cimg_mine_avatar);
-        iv_mine_back.setOnClickListener(this);
-        cimg_mine_avatar.setOnClickListener(this);
     }
 
     /**
@@ -157,9 +224,27 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
             case R.id.btn_cancel:
                 photodialog.dismiss();
                 break;
+            case R.id.btn_birthday://生日
+                Date date = new Date(System.currentTimeMillis());
+                int year = date.getYear();
+                int month = date.getMonth();
+                int day = date.getDate();
+                L.e(TAG, "year is : " + year + " month is " + month + " day is " + day);
+                DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        birthdayDate = new Date(year - 1900, month, dayOfMonth);
+                        birthday = "" + year + "-" + (month + 1) + "-" + dayOfMonth;
+                        btn_birthday.setText(birthday);
+                    }
+                }, 1900 + year, month, day);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
+                break;
         }
     }
 
+    /*设置用户对象*/
     public void saveUser(User user) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
@@ -171,6 +256,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        editor.apply();
     }
 
     public User getUser() {
@@ -189,8 +275,30 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         return user;
     }
 
+    /*保存*/
     public void minesave() {
-
+        username = et_mine_username.getText().toString();
+        intro = et_mine_intro.getText().toString();
+        phone = et_mine_phone.getText().toString();
+        email = et_mine_email.getText().toString();
+        address = et_mine_address.getText().toString();
+        if (radiobtn_male.isChecked()) {
+            sex = 0;
+        } else if (radiobtn_fmale.isChecked()) {
+            sex = 1;
+        } else {
+            sex = -1;
+        }
+        mUser.setNickname(username);
+        mUser.setIntro(intro);
+        mUser.setBirthday(birthday);
+        mUser.setTelephone(phone);
+        mUser.setEmail(email);
+        mUser.setAddress(address);
+        mUser.setSex(sex);
+        mUser.setBgpicture(photo1path);
+        mUser.setAvatar(photo2path);
+        saveUser(mUser);
         Toast.makeText(this, "保存功能待做", Toast.LENGTH_SHORT).show();
     }
 

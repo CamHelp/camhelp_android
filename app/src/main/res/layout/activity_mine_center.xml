@@ -130,21 +130,25 @@
                         android:layout_gravity="center"
                         android:src="@drawable/mine_center_sex" />
                     <RadioGroup
+                        android:id="@+id/radiogroup_sex"
                         android:layout_marginLeft="18dp"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:orientation="horizontal">
                         <RadioButton
+                            android:id="@+id/radiobtn_male"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:text="男"/>
                         <RadioButton
+                            android:id="@+id/radiobtn_fmale"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:text="女"/>
                         <RadioButton
+                            android:id="@+id/radiobtn_secret"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
