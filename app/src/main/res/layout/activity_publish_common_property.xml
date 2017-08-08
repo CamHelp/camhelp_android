@@ -209,6 +209,39 @@
                     android:layout_height="1dp"
                     android:background="@color/colorAccent" />
 
+                <!--联系方式-->
+                <LinearLayout
+                    android:id="@+id/ll_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:padding="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="10dp"
+                        android:text="联系方式"
+                        android:textSize="14dp"/>
+                    <EditText
+                        android:id="@+id/et_contact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:maxLines="2"
+                        android:maxLength="40"
+                        android:hint="QQ/微信/电话/邮箱"
+                        android:padding="4dp"
+                        android:textSize="18dp" />
+                </LinearLayout>
+                <View
+                    android:id="@+id/view_contact"
+                    android:layout_marginTop="-4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent" />
+
                 <include layout="@layout/publish_common_addpic"/>
             </LinearLayout>
         </LinearLayout>

@@ -14,6 +14,7 @@
             android:layout_gravity="center"
             android:layout_width="40dp"
             android:paddingLeft="6dp"
+            android:paddingRight="6dp"
             android:layout_height="match_parent"
             android:src="@drawable/top_return_selector"
             android:background="@drawable/ll_item_selector"/>

@@ -11,6 +11,7 @@ public class CommonGlobal {
 
     /*一些SharedPreferences存取命名*/
     public static  String isAutoLogin = "isautologin";
+    public static  String isFirstLogin = "isFirstLogin";
     public static final String userobj = "user";
     public static final String user_id = "userid";
     public static final String user_password = "userpassword";

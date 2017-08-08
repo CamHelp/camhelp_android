@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.entity.CommonProperty;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
 
@@ -45,6 +46,7 @@ import java.util.Date;
 public class PublishCommonPropertyActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PublishCommonPropertyActivity";
     int categoryType;//发布类型
+    private CommonProperty mCommonProperty = new CommonProperty();
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -54,22 +56,24 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     private ImageView top_return;
     private TextView top_title, top_tv_ok;
 
-    private LinearLayout ll_proType, ll_time_start, ll_time_end;
-    private View view_proType, view_time_start, view_time_end;
-
-    private EditText et_title, et_intro, et_content, et_proType;
-    private Button btn_time_start, btn_time_end;
-    private ImageView iv_photo1, iv_photo2, iv_photo3, iv_photo4;
-
-    private String title, intro, content, protype;
-    private Date startDate, endDate;
-    private String photopath1, photopath2, photopath3, photopath4;
-
     final int TAKE_PHOTO = 1, TAKE_PHOTO2 = 12, TAKE_PHOTO3 = 13, TAKE_PHOTO4 = 14;
     final int GET_PHOTO = 2;
     Uri imageUri, imageUri2, imageUri3, imageUri4;
     private Dialog photodialog = null;//拍照和相册dialog
     Boolean isPhoto1, isPhoto2, isPhoto3, isPhoto4;
+
+    private LinearLayout ll_proType, ll_time_start, ll_time_end,ll_contact;
+    private View view_proType, view_time_start, view_time_end,view_contact;
+
+    private EditText et_title, et_intro, et_content, et_proType,et_contact;
+    private Button btn_time_start, btn_time_end;
+    private ImageView iv_photo1, iv_photo2, iv_photo3, iv_photo4;
+
+    private String title, intro, content,contact;
+    private String protype;
+    private Date startDate, endDate;
+    private String sStartTime,sEndTime;
+    private String photopath1, photopath2, photopath3, photopath4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,14 +127,17 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         ll_proType = (LinearLayout) findViewById(R.id.ll_proType);
         ll_time_start = (LinearLayout) findViewById(R.id.ll_time_start);
         ll_time_end = (LinearLayout) findViewById(R.id.ll_time_end);
+        ll_contact = (LinearLayout) findViewById(R.id.ll_contact);
         view_proType = findViewById(R.id.view_proType);
         view_time_start = findViewById(R.id.view_time_start);
         view_time_end = findViewById(R.id.view_time_end);
+        view_contact = findViewById(R.id.view_contact);
 
         et_title = (EditText) findViewById(R.id.et_title);
         et_intro = (EditText) findViewById(R.id.et_intro);
         et_content = (EditText) findViewById(R.id.et_content);
         et_proType = (EditText) findViewById(R.id.et_proType);
+        et_contact = (EditText) findViewById(R.id.et_contact);
 
         btn_time_start = (Button) findViewById(R.id.btn_time_start);
         btn_time_end = (Button) findViewById(R.id.btn_time_end);
@@ -151,12 +158,16 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     public void initgone() {
         if (categoryType == 1){
             ll_proType.setVisibility(View.GONE);
+            ll_contact.setVisibility(View.GONE);
             view_proType.setVisibility(View.GONE);
+            view_contact.setVisibility(View.GONE);
         } else if(categoryType == 2){
             ll_time_start.setVisibility(View.GONE);
             ll_time_end.setVisibility(View.GONE);
+            ll_contact.setVisibility(View.GONE);
             view_time_start.setVisibility(View.GONE);
             view_time_end.setVisibility(View.GONE);
+            view_contact.setVisibility(View.GONE);
         } else if (categoryType == 3 || categoryType ==4){
             ll_proType.setVisibility(View.GONE);
             ll_time_start.setVisibility(View.GONE);
@@ -186,7 +197,8 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         startDate = new Date(year - 1900, month, dayOfMonth);
-                        btn_time_start.setText("" + year + " 年 " + (month + 1) + " 月 " + dayOfMonth + " 日 ");
+                        sStartTime = "" + year + "-" + (month + 1) + "-" + dayOfMonth;
+                        btn_time_start.setText(sStartTime);
                     }
                 }, 1900 + year, month, day);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -202,7 +214,8 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         endDate = new Date(year - 1900, month, dayOfMonth);
-                        btn_time_end.setText("" + year + " 年 " + (month + 1) + " 月 " + dayOfMonth + " 日 ");
+                        sEndTime = "" + year + "-" + (month + 1) + "-" + dayOfMonth;
+                        btn_time_end.setText(sEndTime);
                     }
                 }, 1900 + year2, month2, day2);
                 dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -248,8 +261,32 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         intro = et_intro.getText().toString();
         content = et_content.getText().toString();
         protype = et_proType.getText().toString();
+        contact = et_contact.getText().toString();
 
-        Toast.makeText(this, "保存功能待做" , Toast.LENGTH_SHORT).show();
+        mCommonProperty.setCategoryType(categoryType);
+        mCommonProperty.setCommonTitle(title);
+        mCommonProperty.setCommonIntro(intro);
+        mCommonProperty.setCommonContent(content);
+
+        mCommonProperty.setCommonPic1(photopath1);
+        mCommonProperty.setCommonPic1(photopath2);
+        mCommonProperty.setCommonPic1(photopath3);
+        mCommonProperty.setCommonPic1(photopath4);
+        Date creattime =new Date();
+        mCommonProperty.setCreatetime(creattime);
+        mCommonProperty.setPraisenum(0);
+        mCommonProperty.setBrowsenum(0);
+        mCommonProperty.setUserId(0);
+        mCommonProperty.setExpstartTime(sStartTime);
+        mCommonProperty.setExpendTime(sEndTime);
+        mCommonProperty.setProType(protype);
+        mCommonProperty.setGoodscontact(contact);
+
+        if (mCommonProperty.save()){
+            Toast.makeText(this, "本地保存成功,等待服务器保存" , Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "本地保存失败" , Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void showphotodialg(View view) {

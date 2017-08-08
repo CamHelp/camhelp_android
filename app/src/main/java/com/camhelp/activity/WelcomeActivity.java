@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.camhelp.R;
 import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.utils.AssetsDatabaseManager;
 
 /**
  * 进入APP欢迎界面
@@ -28,8 +29,19 @@ public class WelcomeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // 数据库assetsDatabase初始化，只需要调用一次
+        //整个应用就第一次打开调用，以后都不在调用，直接通过AssetsDatabaseManager管理数据库对象
+        boolean assetsDatabaseInit = pref.getBoolean(CommonGlobal.isFirstLogin,false);
+        if (!assetsDatabaseInit){
+//            AssetsDatabaseManager.initManager(getApplication());
+            editor = pref.edit();
+            editor.putBoolean(CommonGlobal.isFirstLogin,true);
+            editor.apply();
+//            Toast.makeText(WelcomeActivity.this,"初始化完成",Toast.LENGTH_SHORT).show();
+        }
+
         Handler handler;
         handler = new Handler()
         {

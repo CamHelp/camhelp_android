@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -21,13 +22,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
+import com.camhelp.adapter.MinePublishedAdapter;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.User;
 import com.camhelp.utils.L;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,6 +47,9 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
 
     private CircleImageView cimg_mine_avatar;
 
+    MinePublishedAdapter minePublishedAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
+    private List<CommonProperty> commonPropertyList;
     private RecyclerView recycler_home_focus;
 
     @Override
@@ -53,6 +60,7 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         mUser = getUser();
         initcolor();
         inittitle();
+        initTestData();
         initview();
     }
 
@@ -97,11 +105,21 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
 
     public void initview() {
         recycler_home_focus = (RecyclerView) findViewById(R.id.recycler_home_focus);
+        recycler_home_focus.setLayoutManager(mLinearLayoutManager);
+        minePublishedAdapter = new MinePublishedAdapter(commonPropertyList, this);
+        recycler_home_focus.setAdapter(minePublishedAdapter);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+        }
+    }
+
+    public void initTestData(){
+        for (int i = 0;i<10;i++){
+            CommonProperty commonProperty = new CommonProperty();
+            commonPropertyList.add(commonProperty);
         }
     }
 
