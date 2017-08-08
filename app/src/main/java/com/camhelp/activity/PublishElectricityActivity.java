@@ -23,6 +23,9 @@ import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;
 
+/**
+ * 交电费
+ * */
 public class PublishElectricityActivity extends AppCompatActivity implements View.OnClickListener{
 
     private SharedPreferences pref;

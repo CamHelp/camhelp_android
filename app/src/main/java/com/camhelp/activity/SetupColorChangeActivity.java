@@ -21,6 +21,9 @@ import com.camhelp.R;
 import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 
+/**
+ * 改变主题色
+ * */
 public class SetupColorChangeActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private SharedPreferences pref;

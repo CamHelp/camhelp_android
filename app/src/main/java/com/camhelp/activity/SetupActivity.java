@@ -24,6 +24,9 @@ import com.camhelp.basic.ActivityCollector;
 import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 
+/**
+ * 设置
+ * */
 public class SetupActivity extends BaseActivity implements View.OnClickListener {
 
     private SharedPreferences pref;
@@ -48,7 +51,7 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
-        mInstace =this;
+        mInstace = this;
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         initcolor();
         inittitle();

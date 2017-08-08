@@ -40,6 +40,9 @@ import java.util.Date;
 
 import static org.litepal.LitePalApplication.getContext;
 
+/**
+ * 发布活动
+ * */
 public class PublishExperienceActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PublishExperienceActivity";
 

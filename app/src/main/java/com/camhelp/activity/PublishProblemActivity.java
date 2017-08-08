@@ -16,7 +16,11 @@ import android.widget.TextView;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 
-public class PublishProblemActivity extends AppCompatActivity implements View.OnClickListener{
+
+/**
+ * 发布问题
+ */
+public class PublishProblemActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;

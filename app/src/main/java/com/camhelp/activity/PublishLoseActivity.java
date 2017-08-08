@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 
+/**
+ * 发布失物
+ * */
 public class PublishLoseActivity extends AppCompatActivity implements View.OnClickListener{
 
     private SharedPreferences pref;

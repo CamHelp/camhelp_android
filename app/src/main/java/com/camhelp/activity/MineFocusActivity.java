@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 
+/**
+ * 我关注的
+ * */
 public class MineFocusActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences pref;

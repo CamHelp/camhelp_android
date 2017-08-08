@@ -129,7 +129,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private void initTabLine() {
         mTabline = (ImageView) getActivity().findViewById(R.id.id_iv_tabline);
-        mTabline.setBackgroundColor(Color.parseColor(colorAccent));
+        mTabline.setBackgroundColor(Color.parseColor(colorPrimaryDark));
         Display display = getActivity().getWindow().getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
@@ -148,6 +148,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         tv_02 = (TextView) getActivity().findViewById(R.id.id_tv_problem);
         tv_03 = (TextView) getActivity().findViewById(R.id.id_tv_lose);
         tv_04 = (TextView) getActivity().findViewById(R.id.id_tv_pickup);
+        tv_01.setTextColor(Color.WHITE);
+        tv_02.setTextColor(Color.parseColor(colorAccent));
+        tv_03.setTextColor(Color.parseColor(colorAccent));
+        tv_04.setTextColor(Color.parseColor(colorAccent));
 
         ll_tab1 = (LinearLayout) getActivity().findViewById(R.id.ll_tab1);
         ll_tab2 = (LinearLayout) getActivity().findViewById(R.id.ll_tab2);
@@ -217,16 +221,16 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 resetTextView();
                 switch (position) {
                     case 0:
-                        tv_01.setTextColor(Color.parseColor("#00FF00"));
+                        tv_01.setTextColor(Color.WHITE);
                         break;
                     case 1:
-                        tv_02.setTextColor(Color.parseColor("#00FF00"));
+                        tv_02.setTextColor(Color.WHITE);
                         break;
                     case 2:
-                        tv_03.setTextColor(Color.parseColor("#00FF00"));
+                        tv_03.setTextColor(Color.WHITE);
                         break;
                     case 3:
-                        tv_04.setTextColor(Color.parseColor("#00FF00"));
+                        tv_04.setTextColor(Color.WHITE);
                         break;
                 }
                 mCurrentPageIndex = position;
@@ -283,10 +287,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     }
 
     protected void resetTextView() {
-        tv_01.setTextColor(Color.WHITE);
-        tv_02.setTextColor(Color.WHITE);
-        tv_03.setTextColor(Color.WHITE);
-        tv_04.setTextColor(Color.WHITE);
+        tv_01.setTextColor(Color.parseColor(colorAccent));
+        tv_02.setTextColor(Color.parseColor(colorAccent));
+        tv_03.setTextColor(Color.parseColor(colorAccent));
+        tv_04.setTextColor(Color.parseColor(colorAccent));
     }
 
     @Override

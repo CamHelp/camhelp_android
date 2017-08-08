@@ -10,7 +10,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,18 +22,35 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.entity.User;
+import com.camhelp.utils.L;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+/**
+ * 我发布的内容activity
+ * */
 public class MinePublishedActivity extends AppCompatActivity implements View.OnClickListener {
-
+    private String TAG = "MinePublishedActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
+    User mUser = new User();
+
+    private CircleImageView cimg_mine_avatar;
+
+    private RecyclerView recycler_home_focus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_published);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        mUser = getUser();
         initcolor();
         inittitle();
         initview();
@@ -51,27 +70,56 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     }
 
     public void inittitle() {
-        String fruitName = "fruitname";
+        String nickname = mUser.getNickname();//昵称
+        String photoBg = mUser.getBgpicture();//背景
+        String photoAvatar = mUser.getAvatar();//头像
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         ImageView fruitImageView = (ImageView) findViewById(R.id.fruit_image_view);
+        cimg_mine_avatar = (CircleImageView) findViewById(R.id.cimg_mine_avatar);
+        cimg_mine_avatar.bringToFront();//把头像放在最上层不被标题栏挡住（失败！）
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        collapsingToolbar.setTitle(fruitName);
-        Glide.with(this).load(R.drawable.mine_center_back).into(fruitImageView);
+        collapsingToolbar.setTitle(nickname);
+
+        Glide.with(this).load(photoBg)
+                .error(R.drawable.mine_bg)
+                .placeholder(R.drawable.mine_bg)
+                .into(fruitImageView);
+        Glide.with(this).load(photoAvatar)
+                .error(R.drawable.avatar)
+                .placeholder(R.drawable.avatar)
+                .into(cimg_mine_avatar);
     }
 
     public void initview() {
-
+        recycler_home_focus = (RecyclerView) findViewById(R.id.recycler_home_focus);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
         }
+    }
+
+
+    public User getUser() {
+        String temp = pref.getString(CommonGlobal.userobj, "");
+        L.d(TAG, temp);
+        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
+        User user = null;
+        try {
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            user = (User) ois.readObject();
+        } catch (IOException e) {
+            L.d(TAG, e.toString());
+        } catch (ClassNotFoundException e1) {
+            L.d(TAG, e1.toString());
+        }
+        return user;
     }
 
     @Override

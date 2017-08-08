@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 
+/**
+ * 反馈
+ * */
 public class SetupFeedbackActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences pref;

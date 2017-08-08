@@ -38,6 +38,10 @@ import com.camhelp.utils.MiPictureHelper;
 import java.io.File;
 import java.util.Date;
 
+/**
+ * 共同的发布activity
+ * 通过类型判断发布的是活动、问题、失物还是捡物
+ * */
 public class PublishCommonPropertyActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PublishCommonPropertyActivity";
     int categoryType;//发布类型

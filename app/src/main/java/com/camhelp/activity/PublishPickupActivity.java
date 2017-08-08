@@ -16,6 +16,10 @@ import android.widget.TextView;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 
+
+/**
+ * 发布捡物
+ */
 public class PublishPickupActivity extends AppCompatActivity implements View.OnClickListener{
 
     private SharedPreferences pref;

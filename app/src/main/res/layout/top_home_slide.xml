@@ -2,51 +2,77 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/ll_home_toptab" >
 
     <LinearLayout
-        android:id="@+id/ll_home_toptab"
-        android:layout_width="fill_parent"
-        android:layout_height="37dp"
-        android:orientation="horizontal" >
+        android:layout_gravity="center"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/ll_tab1"
-            android:layout_width="3dp"
-            android:orientation="horizontal"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center" >
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/id_tv_new"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="最新"
-                android:textColor="#00FF00" />
+            <LinearLayout
+                android:id="@+id/ll_tab1"
+                android:layout_width="3dp"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/id_tv_new"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
+                    android:text="最新"
+                    android:textColor="@color/black" />
+                <ImageView
+                    android:layout_gravity="bottom|center"
+                    android:id="@+id/id_iv_tabline_new"
+                    android:layout_width="30dp"
+                    android:layout_height="3dp"
+                    android:background="@color/colorAccent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_tab2"
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center" >
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/id_tv_focus"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
+                    android:text="关注"
+                    android:textColor="@color/black" />
+                <ImageView
+                    android:layout_gravity="bottom|center"
+                    android:id="@+id/id_iv_tabline_focus"
+                    android:layout_width="30dp"
+                    android:layout_height="3dp"
+                    android:background="@color/colorAccent" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_tab2"
-            android:layout_width="3dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/id_tv_focus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="关注"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
+        <ImageView
+            android:id="@+id/id_iv_tabline"
+            android:layout_width="60dp"
+            android:layout_height="3dp"
+            android:background="@color/colorAccent"
+            android:visibility="gone"/>
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/id_iv_tabline"
-        android:layout_width="100dp"
-        android:layout_height="3dp"
-        android:background="@color/colorAccent" />
 
 </LinearLayout>

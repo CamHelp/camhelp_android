@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private TextView tv_01, tv_02;
     private LinearLayout ll_tab1, ll_tab2;
 
-    private ImageView mTabline;
+    private ImageView mTabline,id_iv_tabline_new,id_iv_tabline_focus;
     private int mScreen1_3;
 
     private int mCurrentPageIndex;
@@ -141,15 +141,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         ViewGroup.LayoutParams lp = mTabline.getLayoutParams();
         lp.width = mScreen1_3;
         mTabline.setLayoutParams(lp);
+        mTabline.setVisibility(View.GONE);
     }
 
     private void initView() {
+        id_iv_tabline_new = (ImageView) getActivity().findViewById(R.id.id_iv_tabline_new);
+        id_iv_tabline_focus = (ImageView) getActivity().findViewById(R.id.id_iv_tabline_focus);
+        id_iv_tabline_focus.setVisibility(View.GONE)
+        ;
         ll_home_toptab = (LinearLayout) getActivity().findViewById(R.id.ll_home_toptab);
         ll_home_toptab.setBackgroundColor(Color.parseColor(colorPrimary));
 
         mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager_home);
         tv_01 = (TextView) getActivity().findViewById(R.id.id_tv_new);
         tv_02 = (TextView) getActivity().findViewById(R.id.id_tv_focus);
+        tv_01.setTextColor(Color.WHITE);
+        tv_02.setTextColor(Color.parseColor(colorAccent));
 
         ll_tab1 = (LinearLayout) getActivity().findViewById(R.id.ll_tab1);
         ll_tab2 = (LinearLayout) getActivity().findViewById(R.id.ll_tab2);
@@ -211,10 +218,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 resetTextView();
                 switch (position) {
                     case 0:
-                        tv_01.setTextColor(Color.parseColor("#00FF00"));
+                        tv_01.setTextColor(Color.WHITE);
+                        id_iv_tabline_new.setVisibility(View.VISIBLE);
+                        id_iv_tabline_focus.setVisibility(View.GONE);
                         break;
                     case 1:
-                        tv_02.setTextColor(Color.parseColor("#00FF00"));
+                        tv_02.setTextColor(Color.WHITE);
+                        id_iv_tabline_focus.setVisibility(View.VISIBLE);
+                        id_iv_tabline_new.setVisibility(View.GONE);
                         break;
                 }
                 mCurrentPageIndex = position;
@@ -255,8 +266,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     protected void resetTextView() {
-        tv_01.setTextColor(Color.WHITE);
-        tv_02.setTextColor(Color.WHITE);
+        tv_01.setTextColor(Color.parseColor(colorAccent));
+        tv_02.setTextColor(Color.parseColor(colorAccent));
     }
 
     @Override

@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
 
         bottomNavigationBar.setActiveColor(R.color.white)//选中颜色
-                .setInActiveColor(colorPrimaryDark)//未选中颜色
+                .setInActiveColor(colorPrimaryBlew)//未选中颜色
                 .setBarBackgroundColor(colorPrimary);//背景色
 
         bottomNavigationBar

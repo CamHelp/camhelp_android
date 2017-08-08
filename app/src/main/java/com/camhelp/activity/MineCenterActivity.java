@@ -52,6 +52,9 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * 个人资料编辑
+ */
 public class MineCenterActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "MineCenterActivity";
     private SharedPreferences pref;

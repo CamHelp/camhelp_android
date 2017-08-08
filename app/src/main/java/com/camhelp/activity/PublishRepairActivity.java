@@ -21,6 +21,9 @@ import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;
 
+/**
+ * 宿舍报修
+ */
 public class PublishRepairActivity extends AppCompatActivity implements View.OnClickListener{
 
     private SharedPreferences pref;
