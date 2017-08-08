@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.camhelp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logoko"
@@ -75,7 +80,7 @@
             android:name=".activity.PublishLoseActivity"
             android:label="@string/title_activity_publish_lose"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"  />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.PublishPickupActivity"
             android:label="@string/title_activity_publish_pickup"
@@ -88,12 +93,11 @@
         <activity
             android:name=".activity.PublishElectricityActivity"
             android:label="@string/title_activity_publish_electricity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.PublishCommonPropertyActivity"
+            android:label="@string/title_activity_publish_common_property"
+            android:theme="@style/AppTheme"></activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

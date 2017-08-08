@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.camhelp.R;
+import com.camhelp.activity.PublishCommonPropertyActivity;
 import com.camhelp.activity.PublishExperienceActivity;
 import com.camhelp.activity.PublishElectricityActivity;
 import com.camhelp.activity.PublishLoseActivity;
@@ -153,20 +154,24 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_publish_01:
-                Intent publishClub = new Intent(getActivity(), PublishExperienceActivity.class);
-                startActivity(publishClub);
+                Intent intentPublish1 = new Intent(getActivity(), PublishCommonPropertyActivity.class);
+                intentPublish1.putExtra(CommonGlobal.categoryType,CommonGlobal.categoryType_experience);
+                startActivity(intentPublish1);
                 break;
             case R.id.ll_publish_02:
-                Intent publishProblem = new Intent(getActivity(), PublishProblemActivity.class);
-                startActivity(publishProblem);
+                Intent intentPublish2 = new Intent(getActivity(), PublishCommonPropertyActivity.class);
+                intentPublish2.putExtra(CommonGlobal.categoryType,CommonGlobal.categoryType_problem);
+                startActivity(intentPublish2);
                 break;
             case R.id.ll_publish_03:
-                Intent publishPickup = new Intent(getActivity(), PublishPickupActivity.class);
-                startActivity(publishPickup);
+                Intent intentPublish3 = new Intent(getActivity(), PublishCommonPropertyActivity.class);
+                intentPublish3.putExtra(CommonGlobal.categoryType,CommonGlobal.categoryType_pickup);
+                startActivity(intentPublish3);
                 break;
             case R.id.ll_publish_04:
-                Intent publishLose = new Intent(getActivity(), PublishLoseActivity.class);
-                startActivity(publishLose);
+                Intent intentPublish4 = new Intent(getActivity(), PublishCommonPropertyActivity.class);
+                intentPublish4.putExtra(CommonGlobal.categoryType,CommonGlobal.categoryType_lose);
+                startActivity(intentPublish4);
                 break;
             case R.id.ll_publish_05:
                 Intent publishRepair = new Intent(getActivity(), PublishRepairActivity.class);

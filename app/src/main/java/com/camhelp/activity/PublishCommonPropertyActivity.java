@@ -2,19 +2,19 @@ package com.camhelp.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,10 +38,9 @@ import com.camhelp.utils.MiPictureHelper;
 import java.io.File;
 import java.util.Date;
 
-import static org.litepal.LitePalApplication.getContext;
-
-public class PublishExperienceActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "PublishExperienceActivity";
+public class PublishCommonPropertyActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "PublishCommonPropertyActivity";
+    int categoryType;//发布类型
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -51,28 +50,32 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
     private ImageView top_return;
     private TextView top_title, top_tv_ok;
 
-    private EditText et_title, et_intro, et_content;
+    private LinearLayout ll_proType, ll_time_start, ll_time_end;
+    private View view_proType, view_time_start, view_time_end;
+
+    private EditText et_title, et_intro, et_content, et_proType;
     private Button btn_time_start, btn_time_end;
     private ImageView iv_photo1, iv_photo2, iv_photo3, iv_photo4;
 
-    private String title, intro, content;
+    private String title, intro, content, protype;
     private Date startDate, endDate;
     private String photopath1, photopath2, photopath3, photopath4;
 
-    final int TAKE_PHOTO = 1,TAKE_PHOTO2 = 12,TAKE_PHOTO3 = 13,TAKE_PHOTO4 = 14;
+    final int TAKE_PHOTO = 1, TAKE_PHOTO2 = 12, TAKE_PHOTO3 = 13, TAKE_PHOTO4 = 14;
     final int GET_PHOTO = 2;
     Uri imageUri, imageUri2, imageUri3, imageUri4;
     private Dialog photodialog = null;//拍照和相册dialog
-    Boolean isPhoto1,isPhoto2,isPhoto3,isPhoto4;
+    Boolean isPhoto1, isPhoto2, isPhoto3, isPhoto4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_publish_experience);
+        setContentView(R.layout.activity_publish_common_property);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         initcolor();
         inittitle();
         initview();
+        initgone();
     }
 
 
@@ -90,22 +93,40 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
     }
 
     public void inittitle() {
+        categoryType = this.getIntent().getIntExtra(CommonGlobal.categoryType, 0);
+
         top_rl_title = (LinearLayout) findViewById(R.id.top_rl_title);
         top_rl_title.setBackgroundColor(Color.parseColor(colorPrimary));
 
         top_return = (ImageView) findViewById(R.id.top_return);
         top_title = (TextView) findViewById(R.id.top_title);
 
-        top_title.setText("发布活动");
+        if (categoryType == 1) {
+            top_title.setText("发布活动");
+        } else if (categoryType == 2) {
+            top_title.setText("发布问题");
+        } else if (categoryType == 3) {
+            top_title.setText("发布失物");
+        } else if (categoryType == 4) {
+            top_title.setText("发布捡物");
+        }
         top_return.setOnClickListener(this);
         top_tv_ok = (TextView) findViewById(R.id.top_tv_ok);
         top_tv_ok.setOnClickListener(this);
     }
 
     public void initview() {
+        ll_proType = (LinearLayout) findViewById(R.id.ll_proType);
+        ll_time_start = (LinearLayout) findViewById(R.id.ll_time_start);
+        ll_time_end = (LinearLayout) findViewById(R.id.ll_time_end);
+        view_proType = findViewById(R.id.view_proType);
+        view_time_start = findViewById(R.id.view_time_start);
+        view_time_end = findViewById(R.id.view_time_end);
+
         et_title = (EditText) findViewById(R.id.et_title);
         et_intro = (EditText) findViewById(R.id.et_intro);
         et_content = (EditText) findViewById(R.id.et_content);
+        et_proType = (EditText) findViewById(R.id.et_proType);
 
         btn_time_start = (Button) findViewById(R.id.btn_time_start);
         btn_time_end = (Button) findViewById(R.id.btn_time_end);
@@ -120,6 +141,26 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
         iv_photo2.setOnClickListener(this);
         iv_photo3.setOnClickListener(this);
         iv_photo4.setOnClickListener(this);
+    }
+
+    /*隐藏类型没有的属性*/
+    public void initgone() {
+        if (categoryType == 1){
+            ll_proType.setVisibility(View.GONE);
+            view_proType.setVisibility(View.GONE);
+        } else if(categoryType == 2){
+            ll_time_start.setVisibility(View.GONE);
+            ll_time_end.setVisibility(View.GONE);
+            view_time_start.setVisibility(View.GONE);
+            view_time_end.setVisibility(View.GONE);
+        } else if (categoryType == 3 || categoryType ==4){
+            ll_proType.setVisibility(View.GONE);
+            ll_time_start.setVisibility(View.GONE);
+            ll_time_end.setVisibility(View.GONE);
+            view_proType.setVisibility(View.GONE);
+            view_time_start.setVisibility(View.GONE);
+            view_time_end.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -164,19 +205,19 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
                 dialog2.show();
                 break;
             case R.id.iv_photo1:
-                isPhoto1 =true;
+                isPhoto1 = true;
                 showphotodialg(view);
                 break;
             case R.id.iv_photo2:
-                isPhoto2 =true;
+                isPhoto2 = true;
                 showphotodialg(view);
                 break;
             case R.id.iv_photo3:
-                isPhoto3 =true;
+                isPhoto3 = true;
                 showphotodialg(view);
                 break;
             case R.id.iv_photo4:
-                isPhoto4 =true;
+                isPhoto4 = true;
                 showphotodialg(view);
                 break;
             case R.id.takePhoto:
@@ -202,8 +243,9 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
         title = et_title.getText().toString();
         intro = et_intro.getText().toString();
         content = et_content.getText().toString();
+        protype = et_proType.getText().toString();
 
-        Toast.makeText(this, "保存功能待做", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "保存功能待做" , Toast.LENGTH_SHORT).show();
     }
 
     public void showphotodialg(View view) {
@@ -253,21 +295,21 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
         if (Build.VERSION.SDK_INT >= 24) {
             if (isPhoto1) {
                 imageUri = FileProvider.getUriForFile(this, "com.camhelp.fileprovider", mFile);
-            } else if (isPhoto2){
+            } else if (isPhoto2) {
                 imageUri2 = FileProvider.getUriForFile(this, "com.camehelp.fileprovider", mFile);
-            } else if (isPhoto3){
+            } else if (isPhoto3) {
                 imageUri3 = FileProvider.getUriForFile(this, "com.camehelp.fileprovider", mFile);
-            } else if (isPhoto4){
+            } else if (isPhoto4) {
                 imageUri4 = FileProvider.getUriForFile(this, "com.camehelp.fileprovider", mFile);
             }
         } else {
             if (isPhoto1) {
                 imageUri = Uri.fromFile(mFile);
-            } else if (isPhoto2){
+            } else if (isPhoto2) {
                 imageUri2 = Uri.fromFile(mFile);
-            }else if (isPhoto3){
+            } else if (isPhoto3) {
                 imageUri3 = Uri.fromFile(mFile);
-            }else if (isPhoto4){
+            } else if (isPhoto4) {
                 imageUri4 = Uri.fromFile(mFile);
             }
         }
@@ -281,18 +323,18 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
 
     private void takePhoto() {
         Uri uri = null;
-        int id ;
+        int id;
         Intent mIntent = new Intent("android.media.action.IMAGE_CAPTURE");
         if (isPhoto1) {
             uri = imageUri;
             id = TAKE_PHOTO;
-        } else if (isPhoto2){
+        } else if (isPhoto2) {
             uri = imageUri2;
             id = TAKE_PHOTO2;
-        }else if (isPhoto3){
+        } else if (isPhoto3) {
             uri = imageUri3;
             id = TAKE_PHOTO3;
-        }else{
+        } else {
             uri = imageUri4;
             id = TAKE_PHOTO4;
         }
@@ -312,7 +354,7 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
                     Glide.with(this).load(imageUri).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo1);
                 }
                 isPhoto1 = false;
-                if (photopath1 != null){
+                if (photopath1 != null) {
                     iv_photo2.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -325,7 +367,7 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
                     Glide.with(this).load(imageUri2).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo2);
                 }
                 isPhoto2 = false;
-                if (photopath2 != null){
+                if (photopath2 != null) {
                     iv_photo3.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -338,7 +380,7 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
                     Glide.with(this).load(imageUri3).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo3);
                 }
                 isPhoto3 = false;
-                if (photopath3 != null){
+                if (photopath3 != null) {
                     iv_photo4.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -370,7 +412,7 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
                         imageUri = selectedImage;
                         photopath1 = path;
                         isPhoto1 = false;
-                        if (photopath1 != null){
+                        if (photopath1 != null) {
                             iv_photo2.setVisibility(View.VISIBLE);
                         }
                     } else if (isPhoto2) {
@@ -381,7 +423,7 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
                         imageUri2 = selectedImage;
                         photopath2 = path;
                         isPhoto2 = false;
-                        if (photopath2 != null){
+                        if (photopath2 != null) {
                             iv_photo3.setVisibility(View.VISIBLE);
                         }
                     } else if (isPhoto3) {
@@ -392,7 +434,7 @@ public class PublishExperienceActivity extends AppCompatActivity implements View
                         imageUri3 = selectedImage;
                         photopath3 = path;
                         isPhoto3 = false;
-                        if (photopath3 != null){
+                        if (photopath3 != null) {
                             iv_photo4.setVisibility(View.VISIBLE);
                         }
                     } else if (isPhoto4) {

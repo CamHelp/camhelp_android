@@ -14,7 +14,7 @@
             android:id="@+id/top_return"
             android:layout_centerVertical="true"
             android:layout_width="30dp"
-            android:layout_height="24dp"
+            android:layout_height="match_parent"
             android:src="@drawable/top_return_selector"
             android:background="@android:color/transparent"/>
         <TextView

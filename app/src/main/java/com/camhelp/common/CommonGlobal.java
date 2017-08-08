@@ -28,5 +28,11 @@ public class CommonGlobal {
     public static final String colorAccent = "colorAccent";
     public static final String myColorChosn = "myColorChosn";
 
+    /*发布类型确定*/
+    public static final String categoryType = "categoryType";
+    public static final int categoryType_experience =1;
+    public static final int categoryType_problem =2;
+    public static final int categoryType_lose =3;
+    public static final int categoryType_pickup =4;
 
 }
