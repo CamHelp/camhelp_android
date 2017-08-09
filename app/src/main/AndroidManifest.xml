@@ -103,7 +103,8 @@
         <activity
             android:name=".activity.ItemLookActivity"
             android:label="@string/title_activity_item_look"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
     </application>
 
 </manifest>

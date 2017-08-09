@@ -30,7 +30,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp">
+            android:layout_marginTop="80dp">
             <ImageView
                 android:layout_width="26dp"
                 android:layout_height="match_parent"
@@ -94,15 +94,6 @@
             android:textStyle="bold"
             android:background="@drawable/btn_login_selector"
             android:text="登&#12288;录"/>
-        <TextView
-            android:gravity="center"
-            android:id="@+id/btn_login_admin"
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@drawable/textview_textcolorchange001"
-            android:text="调试默认登录"
-            android:clickable="true"/>
 
         <FrameLayout
             android:layout_marginTop="18dp"
@@ -124,6 +115,17 @@
                 android:text="忘记密码"
                 android:clickable="true"/>
         </FrameLayout>
+
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/btn_login_admin"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/textview_textcolorchange001"
+            android:text="调试默认登录"
+            android:clickable="true"/>
 
     </LinearLayout>
 </ScrollView>

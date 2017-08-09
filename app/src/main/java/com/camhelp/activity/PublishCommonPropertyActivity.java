@@ -292,6 +292,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
             if (mCommonProperty.save()){
                 L.d(TAG,"mCommonProperty::"+mCommonProperty.toString());
                 Toast.makeText(this, "本地保存成功", Toast.LENGTH_SHORT).show();
+                finish();
             }else{
                 Toast.makeText(this, "本地保存失败" , Toast.LENGTH_SHORT).show();
             }
