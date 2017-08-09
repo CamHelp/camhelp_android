@@ -59,38 +59,39 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:text="评论"/>
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="bottom"
+                        android:padding="4dp">
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:maxLines="4"
+                            android:hint="立即评论"
+                            android:background="@color/white"/>
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:text="发送"/>
+                    </LinearLayout>
+
                     <TextView
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="50dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="80dp"
                         android:text="还没有评论"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
-            android:background="@color/background_gray"
-            android:padding="4dp">
-            <EditText
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:maxLines="4"
-                android:hint="立即评论"
-                android:background="@color/white"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="发送"/>
-        </LinearLayout>
     </FrameLayout>
 
 </LinearLayout>

@@ -35,7 +35,7 @@
                 <ImageView
                     android:layout_gravity="bottom|center"
                     android:id="@+id/id_iv_tabline_new"
-                    android:layout_width="30dp"
+                    android:layout_width="40dp"
                     android:layout_height="3dp"
                     android:background="@color/colorAccent" />
             </LinearLayout>
@@ -59,7 +59,7 @@
                 <ImageView
                     android:layout_gravity="bottom|center"
                     android:id="@+id/id_iv_tabline_focus"
-                    android:layout_width="30dp"
+                    android:layout_width="40dp"
                     android:layout_height="3dp"
                     android:background="@color/colorAccent" />
 

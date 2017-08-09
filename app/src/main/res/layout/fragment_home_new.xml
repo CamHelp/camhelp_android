@@ -6,34 +6,41 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/background_gray">
 
         <LinearLayout
-            android:layout_marginTop="18dp"
+            android:id="@+id/ll_noanydata"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_marginTop="18dp"
+            android:gravity="center"
+            android:visibility="gone">
 
             <TextView
+                android:id="@+id/tv_nocontent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="暂无内容"/>
+                android:text="暂无内容" />
+
         </LinearLayout>
 
         <!--显示列表-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/srl_home_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_home_new"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                 </android.support.v7.widget.RecyclerView>
             </android.support.v4.widget.SwipeRefreshLayout>

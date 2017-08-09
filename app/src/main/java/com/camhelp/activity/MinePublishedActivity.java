@@ -55,7 +55,7 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
 
     MinePublishedAdapter minePublishedAdapter;
     private List<CommonProperty> commonPropertyList;
-    private RecyclerView recycler_home_focus;
+    private RecyclerView recycler_mine_published;
     private LinearLayout ll_nodata,ll_recyclerView;
 
     @Override
@@ -68,12 +68,12 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         inittitle();
         initdata();
         initview();
-//        recycler_home_focus.setLayoutManager(mLinearLayoutManager);
-        recycler_home_focus.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
-        recycler_home_focus.setNestedScrollingEnabled(false);
+//        recycler_mine_published.setLayoutManager(mLinearLayoutManager);
+        recycler_mine_published.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        recycler_mine_published.setNestedScrollingEnabled(false);
 
         minePublishedAdapter = new MinePublishedAdapter(commonPropertyList, this);
-        recycler_home_focus.setAdapter(minePublishedAdapter);
+        recycler_mine_published.setAdapter(minePublishedAdapter);
     }
 
     /*获取主题色*/
@@ -120,7 +120,7 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         ll_recyclerView = (LinearLayout) findViewById(R.id.ll_recyclerView);
         ll_recyclerView.bringToFront();
 
-        recycler_home_focus = (RecyclerView) findViewById(R.id.recycler_mine_published);
+        recycler_mine_published = (RecyclerView) findViewById(R.id.recycler_mine_published);
 
         if (commonPropertyList.size()==0){
             ll_nodata.setVisibility(View.VISIBLE);
