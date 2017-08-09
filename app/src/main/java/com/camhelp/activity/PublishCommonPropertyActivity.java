@@ -52,28 +52,32 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
+    /*标题栏*/
     private LinearLayout top_rl_title;
     private ImageView top_return;
     private TextView top_title, top_tv_ok;
 
+    /*拍照相关*/
     final int TAKE_PHOTO = 1, TAKE_PHOTO2 = 12, TAKE_PHOTO3 = 13, TAKE_PHOTO4 = 14;
     final int GET_PHOTO = 2;
     Uri imageUri, imageUri2, imageUri3, imageUri4;
     private Dialog photodialog = null;//拍照和相册dialog
     Boolean isPhoto1, isPhoto2, isPhoto3, isPhoto4;
 
+    /*问题类型，活动开始时间，活动结束时间，物品联系方式*/
     private LinearLayout ll_proType, ll_time_start, ll_time_end,ll_contact;
     private View view_proType, view_time_start, view_time_end,view_contact;
 
+    /*标题，简介，内容，问题类型，物品联系方式*/
     private EditText et_title, et_intro, et_content, et_proType,et_contact;
-    private Button btn_time_start, btn_time_end;
-    private ImageView iv_photo1, iv_photo2, iv_photo3, iv_photo4;
+    private Button btn_time_start, btn_time_end;//活动开始时间，活动结束时间
+    private ImageView iv_photo1, iv_photo2, iv_photo3, iv_photo4;//照片
 
-    private String title, intro, content,contact;
-    private String protype;
-    private Date startDate, endDate;
-    private String sStartTime,sEndTime;
-    private String photopath1, photopath2, photopath3, photopath4;
+    private String title, intro, content,contact;//标题，简介，内容，物品联系方式
+    private String protype;//问题类型
+    private Date startDate, endDate;//活动开始结束时间
+    private String sStartTime,sEndTime;//活动开始结束时间yyyy-mm-dd
+    private String photopath1, photopath2, photopath3, photopath4;//照片路径
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -269,9 +273,9 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         mCommonProperty.setCommonContent(content);
 
         mCommonProperty.setCommonPic1(photopath1);
-        mCommonProperty.setCommonPic1(photopath2);
-        mCommonProperty.setCommonPic1(photopath3);
-        mCommonProperty.setCommonPic1(photopath4);
+        mCommonProperty.setCommonPic2(photopath2);
+        mCommonProperty.setCommonPic3(photopath3);
+        mCommonProperty.setCommonPic4(photopath4);
         Date creattime =new Date();
         mCommonProperty.setCreatetime(creattime);
         mCommonProperty.setPraisenum(0);
@@ -282,10 +286,15 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         mCommonProperty.setProType(protype);
         mCommonProperty.setGoodscontact(contact);
 
-        if (mCommonProperty.save()){
-            Toast.makeText(this, "本地保存成功,等待服务器保存" , Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "本地保存失败" , Toast.LENGTH_SHORT).show();
+        if ("".equals(title)&&"".equals(intro)&&"".equals(content)){
+            Toast.makeText(this, "请填写内容" , Toast.LENGTH_SHORT).show();
+        }else {
+            if (mCommonProperty.save()){
+                L.d(TAG,"mCommonProperty::"+mCommonProperty.toString());
+                Toast.makeText(this, "本地保存成功", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "本地保存失败" , Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

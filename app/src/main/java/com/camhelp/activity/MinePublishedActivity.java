@@ -66,6 +66,7 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         mUser = getUser();
         initcolor();
         inittitle();
+        initdata();
         initview();
     }
 
@@ -115,7 +116,6 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
 
         recycler_home_focus = (RecyclerView) findViewById(R.id.recycler_mine_published);
 
-        commonPropertyList = DataSupport.findAll(CommonProperty.class);
         if (commonPropertyList.size()==0){
             ll_nodata.setVisibility(View.VISIBLE);
         }
@@ -125,6 +125,10 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
 
         minePublishedAdapter = new MinePublishedAdapter(commonPropertyList, this);
         recycler_home_focus.setAdapter(minePublishedAdapter);
+    }
+
+    public void initdata(){
+        commonPropertyList = DataSupport.findAll(CommonProperty.class);
     }
 
     @Override

@@ -23,6 +23,9 @@ import com.camhelp.R;
 import com.camhelp.basic.ActivityCollector;
 import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.entity.CommonProperty;
+
+import org.litepal.crud.DataSupport;
 
 /**
  * 设置
@@ -131,14 +134,15 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        /*要清空数据库和sharedpreferences*/
+                        editor = pref.edit();
+                        editor.clear();
+                        editor.apply();
+                        DataSupport.deleteAll(CommonProperty.class);
                         if (EXITORLOGOUT == 0) {
                             MainActivity.mInstace.finish();
                             finish();
                         } else if (EXITORLOGOUT == 1) {
-                            editor = pref.edit();
-                            editor.putBoolean(CommonGlobal.isAutoLogin, false);
-                            editor.putInt(CommonGlobal.user_id, -1);
-                            editor.apply();
                             Intent loginIntent = new Intent(SetupActivity.this, LoginActivity.class);
                             startActivity(loginIntent);//注销后跳转到登录界面重新登录
                             MainActivity.mInstace.finish();

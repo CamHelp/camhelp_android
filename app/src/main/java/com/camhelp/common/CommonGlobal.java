@@ -28,5 +28,9 @@ public class CommonGlobal {
     public static final int categoryType_problem =2;
     public static final int categoryType_lose =3;
     public static final int categoryType_pickup =4;
+    public static final String sCategoryType_experience = "活动";
+    public static final String sCategoryType_problem ="问题";
+    public static final String sCategoryType_lose ="失物";
+    public static final String sCategoryType_pickup ="捡物";
 
 }

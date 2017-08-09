@@ -9,11 +9,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ImageView
+        android:orientation="vertical"
+        android:paddingTop="12dp">
+        <include layout="@layout/item_publish_center_pic"/>
+        <TextView
+            android:id="@+id/item_tv_intro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/mine_center_back"/>
+            android:padding="8dp"
+            android:textColor="@color/deepblack"
+            android:text="简介"
+            android:textSize="18dp"/>
+        <include layout="@layout/item_minepublish_foot"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
