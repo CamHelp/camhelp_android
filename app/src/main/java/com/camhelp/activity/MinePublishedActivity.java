@@ -68,6 +68,12 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         inittitle();
         initdata();
         initview();
+//        recycler_home_focus.setLayoutManager(mLinearLayoutManager);
+        recycler_home_focus.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        recycler_home_focus.setNestedScrollingEnabled(false);
+
+        minePublishedAdapter = new MinePublishedAdapter(commonPropertyList, this);
+        recycler_home_focus.setAdapter(minePublishedAdapter);
     }
 
     /*获取主题色*/
@@ -119,12 +125,6 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         if (commonPropertyList.size()==0){
             ll_nodata.setVisibility(View.VISIBLE);
         }
-//        recycler_home_focus.setLayoutManager(mLinearLayoutManager);
-        recycler_home_focus.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
-        recycler_home_focus.setNestedScrollingEnabled(false);
-
-        minePublishedAdapter = new MinePublishedAdapter(commonPropertyList, this);
-        recycler_home_focus.setAdapter(minePublishedAdapter);
     }
 
     public void initdata(){

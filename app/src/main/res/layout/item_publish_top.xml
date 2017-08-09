@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
+            android:id="@+id/item_top_iv_avatar"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:layout_width="46dp"
@@ -22,6 +23,7 @@
             android:layout_marginLeft="8dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/item_top_tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -29,6 +31,7 @@
                 android:textColor="@color/deepblack"
                 android:textSize="16dp"/>
             <TextView
+                android:id="@+id/item_top_tv_createtime"
                 android:layout_marginTop="8dp"
                 android:gravity="bottom|left"
                 android:layout_width="wrap_content"
@@ -37,6 +40,7 @@
                 android:text="时间"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/item_top_iv_type"
             android:gravity="center"
             android:layout_width="40dp"
             android:layout_height="26dp"

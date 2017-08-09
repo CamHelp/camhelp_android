@@ -99,7 +99,11 @@
             android:name=".activity.PublishCommonPropertyActivity"
             android:label="@string/title_activity_publish_common_property"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".activity.ItemLookActivity"
+            android:label="@string/title_activity_item_look"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

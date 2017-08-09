@@ -33,4 +33,5 @@ public class CommonGlobal {
     public static final String sCategoryType_lose ="失物";
     public static final String sCategoryType_pickup ="捡物";
 
+    public static final String  commonProperty = "commonProperty";
 }

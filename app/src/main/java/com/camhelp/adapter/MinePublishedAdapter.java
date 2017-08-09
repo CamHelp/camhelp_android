@@ -1,6 +1,7 @@
 package com.camhelp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
+import com.camhelp.activity.ItemLookActivity;
+import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.utils.LookLargeImg;
@@ -48,11 +51,14 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
 
         final CommonProperty commonProperty = mList.get(position);
         holder.dataBinding(commonProperty, position, mContext);
+
         /*每一项的点击事件*/
         holder.queryItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
+                Intent intentLook = new Intent(mContext, ItemLookActivity.class);
+                intentLook.putExtra(CommonGlobal.commonProperty, commonProperty);
+                mContext.startActivity(intentLook);
             }
         });
         /*分享*/
@@ -66,7 +72,9 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
         holder.ll_minepublish_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "comment" + position, Toast.LENGTH_SHORT).show();
+                Intent intentLook = new Intent(mContext, ItemLookActivity.class);
+                intentLook.putExtra("commonProperty", commonProperty);
+                mContext.startActivity(intentLook);
             }
         });
         /*删除*/
@@ -117,7 +125,7 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
         View queryItemView;
         TextView item_tv_intro, tv_minepublish_type;
         LinearLayout ll_minepublish_share, ll_minepublish_comment, ll_minepublish_delete;
-        ImageView item_iv_pic1,item_iv_pic2,item_iv_pic3,item_iv_pic4;
+        ImageView item_iv_pic1, item_iv_pic2, item_iv_pic3, item_iv_pic4;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -155,24 +163,24 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
             }
             tv_minepublish_type.setText(findValueForID.findCategoryType(type));
 
-            if (pic1!=null){
+            if (pic1 != null) {
                 Glide.with(context).load(pic1).into(item_iv_pic1);
-            }else {
+            } else {
                 item_iv_pic1.setVisibility(View.GONE);
             }
-            if (pic2!=null){
+            if (pic2 != null) {
                 Glide.with(context).load(pic2).into(item_iv_pic2);
-            }else {
+            } else {
                 item_iv_pic2.setVisibility(View.GONE);
             }
-            if (pic3!=null){
+            if (pic3 != null) {
                 Glide.with(context).load(pic3).into(item_iv_pic3);
-            }else {
+            } else {
                 item_iv_pic3.setVisibility(View.GONE);
             }
-            if (pic4!=null){
+            if (pic4 != null) {
                 Glide.with(context).load(pic4).into(item_iv_pic4);
-            }else {
+            } else {
                 item_iv_pic4.setVisibility(View.GONE);
             }
         }
