@@ -2,6 +2,7 @@ package com.camhelp.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -206,6 +208,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.top_return:
+                hintKbTwo();
                 finish();
                 break;
             case R.id.top_tv_ok://保存
@@ -307,7 +310,10 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         mUser.setBgpicture(photo1path);
         mUser.setAvatar(photo2path);
         saveUser(mUser);
-        Toast.makeText(this, "保存功能待做", Toast.LENGTH_SHORT).show();
+
+        hintKbTwo();
+        Toast.makeText(this, "保存本地成功", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     /*显示dialog*/
@@ -338,6 +344,16 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         dialogWindow.setAttributes(lp);
         //显示对话框
         photodialog.show();
+    }
+
+    /*关闭软键盘*/
+    private void hintKbTwo() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm.isActive()&&getCurrentFocus()!=null){
+            if (getCurrentFocus().getWindowToken()!=null) {
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 
     /**

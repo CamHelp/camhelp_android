@@ -116,6 +116,7 @@ public class HomeNewFragment extends Fragment {
             @Override
             public void onRefresh() {
                 FIRST = true;
+                srl_home_new.setRefreshing(true);
                 onResume();
             }
         });
