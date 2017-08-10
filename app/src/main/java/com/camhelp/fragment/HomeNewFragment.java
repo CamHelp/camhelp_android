@@ -42,7 +42,7 @@ public class HomeNewFragment extends Fragment {
     private RecyclerView recycler_home_new;
     private LinearLayout ll_nodata;
 
-    private LinearLayoutManager mLinearLayoutManager;
+    //    private LinearLayoutManager mLinearLayoutManager;
     private FullyLinearLayoutManager fullyLinearLayoutManager;
     private HomeNewAndFocusAdapter homeNewAndFocusAdapter;
     private List<CommonProperty> commonPropertyList;
@@ -95,7 +95,12 @@ public class HomeNewFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initdata();
         initview();
-        Toast.makeText(getActivity(), "" + commonPropertyList.size(), Toast.LENGTH_SHORT).show();
+
+//        fullyLinearLayoutManager = new FullyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        recycler_home_new.setLayoutManager(fullyLinearLayoutManager);
+//        recycler_home_new.setNestedScrollingEnabled(false);
+//        homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyList, getActivity());
+//        recycler_home_new.setAdapter(homeNewAndFocusAdapter);
     }
 
     public void initview() {
@@ -170,6 +175,12 @@ public class HomeNewFragment extends Fragment {
      */
     public void initdata() {
         commonPropertyList = DataSupport.findAll(CommonProperty.class);
+        int total = commonPropertyList.size();
+        if (total > 0) {
+            for (int i = 0; i < 20; i++) {
+                commonPropertyList.add(commonPropertyList.get(i / total));
+            }
+        }
     }
 
     /**
@@ -177,12 +188,12 @@ public class HomeNewFragment extends Fragment {
      */
     public void loadmoredata() {
         int total = commonPropertyList.size();
-        for (int i = 0;i < total; i++) {
+        for (int i = 0; i < total; i++) {
             commonPropertyList.add(commonPropertyList.get(i));
         }
         homeNewAndFocusAdapter.notifyDataSetChanged();
         srl_home_new.setRefreshing(false);
-        homeNewAndFocusAdapter.notifyItemRemoved(homeNewAndFocusAdapter.getItemCount());
+//        homeNewAndFocusAdapter.notifyItemRemoved(homeNewAndFocusAdapter.getItemCount());
         tv_loading.setVisibility(View.GONE);
     }
 
@@ -193,6 +204,7 @@ public class HomeNewFragment extends Fragment {
             srl_home_new.setRefreshing(true);
             commonPropertyList.clear();
             initdata();
+//            mLinearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
             fullyLinearLayoutManager = new FullyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             recycler_home_new.setLayoutManager(fullyLinearLayoutManager);
             recycler_home_new.setNestedScrollingEnabled(false);
@@ -201,8 +213,8 @@ public class HomeNewFragment extends Fragment {
             srl_home_new.setRefreshing(false);
             FIRST = false;
         } else {
-            homeNewAndFocusAdapter.notifyDataSetChanged();
-            srl_home_new.setRefreshing(false);
+//            homeNewAndFocusAdapter.notifyDataSetChanged();
+//            srl_home_new.setRefreshing(false);
         }
     }
 

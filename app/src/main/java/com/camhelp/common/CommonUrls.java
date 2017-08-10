@@ -13,4 +13,11 @@ public class CommonUrls {
     public static final String URL_ELECTRICITY = "http://zxzf.swpu.edu.cn/OnlinePay/login.aspx";
     /*宿舍报修*/
     public static final String URL_REPAIR = "http://hqservice.swpu.edu.cn/rsp";
+
+    /*服务器相关路径*/
+        public static final String SERVER_ADDRESS = "http://123.207.253.163:8080";
+    /*登录*/
+    public static final String SERVER_LOGIN = SERVER_ADDRESS+"/user/login";
+    /*注册*/
+    public static final String SERVER_REGISTER = SERVER_ADDRESS+"/user/register";
 }

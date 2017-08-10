@@ -35,6 +35,8 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
     private LookLargeImg lookLargeImg = new LookLargeImg();
     private User user = new User();
 
+    private boolean isliked, iscollected;
+
     public HomeNewAndFocusAdapter(List<CommonProperty> CommonPropertys, Context context) {
         mList = CommonPropertys;
         mContext = context;
@@ -93,14 +95,26 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         holder.ll_publishfoot_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isliked) {
 
+                    isliked = false;
+                } else {
+
+                    isliked = true;
+                }
             }
         });
         /*收藏*/
         holder.ll_publishfoot_collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "collect" + position, Toast.LENGTH_SHORT).show();
+                if (iscollected) {
+
+                    iscollected = false;
+                } else {
+
+                    iscollected = true;
+                }
             }
         });
         /*查看大图*/
@@ -143,9 +157,10 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
     class ViewHolder extends RecyclerView.ViewHolder {
         View queryItemView;
         ImageView item_top_iv_avatar;//头像
-        TextView item_top_tv_nickname,item_top_tv_createtime,item_top_iv_type;//昵称,发布时间,类型
-        TextView item_tv_intro,item_foot_praisenum;//标题或简介或详情,热度（点赞量）
-        LinearLayout ll_publishfoot_share, ll_publishfoot_comment, ll_publishfoot_like,ll_publishfoot_collect;
+        TextView item_top_tv_nickname, item_top_tv_createtime, item_top_iv_type;//昵称,发布时间,类型
+        TextView item_tv_intro, item_foot_praisenum;//标题或简介或详情,热度（点赞量）
+        LinearLayout ll_publishfoot_share, ll_publishfoot_comment, ll_publishfoot_like, ll_publishfoot_collect;
+        ImageView iv_like,iv_collect;
         ImageView item_iv_pic1, item_iv_pic2, item_iv_pic3, item_iv_pic4;
 
         public ViewHolder(View itemView) {
@@ -161,6 +176,8 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             ll_publishfoot_comment = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_comment);
             ll_publishfoot_like = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_like);
             ll_publishfoot_collect = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_collect);
+            iv_like = (ImageView) itemView.findViewById(R.id.iv_like);
+            iv_collect = (ImageView) itemView.findViewById(R.id.iv_collect);
             item_iv_pic1 = (ImageView) itemView.findViewById(R.id.item_iv_pic1);
             item_iv_pic2 = (ImageView) itemView.findViewById(R.id.item_iv_pic2);
             item_iv_pic3 = (ImageView) itemView.findViewById(R.id.item_iv_pic3);
@@ -179,7 +196,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
             int userId = mCommonProperty.getUserId();
             user.setUserID(userId);
-            item_top_tv_nickname.setText(""+userId);
+            item_top_tv_nickname.setText("" + userId);
 
             /*设置显示文字，标题不为空显示标题，否则显示简介，否则显示详情，否则隐藏*/
             if (stitle != null && !"".equals(stitle)) {
@@ -223,7 +240,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
                 item_iv_pic4.setVisibility(View.GONE);
             }
 
-            item_foot_praisenum.setText(""+mCommonProperty.getPraisenum()+"条热度");
+            item_foot_praisenum.setText("" + mCommonProperty.getPraisenum() + "条热度");
         }
     }
 }

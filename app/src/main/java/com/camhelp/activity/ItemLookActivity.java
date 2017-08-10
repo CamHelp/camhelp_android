@@ -1,5 +1,6 @@
 package com.camhelp.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +23,11 @@ import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.User;
+import com.camhelp.utils.L;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.text.SimpleDateFormat;
 
 
@@ -29,7 +35,7 @@ import java.text.SimpleDateFormat;
  * 查看具体的内容activity
  */
 public class ItemLookActivity extends AppCompatActivity implements View.OnClickListener {
-
+    private String TAG = "ItemLookActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
@@ -39,7 +45,6 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private TextView top_title;
 
     private FindValueForID findValueForID = new FindValueForID();
-    private User user = new User();
     private CommonProperty commonProperty;
 
     private boolean isLike, isCollection;
@@ -51,6 +56,8 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private TextView item_foot_praisenum, item_foot_browsenum;//热度，浏览量
     private LinearLayout ll_look_share, ll_look_like, ll_look_collect;//分享，喜欢，收藏
     private ImageView iv_like, iv_collect;//喜欢，收藏按钮（点击改变）
+
+    User mUser = new User();//用户
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +98,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
     public void initview() {
         item_top_iv_avatar = (ImageView) findViewById(R.id.item_top_iv_avatar);
+        item_top_iv_avatar.setOnClickListener(this);
         item_top_tv_nickname = (TextView) findViewById(R.id.item_top_tv_nickname);
         item_top_tv_createtime = (TextView) findViewById(R.id.item_top_tv_createtime);
         item_top_iv_type = (TextView) findViewById(R.id.item_top_iv_type);
@@ -117,7 +125,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void initdata() {
-        item_top_tv_nickname.setText(user.getNickname());
+        item_top_tv_nickname.setText(mUser.getNickname());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sCreatetime = sdf.format(commonProperty.getCreatetime());
@@ -185,8 +193,23 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
      */
     public void initUser() {
         item_top_iv_avatar.setImageResource(R.drawable.avatar);
-        user.setNickname("石头人m");
-        user.setIntro("简介");
+        mUser = getUser();//得到user
+    }
+
+    public User getUser() {
+        String temp = pref.getString(CommonGlobal.userobj, "");
+        L.d(TAG, temp);
+        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
+        User user = null;
+        try {
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            user = (User) ois.readObject();
+        } catch (IOException e) {
+            L.d(TAG, e.toString());
+        } catch (ClassNotFoundException e1) {
+            L.d(TAG, e1.toString());
+        }
+        return user;
     }
 
     @Override
@@ -194,6 +217,11 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         switch (view.getId()) {
             case R.id.top_return:
                 finish();
+                break;
+            case R.id.item_top_iv_avatar://点击头像查看
+                Intent intentLookOtherPeople = new Intent(this, LookOtherPeopleActivity.class);
+                intentLookOtherPeople.putExtra(CommonGlobal.user_id, commonProperty.getUserId());//把用户id传过去
+                startActivity(intentLookOtherPeople);
                 break;
             case R.id.ll_look_share://分享
                 Toast.makeText(this, "分享功能待完成", Toast.LENGTH_SHORT).show();

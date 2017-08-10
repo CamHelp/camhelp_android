@@ -105,9 +105,9 @@ public class LookOthersDataActivity extends AppCompatActivity implements View.On
         top_return = (ImageView) findViewById(R.id.top_return);
         top_title = (TextView) findViewById(R.id.top_title);
         top_tv_ok = (TextView) findViewById(R.id.top_tv_ok);
-        top_tv_ok.setVisibility(View.GONE);
 
         top_title.setText("查看资料");
+        top_tv_ok.setText("关注");
         top_return.setOnClickListener(this);
         top_tv_ok.setOnClickListener(this);
     }
@@ -188,6 +188,10 @@ public class LookOthersDataActivity extends AppCompatActivity implements View.On
             case R.id.top_return:
                 finish();
                 break;
+            case R.id.top_tv_ok://关注
+                addAttention(mUser.getUserID());
+                Toast.makeText(this, "关注功能待做", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.iv_others_back://背景图
                 lookLargeImg.looklargeimg(photo1path,this);
                 break;
@@ -213,4 +217,8 @@ public class LookOthersDataActivity extends AppCompatActivity implements View.On
         return user;
     }
 
+    public boolean addAttention(int userid){
+
+        return false;
+    }
 }

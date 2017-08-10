@@ -17,7 +17,7 @@ public class FindValueForID {
         if (type == CommonGlobal.categoryType_experience) {
             sCategoryType = CommonGlobal.sCategoryType_experience;
         }else if (type == CommonGlobal.categoryType_problem) {
-            sCategoryType = CommonGlobal.sCategoryType_pickup;
+            sCategoryType = CommonGlobal.sCategoryType_problem;
         }else if (type == CommonGlobal.categoryType_lose) {
             sCategoryType = CommonGlobal.sCategoryType_lose;
         }else if (type == CommonGlobal.categoryType_pickup) {

@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -20,15 +22,25 @@ import android.widget.Toast;
 import com.camhelp.R;
 import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.User;
 import com.camhelp.utils.L;
 import com.camhelp.utils.SharePrefUser;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * 登录
@@ -45,6 +57,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private CheckBox checkboxAutologin;
     private TextView tv_register, tv_forget;
     private TextView btnLoginAdmin;
+
+    User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +98,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 String password = etPassword.getText().toString();
                 login(username, password);
                 break;
-            case R.id.btn_login_admin:
-                login("admin", "admin1");
+            case R.id.btn_login_admin://调试默认登录
+                login("18084938391", "123456");
                 break;
             case R.id.tv_register:
-                Intent registerIntent = new Intent(this,RegisterActivity.class);
+                Intent registerIntent = new Intent(this, RegisterActivity.class);
                 startActivity(registerIntent);
                 break;
             case R.id.tv_forget:
-                Intent forgetIntent = new Intent(this,ForgetPasswordActivity.class);
+                Intent forgetIntent = new Intent(this, ForgetPasswordActivity.class);
                 startActivity(forgetIntent);
                 break;
             default:
@@ -115,28 +129,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         /**
          * 处理登陆
          * */
-        String rePassword = "admin1";
-        int reId = 0;             //得到用户id
-
-        editor = pref.edit();
-        if (password.equals(rePassword)) {                                   //密码正确
-            if (checkboxAutologin.isChecked()) {                           //自动登录验证
-                editor.putBoolean(CommonGlobal.isAutoLogin,true);
-            }
-            inituser();
-            editor.putInt(CommonGlobal.user_id,reId);
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-            this.finish();
-        } else {
-            tvResultLabel.setText("用户名或密码错误！");
-        }
-        editor.apply();
+        okhttpTest(username, password);
     }
 
-    private void inituser(){
-        User user = new User();
+    private void inituser() {
         user.setUserID(0);
         user.setAccount("18084938391");
         user.setAvatar("http://www.stormstone.xin/img/avatar-storm.jpg");
@@ -155,6 +151,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     public void saveUser(User user) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        editor = pref.edit();
         try {
             ObjectOutputStream oos = new ObjectOutputStream(baos);
             oos.writeObject(user);
@@ -164,7 +161,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        editor.commit();
         editor.apply();
     }
 
@@ -181,5 +177,51 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             L.d(TAG, e1.toString());
         }
         return user;
+    }
+
+    boolean loginsuccess;
+
+
+    private boolean okhttpTest(String telephone, String password) {
+        final String url = CommonUrls.SERVER_LOGIN;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
+
+        FormBody body = new FormBody.Builder().add("telephone", telephone).add("password", password).build();
+        Request request = new Request.Builder().url(url).post(body).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("TAG", "onFailure" + e.toString());
+
+                tvResultLabel.setText("用户名或密码错误！");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String result = response.body().string();
+                Log.d("TAG", result);
+
+                loginsuccess = true;
+                L.d(TAG, "" + loginsuccess);
+
+                Gson gson = new Gson();
+                user = gson.fromJson(result, User.class);
+                saveUser(user);
+                L.d(TAG, "user:" + user.toString());
+
+                editor = pref.edit();
+                if (checkboxAutologin.isChecked()) {                           //自动登录验证
+                    editor.putBoolean(CommonGlobal.isAutoLogin, true);
+                }
+//                editor.putInt(CommonGlobal.user_id, user.getUserID());
+                editor.apply();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                LoginActivity.this.finish();
+            }
+        });
+        return loginsuccess;
     }
 }
