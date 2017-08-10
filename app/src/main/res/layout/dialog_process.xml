@@ -20,7 +20,7 @@
                 android:id="@+id/ivBackGround"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/logoko"
+                android:background="@drawable/mine_bg"
                 android:layout_centerInParent="true"
                 />
             <ImageView

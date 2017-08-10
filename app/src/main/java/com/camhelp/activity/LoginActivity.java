@@ -238,6 +238,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 if ("成功".equals(msg)) {
 
+                    LoginActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogProcess.dismiss();
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                     user = gson.fromJson(result, User.class);
                     saveUser(user);
                     L.d(TAG, "user:" + user.toString());
