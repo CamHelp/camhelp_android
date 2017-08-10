@@ -1,5 +1,6 @@
 package com.camhelp.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -25,8 +26,14 @@ import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.User;
 import com.camhelp.utils.L;
+import com.camhelp.utils.MyProcessDialog;
 import com.camhelp.utils.SharePrefUser;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -59,6 +66,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView btnLoginAdmin;
 
     User user = new User();
+    Dialog dialogProcess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,10 +137,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         /**
          * 处理登陆
          * */
+        dialogProcess = MyProcessDialog.showDialog(LoginActivity.this);
+        dialogProcess.show();
         okhttpTest(username, password);
     }
 
-    private void inituser() {
+    private void initTestuser() {
         user.setUserID(0);
         user.setAccount("18084938391");
         user.setAvatar("http://www.stormstone.xin/img/avatar-storm.jpg");
@@ -193,8 +203,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("TAG", "onFailure" + e.toString());
+                dialogProcess.dismiss();
 
-                tvResultLabel.setText("用户名或密码错误！");
+                LoginActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvResultLabel.setText("请检查网络！");
+                    }
+                });
             }
 
             @Override
@@ -207,19 +223,43 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 L.d(TAG, "" + loginsuccess);
 
                 Gson gson = new Gson();
-                user = gson.fromJson(result, User.class);
-                saveUser(user);
-                L.d(TAG, "user:" + user.toString());
+                //  获得 解析者
+                JsonParser parser = new JsonParser();
+                //  获得 根节点元素
+                JsonElement root = parser.parse(result);
+                //  根据 文档判断根节点属于 什么类型的 Gson节点对象
+                // 假如文档 显示 根节点 为对象类型
+                // 获得 根节点 的实际 节点类型
+                JsonObject element = root.getAsJsonObject();
+                //  取得 节点 下 的某个节点的 value
+                // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                String msg = msgJson.getAsString();
 
-                editor = pref.edit();
-                if (checkboxAutologin.isChecked()) {                           //自动登录验证
-                    editor.putBoolean(CommonGlobal.isAutoLogin, true);
-                }
+                if ("成功".equals(msg)) {
+
+                    user = gson.fromJson(result, User.class);
+                    saveUser(user);
+                    L.d(TAG, "user:" + user.toString());
+
+                    editor = pref.edit();
+                    if (checkboxAutologin.isChecked()) {                           //自动登录验证
+                        editor.putBoolean(CommonGlobal.isAutoLogin, true);
+                    }
 //                editor.putInt(CommonGlobal.user_id, user.getUserID());
-                editor.apply();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                LoginActivity.this.finish();
+                    editor.apply();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    LoginActivity.this.finish();
+                } else {
+                    LoginActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogProcess.dismiss();
+                            tvResultLabel.setText("用户名或密码错误！");
+                        }
+                    });
+                }
             }
         });
         return loginsuccess;

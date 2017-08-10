@@ -152,7 +152,12 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         email = mUser.getEmail();
         address = mUser.getAddress();
         birthday = mUser.getBirthday();
-        sex = mUser.getSex();
+
+        if (mUser.getSex()==null){
+            sex = -1;
+        }else {
+            sex = mUser.getSex();
+        }
 
         if (username != null || "".equals(username)) {
             et_mine_username.setText(username);
@@ -176,7 +181,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
             radiobtn_male.setChecked(true);
         } else if (sex == 1) {
             radiobtn_fmale.setChecked(true);
-        } else {
+        } else if(sex == -1){
             radiobtn_secret.setChecked(true);
         }
 
