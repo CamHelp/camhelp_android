@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 /**
  * Created by storm on 2017-07-24.
  * 实现RecyclerView上拉加载更多功能
+ * 问题：未检测滑动方向，到底部上滑也会加载更多
  * */
 
 public abstract class EndLessOnScrollListener extends  RecyclerView.OnScrollListener{
@@ -42,7 +43,7 @@ public abstract class EndLessOnScrollListener extends  RecyclerView.OnScrollList
 //        super.onScrolled(recyclerView, dx, dy);
 //        if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset()
 //                >= recyclerView.computeVerticalScrollRange()) {
-//            onLoadMore(0);
+//            onLoadMore(1);
 //        }
 //    }
 

@@ -14,43 +14,39 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
 import com.camhelp.activity.ItemLookActivity;
-import com.camhelp.activity.LookOtherPeopleActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
-import com.camhelp.entity.User;
 import com.camhelp.utils.LookLargeImg;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- * Created by storm on 2017-08-09.
+ * Created by storm on 2017-08-10.
  */
 
-public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocusAdapter.ViewHolder> {
+public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeopleAdapter.ViewHolder> {
     private List<CommonProperty> mList;
     private Context mContext;
     private FindValueForID findValueForID = new FindValueForID();
     private LookLargeImg lookLargeImg = new LookLargeImg();
-    private User user = new User();
 
-    public HomeNewAndFocusAdapter(List<CommonProperty> CommonPropertys, Context context) {
+    public LookOtherPeopleAdapter(List<CommonProperty> CommonPropertys, Context context) {
         mList = CommonPropertys;
         mContext = context;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LookOtherPeopleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.item_home_new_or_focus, parent, false);
-        final HomeNewAndFocusAdapter.ViewHolder holder = new HomeNewAndFocusAdapter.ViewHolder(view);
+                inflate(R.layout.item_otherpeople_all, parent, false);
+        final LookOtherPeopleAdapter.ViewHolder holder = new LookOtherPeopleAdapter.ViewHolder(view);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(LookOtherPeopleAdapter.ViewHolder holder, final int position) {
 
         final CommonProperty commonProperty = mList.get(position);
         holder.dataBinding(commonProperty, position, mContext);
@@ -62,15 +58,6 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
                 Intent intentLook = new Intent(mContext, ItemLookActivity.class);
                 intentLook.putExtra(CommonGlobal.commonProperty, commonProperty);
                 mContext.startActivity(intentLook);
-            }
-        });
-        /*点击头像查看用户*/
-        holder.item_top_iv_avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentLookOtherPeople = new Intent(mContext, LookOtherPeopleActivity.class);
-                intentLookOtherPeople.putExtra(CommonGlobal.user_id, commonProperty.getUserId());//把用户id传过去
-                mContext.startActivity(intentLookOtherPeople);
             }
         });
         /*分享*/
@@ -85,7 +72,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             @Override
             public void onClick(View v) {
                 Intent intentLook = new Intent(mContext, ItemLookActivity.class);
-                intentLook.putExtra(CommonGlobal.commonProperty, commonProperty);
+                intentLook.putExtra("commonProperty", commonProperty);
                 mContext.startActivity(intentLook);
             }
         });
@@ -93,7 +80,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         holder.ll_publishfoot_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(mContext, "like" + position, Toast.LENGTH_SHORT).show();
             }
         });
         /*收藏*/
@@ -142,20 +129,14 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
     class ViewHolder extends RecyclerView.ViewHolder {
         View queryItemView;
-        ImageView item_top_iv_avatar;//头像
-        TextView item_top_tv_nickname,item_top_tv_createtime,item_top_iv_type;//昵称,发布时间,类型
-        TextView item_tv_intro,item_foot_praisenum;//标题或简介或详情,热度（点赞量）
+        TextView item_tv_intro,item_foot_praisenum;//简介，类型，热度
         LinearLayout ll_publishfoot_share, ll_publishfoot_comment, ll_publishfoot_like,ll_publishfoot_collect;
         ImageView item_iv_pic1, item_iv_pic2, item_iv_pic3, item_iv_pic4;
 
         public ViewHolder(View itemView) {
             super(itemView);
             queryItemView = itemView;
-            item_top_iv_avatar = (ImageView) itemView.findViewById(R.id.item_top_iv_avatar);
-            item_top_tv_nickname = (TextView) itemView.findViewById(R.id.item_top_tv_nickname);
-            item_top_tv_createtime = (TextView) itemView.findViewById(R.id.item_top_tv_createtime);
             item_tv_intro = (TextView) itemView.findViewById(R.id.item_tv_intro);
-            item_top_iv_type = (TextView) itemView.findViewById(R.id.item_top_iv_type);
             item_foot_praisenum = (TextView) itemView.findViewById(R.id.item_foot_praisenum);
             ll_publishfoot_share = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_share);
             ll_publishfoot_comment = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_comment);
@@ -177,10 +158,6 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             String pic3 = mCommonProperty.getCommonPic3();
             String pic4 = mCommonProperty.getCommonPic4();
 
-            int userId = mCommonProperty.getUserId();
-            user.setUserID(userId);
-            item_top_tv_nickname.setText(""+userId);
-
             /*设置显示文字，标题不为空显示标题，否则显示简介，否则显示详情，否则隐藏*/
             if (stitle != null && !"".equals(stitle)) {
                 item_tv_intro.setText(stitle);
@@ -192,38 +169,29 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
                 item_tv_intro.setVisibility(View.GONE);
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String sCreatetime = sdf.format(mCommonProperty.getCreatetime());
-            item_top_tv_createtime.setText(sCreatetime);
-
-            item_top_iv_type.setText(findValueForID.findCategoryType(type));
+            item_foot_praisenum.setText(findValueForID.findCategoryType(type));//热度的位置显示类型
+            item_foot_praisenum.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
 
             if (pic1 != null) {
-                Glide.with(context).load(pic1)
-                        .placeholder(R.drawable.isloading).into(item_iv_pic1);
+                Glide.with(context).load(pic1).into(item_iv_pic1);
             } else {
                 item_iv_pic1.setVisibility(View.GONE);
             }
             if (pic2 != null) {
-                Glide.with(context).load(pic2)
-                        .placeholder(R.drawable.isloading).into(item_iv_pic2);
+                Glide.with(context).load(pic2).into(item_iv_pic2);
             } else {
                 item_iv_pic2.setVisibility(View.GONE);
             }
             if (pic3 != null) {
-                Glide.with(context).load(pic3)
-                        .placeholder(R.drawable.isloading).into(item_iv_pic3);
+                Glide.with(context).load(pic3).into(item_iv_pic3);
             } else {
                 item_iv_pic3.setVisibility(View.GONE);
             }
             if (pic4 != null) {
-                Glide.with(context).load(pic4)
-                        .placeholder(R.drawable.isloading).into(item_iv_pic4);
+                Glide.with(context).load(pic4).into(item_iv_pic4);
             } else {
                 item_iv_pic4.setVisibility(View.GONE);
             }
-
-            item_foot_praisenum.setText(""+mCommonProperty.getPraisenum()+"条热度");
         }
     }
 }

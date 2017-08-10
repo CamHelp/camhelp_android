@@ -104,7 +104,15 @@
             android:name=".activity.ItemLookActivity"
             android:label="@string/title_activity_item_look"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".activity.LookOtherPeopleActivity"
+            android:label="@string/title_activity_look_other_people"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.LookOthersDataActivity"
+            android:label="@string/title_activity_look_others_data"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

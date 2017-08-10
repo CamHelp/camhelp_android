@@ -20,4 +20,6 @@
     <string name="title_activity_publish_electricity">PublishElectricityActivity</string>
     <string name="title_activity_publish_common_property">PublishCommonPropertyActivity</string>
     <string name="title_activity_item_look">ItemLookActivity</string>
+    <string name="title_activity_look_other_people">LookOtherPeopleActivity</string>
+    <string name="title_activity_look_others_data">LookOthersDataActivity</string>
 </resources>
