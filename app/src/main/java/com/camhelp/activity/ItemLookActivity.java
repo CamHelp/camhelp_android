@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -22,15 +23,33 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.common.CommonUrls;
 import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
+import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.entity.User;
 import com.camhelp.utils.L;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -47,7 +66,8 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private TextView top_title;
 
     private FindValueForID findValueForID = new FindValueForID();
-    private CommonProperty commonProperty;
+    private int commonPropertyID;
+    private CommonProperty commonProperty = new CommonProperty();
 
     private boolean isLike, isCollection;
 
@@ -66,7 +86,10 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_look);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        commonProperty = (CommonProperty) getIntent().getSerializableExtra(CommonGlobal.commonProperty);
+
+        commonPropertyID = getIntent().getIntExtra(CommonGlobal.commonPropertyID,-1);
+        okhttpLookOne(commonPropertyID);
+
         initcolor();
         inittitle();
         initview();
@@ -130,8 +153,10 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         item_top_tv_nickname.setText(mUser.getNickname());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sCreatetime = sdf.format(commonProperty.getCreatetime());
-        item_top_tv_createtime.setText(sCreatetime);
+        if (commonProperty.getCreatetime()!=null){
+            String sCreatetime = sdf.format(commonProperty.getCreatetime());
+            item_top_tv_createtime.setText(sCreatetime);
+        }
 
         item_top_iv_type.setText(findValueForID.findCategoryType(commonProperty.getCategoryType()));
 
@@ -186,6 +211,72 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         } else {
             item_iv_pic4.setVisibility(View.GONE);
         }
+    }
+
+    /**请求服务器数据*/
+    private void okhttpLookOne(Integer commonid) {
+        final String url = CommonUrls.SERVER_COMMONLIST_ONE;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
+
+        FormBody body = new FormBody.Builder()
+                .add("commonid",""+commonid)
+                .build();
+        Request request = new Request.Builder().url(url).post(body).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("TAG", "onFailure" + e.toString());
+                ItemLookActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ItemLookActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String result = response.body().string();
+                Log.d("TAG"+"onresponse result:", result);
+
+                Gson gson = new Gson();
+                //  获得 解析者
+                JsonParser parser = new JsonParser();
+                //  获得 根节点元素
+                JsonElement root = parser.parse(result);
+                //  根据 文档判断根节点属于 什么类型的 Gson节点对象
+                // 假如文档 显示 根节点 为对象类型
+                // 获得 根节点 的实际 节点类型
+                JsonObject element = root.getAsJsonObject();
+                //  取得 节点 下 的某个节点的 value
+                // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                final String msg = msgJson.getAsString();
+
+                if (code == 0) {
+                    final JsonObject dataJson = element.getAsJsonObject("data");
+//                    commonProperty = gson.fromJson(dataJson,CommonProperty.class);
+
+                    ItemLookActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ItemLookActivity.this, dataJson.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    ItemLookActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ItemLookActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     /**

@@ -19,6 +19,7 @@ import com.camhelp.activity.LookOtherPeopleActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
+import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.entity.User;
 import com.camhelp.utils.LookLargeImg;
 
@@ -31,7 +32,7 @@ import java.util.List;
  */
 
 public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocusAdapter.ViewHolder> {
-    private List<CommonProperty> mList;
+    private List<CommonPropertyVO> mList;
     private Context mContext;
     private FindValueForID findValueForID = new FindValueForID();
     private LookLargeImg lookLargeImg = new LookLargeImg();
@@ -43,8 +44,8 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
     String shreText;
 
-    public HomeNewAndFocusAdapter(List<CommonProperty> CommonPropertys, Context context) {
-        mList = CommonPropertys;
+    public HomeNewAndFocusAdapter(List<CommonPropertyVO> CommonPropertyVOs, Context context) {
+        mList = CommonPropertyVOs;
         mContext = context;
 
     }
@@ -61,15 +62,15 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        final CommonProperty commonProperty = mList.get(position);
-        holder.dataBinding(commonProperty, position, mContext);
+        final CommonPropertyVO commonPropertyVO = mList.get(position);
+        holder.dataBinding(commonPropertyVO, position, mContext);
 
         /*每一项的点击事件*/
         holder.queryItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentLook = new Intent(mContext, ItemLookActivity.class);
-                intentLook.putExtra(CommonGlobal.commonProperty, commonProperty);
+                intentLook.putExtra(CommonGlobal.commonPropertyID, commonPropertyVO.getCommonid());
                 mContext.startActivity(intentLook);
             }
         });
@@ -78,7 +79,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             @Override
             public void onClick(View v) {
                 Intent intentLookOtherPeople = new Intent(mContext, LookOtherPeopleActivity.class);
-                intentLookOtherPeople.putExtra(CommonGlobal.user_id, commonProperty.getUserId());//把用户id传过去
+                intentLookOtherPeople.putExtra(CommonGlobal.user_id, commonPropertyVO.getUserID());//把用户id传过去
                 mContext.startActivity(intentLookOtherPeople);
             }
         });
@@ -86,10 +87,10 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         holder.ll_publishfoot_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Intent.ACTION_SEND);
+                Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("image/*");
 //                intent.putExtra(Intent.EXTRA_SUBJECT, commonProperty);
-                intent.putExtra(Intent.EXTRA_SHORTCUT_ICON,commonProperty.getCommonPic1());
+                intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, commonPropertyVO.getCommonPic1());
                 intent.putExtra(Intent.EXTRA_TEXT, shreText);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(Intent.createChooser(intent, "分享"));
@@ -100,7 +101,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             @Override
             public void onClick(View v) {
                 Intent intentLook = new Intent(mContext, ItemLookActivity.class);
-                intentLook.putExtra(CommonGlobal.commonProperty, commonProperty);
+                intentLook.putExtra(CommonGlobal.commonProperty, commonPropertyVO);
                 mContext.startActivity(intentLook);
             }
         });
@@ -110,10 +111,10 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             public void onClick(View v) {
                 if (isLikedList.get(position)) {
                     notifyItemChanged(position);//通知该位置的数据发送改变
-                    isLikedList.set(position,false);
+                    isLikedList.set(position, false);
                 } else {
                     notifyItemChanged(position);//通知该位置的数据发送改变
-                    isLikedList.set(position,true);
+                    isLikedList.set(position, true);
                 }
             }
         });
@@ -123,10 +124,10 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             public void onClick(View v) {
                 if (isCollectList.get(position)) {
                     notifyItemChanged(position);//通知该位置的数据发送改变
-                    isCollectList.set(position,false);
+                    isCollectList.set(position, false);
                 } else {
                     notifyItemChanged(position);//通知该位置的数据发送改变
-                    isCollectList.set(position,true);
+                    isCollectList.set(position, true);
                 }
             }
         });
@@ -134,28 +135,28 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         holder.item_iv_pic1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic1();
+                String imgurl = commonPropertyVO.getCommonPic1();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic2();
+                String imgurl = commonPropertyVO.getCommonPic2();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic3();
+                String imgurl = commonPropertyVO.getCommonPic3();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic4();
+                String imgurl = commonPropertyVO.getCommonPic4();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
@@ -164,7 +165,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
     @Override
     public int getItemCount() {
-        for (int i = 0;i<mList.size();i++){
+        for (int i = 0; i < mList.size(); i++) {
             isLikedList.add(false);
             isCollectList.add(false);
         }
@@ -177,7 +178,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         TextView item_top_tv_nickname, item_top_tv_createtime, item_top_iv_type;//昵称,发布时间,类型
         TextView item_tv_intro, item_foot_praisenum;//标题或简介或详情,热度（点赞量）
         LinearLayout ll_publishfoot_share, ll_publishfoot_comment, ll_publishfoot_like, ll_publishfoot_collect;
-        ImageView iv_like,iv_collect;
+        ImageView iv_like, iv_collect;
         ImageView item_iv_pic1, item_iv_pic2, item_iv_pic3, item_iv_pic4;
 
         public ViewHolder(View itemView) {
@@ -201,35 +202,31 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             item_iv_pic4 = (ImageView) itemView.findViewById(R.id.item_iv_pic4);
         }
 
-        public void dataBinding(final CommonProperty mCommonProperty, final int position, Context context) {
-            String stitle = mCommonProperty.getCommonTitle();
-            String sintro = mCommonProperty.getCommonIntro();
-            String scontent = mCommonProperty.getCommonContent();
-            int type = mCommonProperty.getCategoryType();
-            String pic1 = mCommonProperty.getCommonPic1();
-            String pic2 = mCommonProperty.getCommonPic2();
-            String pic3 = mCommonProperty.getCommonPic3();
-            String pic4 = mCommonProperty.getCommonPic4();
+        public void dataBinding(final CommonPropertyVO mCommonPropertyVO, final int position, Context context) {
+            String stitle = mCommonPropertyVO.getCommonTitle();
+            int type = mCommonPropertyVO.getCategoryType();
+            String pic1 = mCommonPropertyVO.getCommonPic1();
+            String pic2 = mCommonPropertyVO.getCommonPic2();
+            String pic3 = mCommonPropertyVO.getCommonPic3();
+            String pic4 = mCommonPropertyVO.getCommonPic4();
 
-            int userId = mCommonProperty.getUserId();
+            int userId = mCommonPropertyVO.getUserID();
             user.setUserID(userId);
-            item_top_tv_nickname.setText("" + userId);
+            item_top_tv_nickname.setText(mCommonPropertyVO.getNickname());
 
-            /*设置显示文字，标题不为空显示标题，否则显示简介，否则显示详情，否则隐藏*/
+            /*设置显示文字，标题不为空显示标题，否则隐藏*/
             if (stitle != null && !"".equals(stitle)) {
                 item_tv_intro.setText(stitle);
-            } else if (sintro != null && !"".equals(sintro)) {
-                item_tv_intro.setText(sintro);
-            } else if (scontent != null && !"".equals(scontent)) {
-                item_tv_intro.setText(scontent);
             } else {
                 item_tv_intro.setVisibility(View.GONE);
             }
             shreText = item_tv_intro.getText().toString();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String sCreatetime = sdf.format(mCommonProperty.getCreatetime());
-            item_top_tv_createtime.setText(sCreatetime);
+            if (mCommonPropertyVO.getCreatetime()!=null){
+                String sCreatetime = sdf.format(mCommonPropertyVO.getCreatetime());
+                item_top_tv_createtime.setText(sCreatetime);
+            }
 
             item_top_iv_type.setText(findValueForID.findCategoryType(type));
 
@@ -258,7 +255,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
                 item_iv_pic4.setVisibility(View.GONE);
             }
 
-            item_foot_praisenum.setText("" + mCommonProperty.getPraisenum() + "条热度");
+            item_foot_praisenum.setText("" + mCommonPropertyVO.getPraisenum() + "条热度");
 
             if (isLikedList.get(position)) {
                 iv_like.setImageResource(R.drawable.item_foot_liked);

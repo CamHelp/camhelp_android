@@ -1,5 +1,7 @@
 package com.camhelp.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +11,7 @@ import android.support.v4.util.CircularArray;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,15 +22,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.camhelp.R;
+import com.camhelp.activity.MainActivity;
+import com.camhelp.activity.RegisterActivity;
+import com.camhelp.activity.RegisterPerfectActivity;
 import com.camhelp.adapter.EndLessOnScrollListener;
 import com.camhelp.adapter.HomeNewAndFocusAdapter;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.CommonProperty;
+import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.utils.FullyLinearLayoutManager;
+import com.camhelp.utils.GsonUtil;
+import com.camhelp.utils.L;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.reflect.TypeToken;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +73,8 @@ public class HomeNewFragment extends Fragment {
     //    private LinearLayoutManager mLinearLayoutManager;
     private FullyLinearLayoutManager fullyLinearLayoutManager;
     private HomeNewAndFocusAdapter homeNewAndFocusAdapter;
-    private List<CommonProperty> commonPropertyList;
+    //    private List<CommonProperty> commonPropertyList;
+    private List<CommonPropertyVO> commonPropertyVOList = new ArrayList<CommonPropertyVO>();
 
     EndLessOnScrollListener onScrollListener;
 
@@ -94,8 +122,8 @@ public class HomeNewFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initdata();
         initview();
+        initdata();
 
 //        fullyLinearLayoutManager = new FullyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        recycler_home_new.setLayoutManager(fullyLinearLayoutManager);
@@ -108,7 +136,7 @@ public class HomeNewFragment extends Fragment {
         ll_nodata = (LinearLayout) getActivity().findViewById(R.id.ll_noanydata);
         tv_loading = (TextView) getActivity().findViewById(R.id.tv_loading);
         recycler_home_new = (RecyclerView) getActivity().findViewById(R.id.recycler_home_new);
-        if (commonPropertyList.size() == 0) {
+        if (commonPropertyVOList.size() == 0) {
             ll_nodata.setVisibility(View.VISIBLE);
         }
 
@@ -118,7 +146,8 @@ public class HomeNewFragment extends Fragment {
             public void onRefresh() {
                 CommonGlobal.homenewfragmentfirst = true;
                 srl_home_new.setRefreshing(true);
-                onResume();
+                commonPropertyVOList.clear();
+                okhttpHomeNew();
             }
         });
         //这个是下拉刷新出现的那个圈圈要显示的颜色
@@ -129,17 +158,6 @@ public class HomeNewFragment extends Fragment {
         );
 
         /**滑动到底部自动加载更多*/
-//        onScrollListener = new EndLessOnScrollListener(mLinearLayoutManager) {
-//            @Override
-//            public boolean onLoadMore(int currentPage) {
-//                final Boolean[] result = {false};
-//                    loadmoredata();
-//                    onResume();
-//                return result[0];
-//            }
-//        };
-//        recycler_home_new.addOnScrollListener(onScrollListener);
-
         recycler_home_new.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -176,22 +194,17 @@ public class HomeNewFragment extends Fragment {
      * 加载最新数据
      */
     public void initdata() {
-        commonPropertyList = DataSupport.findAll(CommonProperty.class);
-        int total = commonPropertyList.size();
-        if (total > 0) {
-            for (int i = 0; i < 20; i++) {
-                commonPropertyList.add(commonPropertyList.get(i / total));
-            }
-        }
+        srl_home_new.setRefreshing(true);
+        okhttpHomeNew();
     }
 
     /**
      * 加载更多
      */
     public void loadmoredata() {
-        int total = commonPropertyList.size();
+        int total = commonPropertyVOList.size();
         for (int i = 0; i < total; i++) {
-            commonPropertyList.add(commonPropertyList.get(i));
+            commonPropertyVOList.add(commonPropertyVOList.get(i));
         }
         homeNewAndFocusAdapter.notifyDataSetChanged();
         srl_home_new.setRefreshing(false);
@@ -204,14 +217,11 @@ public class HomeNewFragment extends Fragment {
         super.onResume();
         FIRST = CommonGlobal.homenewfragmentfirst;
         if (FIRST) {
-            srl_home_new.setRefreshing(true);
-            commonPropertyList.clear();
-            initdata();
-//            mLinearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+
             fullyLinearLayoutManager = new FullyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             recycler_home_new.setLayoutManager(fullyLinearLayoutManager);
             recycler_home_new.setNestedScrollingEnabled(false);
-            homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyList, getActivity());
+            homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
             recycler_home_new.setAdapter(homeNewAndFocusAdapter);
             srl_home_new.setRefreshing(false);
 
@@ -224,6 +234,74 @@ public class HomeNewFragment extends Fragment {
 
     }
 
+    /**请求服务器数据*/
+    private void okhttpHomeNew() {
+        final String url = CommonUrls.SERVER_COMMONLIST_ALL;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
+
+        FormBody body = new FormBody.Builder().build();
+        Request request = new Request.Builder().url(url).get().build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("TAG", "onFailure" + e.toString());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "无法连接到服务器", Toast.LENGTH_SHORT).show();
+                        srl_home_new.setRefreshing(false);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String result = response.body().string();
+                Log.d("TAG"+"onresponse result:", result);
+
+                Gson gson = new Gson();
+                //  获得 解析者
+                JsonParser parser = new JsonParser();
+                //  获得 根节点元素
+                JsonElement root = parser.parse(result);
+                //  根据 文档判断根节点属于 什么类型的 Gson节点对象
+                // 假如文档 显示 根节点 为对象类型
+                // 获得 根节点 的实际 节点类型
+                JsonObject element = root.getAsJsonObject();
+                //  取得 节点 下 的某个节点的 value
+                // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                final String msg = msgJson.getAsString();
+
+                if (code == 0) {
+                    final JsonArray dataJson = element.getAsJsonArray("data");
+//                    commonPropertyVOList = GsonUtil.parseJsonArrayWithGson(dataJson.toString(), CommonPropertyVO.class);
+                    commonPropertyVOList = gson.fromJson(dataJson,new TypeToken<List<CommonPropertyVO>>(){}.getType());
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (commonPropertyVOList.size()>0){
+                                ll_nodata.setVisibility(View.GONE);
+                            }
+                            onResume();
+                        }
+                    });
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

@@ -32,4 +32,25 @@ public class CommonUrls {
      * 路径：/user/register
      */
     public static final String SERVER_REGISTER = SERVER_ADDRESS + "/user/register";
+    /**
+     * 功能：得到所有的记录
+     * 方式：get
+     * 路径：/classify/list
+     * */
+    public static final String SERVER_COMMONLIST_ALL = SERVER_ADDRESS + "/classify/list";
+    /**
+     * 功能：得到某一项具体的记录
+     * 方式：post
+     * 路径：/classify/details
+     * post：commonid
+     * */
+    public static final String SERVER_COMMONLIST_ONE = SERVER_ADDRESS + "/classify/details";
+    /**
+     * 功能：得到某一用户的信息
+     * 方式：post
+     * 路径：/user/find
+     * post：userid
+     */
+    public static final String SERVER_USER_ONE= SERVER_ADDRESS + "/user/find";
+
 }
