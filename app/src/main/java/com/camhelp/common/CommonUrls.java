@@ -15,9 +15,21 @@ public class CommonUrls {
     public static final String URL_REPAIR = "http://hqservice.swpu.edu.cn/rsp";
 
     /*服务器相关路径*/
-        public static final String SERVER_ADDRESS = "http://123.207.253.163:8080";
-    /*登录*/
-    public static final String SERVER_LOGIN = SERVER_ADDRESS+"/user/login";
-    /*注册*/
-    public static final String SERVER_REGISTER = SERVER_ADDRESS+"/user/register";
+
+    /**服务器地址*/
+    public static final String SERVER_ADDRESS = "http://123.207.253.163:8080";
+
+    /**
+     * 功能：登录
+     * 方式：Post
+     * 路径：/user/login
+     */
+    public static final String SERVER_LOGIN = SERVER_ADDRESS + "/user/login";
+
+    /**
+     * 功能：注册
+     * 方式：Post
+     * 路径：/user/register
+     */
+    public static final String SERVER_REGISTER = SERVER_ADDRESS + "/user/register";
 }

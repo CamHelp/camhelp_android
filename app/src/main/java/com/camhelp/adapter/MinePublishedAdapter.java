@@ -65,8 +65,13 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
         holder.ll_minepublish_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "share" + position, Toast.LENGTH_SHORT).show();
-            }
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                intent.setType("image/*");
+//                intent.putExtra(Intent.EXTRA_SUBJECT, commonProperty);
+                intent.putExtra(Intent.EXTRA_SHORTCUT_ICON,commonProperty.getCommonPic1());
+                intent.putExtra(Intent.EXTRA_TEXT, commonProperty.getCommonTitle());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(Intent.createChooser(intent, "分享"));            }
         });
         /*评论*/
         holder.ll_minepublish_comment.setOnClickListener(new View.OnClickListener() {

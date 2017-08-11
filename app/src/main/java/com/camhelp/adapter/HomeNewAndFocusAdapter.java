@@ -41,6 +41,8 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
     List<Boolean> isLikedList = new ArrayList<Boolean>();
     List<Boolean> isCollectList = new ArrayList<Boolean>();
 
+    String shreText;
+
     public HomeNewAndFocusAdapter(List<CommonProperty> CommonPropertys, Context context) {
         mList = CommonPropertys;
         mContext = context;
@@ -84,7 +86,13 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         holder.ll_publishfoot_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "share" + position, Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                intent.setType("image/*");
+//                intent.putExtra(Intent.EXTRA_SUBJECT, commonProperty);
+                intent.putExtra(Intent.EXTRA_SHORTCUT_ICON,commonProperty.getCommonPic1());
+                intent.putExtra(Intent.EXTRA_TEXT, shreText);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(Intent.createChooser(intent, "分享"));
             }
         });
         /*评论*/
@@ -217,6 +225,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             } else {
                 item_tv_intro.setVisibility(View.GONE);
             }
+            shreText = item_tv_intro.getText().toString();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String sCreatetime = sdf.format(mCommonProperty.getCreatetime());

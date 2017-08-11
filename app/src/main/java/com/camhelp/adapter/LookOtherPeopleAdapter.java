@@ -68,7 +68,13 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
         holder.ll_publishfoot_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "share" + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/*");
+//                intent.putExtra(Intent.EXTRA_SUBJECT, commonProperty);
+                intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, commonProperty.getCommonPic1());
+                intent.putExtra(Intent.EXTRA_TEXT, commonProperty.getCommonTitle());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(Intent.createChooser(intent, "分享"));
             }
         });
         /*评论*/
@@ -86,11 +92,12 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
             public void onClick(View v) {
                 if (isLikedList.get(position)) {
                     notifyItemChanged(position);//通知该位置的数据发送改变
-                    isLikedList.set(position,false);
+                    isLikedList.set(position, false);
                 } else {
                     notifyItemChanged(position);//通知该位置的数据发送改变
-                    isLikedList.set(position,true);
-                }            }
+                    isLikedList.set(position, true);
+                }
+            }
         });
         /*收藏*/
         holder.ll_publishfoot_collect.setOnClickListener(new View.OnClickListener() {
@@ -98,11 +105,12 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
             public void onClick(View v) {
                 if (isCollectList.get(position)) {
                     notifyItemChanged(position);//通知该位置的数据发送改变
-                    isCollectList.set(position,false);
+                    isCollectList.set(position, false);
                 } else {
                     notifyItemChanged(position);//通知该位置的数据发送改变
-                    isCollectList.set(position,true);
-                }            }
+                    isCollectList.set(position, true);
+                }
+            }
         });
         /*查看大图*/
         holder.item_iv_pic1.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +146,7 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
 
     @Override
     public int getItemCount() {
-        for (int i = 0;i<mList.size();i++){
+        for (int i = 0; i < mList.size(); i++) {
             isLikedList.add(false);
             isCollectList.add(false);
         }
@@ -147,9 +155,9 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
 
     class ViewHolder extends RecyclerView.ViewHolder {
         View queryItemView;
-        TextView item_tv_intro,item_foot_praisenum;//简介，类型，热度
-        LinearLayout ll_publishfoot_share, ll_publishfoot_comment, ll_publishfoot_like,ll_publishfoot_collect;
-        ImageView iv_like,iv_collect;
+        TextView item_tv_intro, item_foot_praisenum;//简介，类型，热度
+        LinearLayout ll_publishfoot_share, ll_publishfoot_comment, ll_publishfoot_like, ll_publishfoot_collect;
+        ImageView iv_like, iv_collect;
         ImageView item_iv_pic1, item_iv_pic2, item_iv_pic3, item_iv_pic4;
 
         public ViewHolder(View itemView) {
