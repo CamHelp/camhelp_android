@@ -22,4 +22,5 @@
     <string name="title_activity_item_look">ItemLookActivity</string>
     <string name="title_activity_look_other_people">LookOtherPeopleActivity</string>
     <string name="title_activity_look_others_data">LookOthersDataActivity</string>
+    <string name="title_activity_register_perfect">RegisterPerfectActivity</string>
 </resources>

@@ -155,7 +155,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
          * */
         dialogProcess = MyProcessDialog.showDialog(LoginActivity.this);
         dialogProcess.show();
-        okhttpTest(username, password);
+        okhttpLogin(username, password);
     }
 
     private void initTestuser() {
@@ -206,9 +206,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     boolean loginsuccess;
-
-
-    private boolean okhttpTest(String telephone, String password) {
+    private boolean okhttpLogin(String telephone, String password) {
         final String url = CommonUrls.SERVER_LOGIN;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
@@ -248,16 +246,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 JsonObject element = root.getAsJsonObject();
                 //  取得 节点 下 的某个节点的 value
                 // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
                 JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
-                String msg = msgJson.getAsString();
+                final String msg = msgJson.getAsString();
 
-                if ("成功".equals(msg)) {
+                if (code==0) {
 
                     LoginActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             dialogProcess.dismiss();
-                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -282,7 +282,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         @Override
                         public void run() {
                             dialogProcess.dismiss();
-                            tvResultLabel.setText("用户名或密码错误！");
+                            tvResultLabel.setText(msg);
                         }
                     });
                 }
