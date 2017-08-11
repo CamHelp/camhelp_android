@@ -74,7 +74,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_login);
         initView();
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        initTestUserInfo();//填写默认信息，方便调试
+    }
 
+    public void initTestUserInfo(){
+        etUsername.setText("18084938391");
+        etPassword.setText("123456");
     }
 
     private void initView() {
@@ -107,7 +112,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 login(username, password);
                 break;
             case R.id.btn_login_admin://调试默认登录
-                login("18084938391", "123456");
+//                login("18084938391", "123456");
+                initTestuser();
+                saveUser(user);
+                editor = pref.edit();
+                if (checkboxAutologin.isChecked()) {                           //自动登录验证
+                    editor.putBoolean(CommonGlobal.isAutoLogin, true);
+                }
+                editor.putInt(CommonGlobal.user_id, user.getUserID());
+                editor.apply();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                LoginActivity.this.finish();
                 break;
             case R.id.tv_register:
                 Intent registerIntent = new Intent(this, RegisterActivity.class);
@@ -204,11 +220,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onFailure(Call call, IOException e) {
                 Log.d("TAG", "onFailure" + e.toString());
                 dialogProcess.dismiss();
-
                 LoginActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvResultLabel.setText("请检查网络！");
+                        tvResultLabel.setText("无法连接到服务器！");
                     }
                 });
             }
@@ -247,6 +262,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     });
 
                     user = gson.fromJson(result, User.class);
+                    if (user.getUserID()==null){
+                        user.setUserID(0);
+                    }
                     saveUser(user);
                     L.d(TAG, "user:" + user.toString());
 

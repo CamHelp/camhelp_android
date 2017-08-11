@@ -19,6 +19,7 @@ import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.utils.LookLargeImg;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,9 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
     private Context mContext;
     private FindValueForID findValueForID = new FindValueForID();
     private LookLargeImg lookLargeImg = new LookLargeImg();
+
+    List<Boolean> isLikedList = new ArrayList<Boolean>();
+    List<Boolean> isCollectList = new ArrayList<Boolean>();
 
     public LookOtherPeopleAdapter(List<CommonProperty> CommonPropertys, Context context) {
         mList = CommonPropertys;
@@ -80,15 +84,25 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
         holder.ll_publishfoot_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "like" + position, Toast.LENGTH_SHORT).show();
-            }
+                if (isLikedList.get(position)) {
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    isLikedList.set(position,false);
+                } else {
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    isLikedList.set(position,true);
+                }            }
         });
         /*收藏*/
         holder.ll_publishfoot_collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "collect" + position, Toast.LENGTH_SHORT).show();
-            }
+                if (isCollectList.get(position)) {
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    isCollectList.set(position,false);
+                } else {
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    isCollectList.set(position,true);
+                }            }
         });
         /*查看大图*/
         holder.item_iv_pic1.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +138,10 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
 
     @Override
     public int getItemCount() {
+        for (int i = 0;i<mList.size();i++){
+            isLikedList.add(false);
+            isCollectList.add(false);
+        }
         return mList.size();
     }
 
@@ -131,6 +149,7 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
         View queryItemView;
         TextView item_tv_intro,item_foot_praisenum;//简介，类型，热度
         LinearLayout ll_publishfoot_share, ll_publishfoot_comment, ll_publishfoot_like,ll_publishfoot_collect;
+        ImageView iv_like,iv_collect;
         ImageView item_iv_pic1, item_iv_pic2, item_iv_pic3, item_iv_pic4;
 
         public ViewHolder(View itemView) {
@@ -142,6 +161,8 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
             ll_publishfoot_comment = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_comment);
             ll_publishfoot_like = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_like);
             ll_publishfoot_collect = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_collect);
+            iv_like = (ImageView) itemView.findViewById(R.id.iv_like);
+            iv_collect = (ImageView) itemView.findViewById(R.id.iv_collect);
             item_iv_pic1 = (ImageView) itemView.findViewById(R.id.item_iv_pic1);
             item_iv_pic2 = (ImageView) itemView.findViewById(R.id.item_iv_pic2);
             item_iv_pic3 = (ImageView) itemView.findViewById(R.id.item_iv_pic3);
@@ -191,6 +212,17 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
                 Glide.with(context).load(pic4).into(item_iv_pic4);
             } else {
                 item_iv_pic4.setVisibility(View.GONE);
+            }
+
+            if (isLikedList.get(position)) {
+                iv_like.setImageResource(R.drawable.item_foot_liked);
+            } else {
+                iv_like.setImageResource(R.drawable.item_foot_like);
+            }
+            if (isCollectList.get(position)) {
+                iv_collect.setImageResource(R.drawable.item_foot_collected);
+            } else {
+                iv_collect.setImageResource(R.drawable.item_foot_collection);
             }
         }
     }

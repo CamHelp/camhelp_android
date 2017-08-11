@@ -44,6 +44,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
     public HomeNewAndFocusAdapter(List<CommonProperty> CommonPropertys, Context context) {
         mList = CommonPropertys;
         mContext = context;
+
     }
 
     @Override
@@ -252,17 +253,13 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
             if (isLikedList.get(position)) {
                 iv_like.setImageResource(R.drawable.item_foot_liked);
-                isLikedList.set(position,false);
             } else {
                 iv_like.setImageResource(R.drawable.item_foot_like);
-                isLikedList.set(position,true);
             }
             if (isCollectList.get(position)) {
                 iv_collect.setImageResource(R.drawable.item_foot_collected);
-                isCollectList.set(position,false);
             } else {
                 iv_collect.setImageResource(R.drawable.item_foot_collection);
-                isCollectList.set(position,true);
             }
         }
     }

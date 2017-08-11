@@ -136,7 +136,12 @@ public class LookOthersDataActivity extends AppCompatActivity implements View.On
         email = mUser.getEmail();
         address = mUser.getAddress();
         birthday = mUser.getBirthday();
-        sex = mUser.getSex();
+
+        if (mUser.getSex()==null){
+            sex = -1;
+        }else {
+            sex = mUser.getSex();
+        }
 
         if (username != null || "".equals(username)) {
             tv_username.setText(username);
