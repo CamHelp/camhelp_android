@@ -37,6 +37,7 @@ import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.User;
+import com.camhelp.entity.UserVO;
 import com.camhelp.utils.L;
 import com.camhelp.utils.LookLargeImg;
 import com.camhelp.utils.MiPictureHelper;
@@ -56,7 +57,8 @@ public class LookOthersDataActivity extends AppCompatActivity implements View.On
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
-    User mUser = new User();
+//    User mUser = new User();
+    UserVO mUser = new UserVO();
 
     private LinearLayout top_rl_title;
     private ImageView top_return;
@@ -183,7 +185,7 @@ public class LookOthersDataActivity extends AppCompatActivity implements View.On
      * 获取用户
      */
     public void userInit() {
-        mUser = (User) getIntent().getSerializableExtra(CommonGlobal.userobj);
+        mUser = (UserVO) getIntent().getSerializableExtra(CommonGlobal.userobj);
 
     }
 

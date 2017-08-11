@@ -18,6 +18,8 @@ public class CommonUrls {
 
     /**服务器地址*/
     public static final String SERVER_ADDRESS = "http://123.207.253.163:8080";
+    /**图片的根路径*/
+    public static final String SERVER_ADDRESS_PIC = "http://123.207.253.163:8081/camhelp/";
 
     /**
      * 功能：登录

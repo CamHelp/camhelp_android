@@ -32,6 +32,7 @@ import com.camhelp.activity.MinePublishedActivity;
 import com.camhelp.activity.SetupActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.entity.User;
+import com.camhelp.entity.UserVO;
 import com.camhelp.utils.L;
 import com.camhelp.utils.SharePrefUser;
 
@@ -58,7 +59,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary,colorPrimaryBlew,colorPrimaryDark,colorAccent;
-    User mUser = new User();
+//    User mUser = new User();
+    UserVO userVO = new UserVO();
 
     private LinearLayout ll_base;
 
@@ -146,7 +148,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void initview() {
         mine_cimg_avatar = (CircleImageView) getActivity().findViewById(R.id.mine_cimg_avatar);
         mine_cimg_avatar.setOnClickListener(this);
-        Glide.with(this).load(mUser.getAvatar())
+        Glide.with(this).load(userVO.getAvatar())
                 .error(R.drawable.avatar)
                 .placeholder(R.drawable.avatar)
                 .into(mine_cimg_avatar);
@@ -156,8 +158,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
         tv_username = (TextView) getActivity().findViewById(R.id.tv_username);
         tv_intro = (TextView) getActivity().findViewById(R.id.tv_intro);
-        tv_username.setText(mUser.getNickname());
-        tv_intro.setText(mUser.getIntro());
+        tv_username.setText(userVO.getNickname());
+        tv_intro.setText(userVO.getIntro());
 
         ll_personal = (LinearLayout) getActivity().findViewById(R.id.ll_personal);
         ll_setup = (LinearLayout) getActivity().findViewById(R.id.ll_setup);
@@ -176,7 +178,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
      * 获取用户
      */
     public void userInit() {
-        mUser = getUser();
+        userVO = getUserVO();
     }
 
     @Override
@@ -207,20 +209,36 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public User getUser() {
+//    public User getUser() {
+//        String temp = pref.getString(CommonGlobal.userobj, "");
+//        L.d(TAG,temp);
+//        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
+//        User user = null;
+//        try {
+//            ObjectInputStream ois = new ObjectInputStream(bais);
+//            user = (User) ois.readObject();
+//        } catch (IOException e) {
+//            L.d(TAG, e.toString());
+//        } catch (ClassNotFoundException e1) {
+//            L.d(TAG, e1.toString());
+//        }
+//        return user;
+//    }
+
+    public UserVO getUserVO() {
         String temp = pref.getString(CommonGlobal.userobj, "");
         L.d(TAG,temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
-        User user = null;
+        UserVO userVO = null;
         try {
             ObjectInputStream ois = new ObjectInputStream(bais);
-            user = (User) ois.readObject();
+            userVO = (UserVO) ois.readObject();
         } catch (IOException e) {
             L.d(TAG, e.toString());
         } catch (ClassNotFoundException e1) {
             L.d(TAG, e1.toString());
         }
-        return user;
+        return userVO;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

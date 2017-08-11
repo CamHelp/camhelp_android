@@ -26,6 +26,7 @@ import com.camhelp.adapter.MinePublishedAdapter;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.User;
+import com.camhelp.entity.UserVO;
 import com.camhelp.utils.FullyLinearLayoutManager;
 import com.camhelp.utils.L;
 
@@ -34,6 +35,7 @@ import org.litepal.crud.DataSupport;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,12 +47,13 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
     private int user_id;//上一个activity传过来的用户id，根据此得到用户
-    User mUser = new User();//用户
+//    User mUser = new User();//用户
+    UserVO mUser = new UserVO();//用户
 
     private CircleImageView cimg_mine_avatar;
 
     LookOtherPeopleAdapter lookOtherPeopleAdapter;
-    private List<CommonProperty> commonPropertyList;
+    private List<CommonProperty> commonPropertyList = new ArrayList<CommonProperty>();
     private RecyclerView recycler_publish_otherpeople;
     private LinearLayout ll_nodata, ll_recyclerView;
 
@@ -59,8 +62,10 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_look_other_people);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+
         user_id = getIntent().getIntExtra(CommonGlobal.user_id, 0);//得到userid
         getUserById(user_id);
+
         initcolor();
         inittitle();
         initdata();
@@ -140,24 +145,24 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
         }
     }
 
-    public User getUser() {
+    public UserVO getUserVO() {
         String temp = pref.getString(CommonGlobal.userobj, "");
-        L.d(TAG, temp);
+        L.d(TAG,temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
-        User user = null;
+        UserVO userVO = null;
         try {
             ObjectInputStream ois = new ObjectInputStream(bais);
-            user = (User) ois.readObject();
+            userVO = (UserVO) ois.readObject();
         } catch (IOException e) {
             L.d(TAG, e.toString());
         } catch (ClassNotFoundException e1) {
             L.d(TAG, e1.toString());
         }
-        return user;
+        return userVO;
     }
 
-    public User getUserById(int id) {
-        mUser = getUser();//得到user
+    public UserVO getUserById(int id) {
+        mUser = getUserVO();//得到user
         return mUser;
     }
 

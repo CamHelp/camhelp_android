@@ -17,6 +17,7 @@ import com.camhelp.activity.ItemLookActivity;
 import com.camhelp.activity.LoginActivity;
 import com.camhelp.activity.LookOtherPeopleActivity;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.common.CommonUrls;
 import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.CommonPropertyVO;
@@ -203,6 +204,15 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         }
 
         public void dataBinding(final CommonPropertyVO mCommonPropertyVO, final int position, Context context) {
+            String avatar = CommonUrls.SERVER_ADDRESS_PIC+mCommonPropertyVO.getAvatar();
+            Glide.with(context).load(avatar).into(item_top_iv_avatar);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            if (mCommonPropertyVO.getCreatetime()!=null){
+                String sCreatetime = sdf.format(mCommonPropertyVO.getCreatetime());
+                item_top_tv_createtime.setText(sCreatetime);
+            }
+
             String stitle = mCommonPropertyVO.getCommonTitle();
             int type = mCommonPropertyVO.getCategoryType();
             String pic1 = mCommonPropertyVO.getCommonPic1();
@@ -222,34 +232,28 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             }
             shreText = item_tv_intro.getText().toString();
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            if (mCommonPropertyVO.getCreatetime()!=null){
-                String sCreatetime = sdf.format(mCommonPropertyVO.getCreatetime());
-                item_top_tv_createtime.setText(sCreatetime);
-            }
-
             item_top_iv_type.setText(findValueForID.findCategoryType(type));
 
-            if (pic1 != null) {
-                Glide.with(context).load(pic1)
+            if (pic1 != null && !"".equals(pic1)) {
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic1)
                         .placeholder(R.drawable.isloading).into(item_iv_pic1);
             } else {
                 item_iv_pic1.setVisibility(View.GONE);
             }
-            if (pic2 != null) {
-                Glide.with(context).load(pic2)
+            if (pic2 != null && !"".equals(pic2)) {
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic2)
                         .placeholder(R.drawable.isloading).into(item_iv_pic2);
             } else {
                 item_iv_pic2.setVisibility(View.GONE);
             }
-            if (pic3 != null) {
-                Glide.with(context).load(pic3)
+            if (pic3 != null && !"".equals(pic3)) {
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic3)
                         .placeholder(R.drawable.isloading).into(item_iv_pic3);
             } else {
                 item_iv_pic3.setVisibility(View.GONE);
             }
-            if (pic4 != null) {
-                Glide.with(context).load(pic4)
+            if (pic4 != null && !"".equals(pic4)) {
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic4)
                         .placeholder(R.drawable.isloading).into(item_iv_pic4);
             } else {
                 item_iv_pic4.setVisibility(View.GONE);

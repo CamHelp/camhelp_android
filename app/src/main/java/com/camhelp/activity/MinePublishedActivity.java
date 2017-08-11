@@ -28,6 +28,7 @@ import com.camhelp.adapter.MinePublishedAdapter;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.User;
+import com.camhelp.entity.UserVO;
 import com.camhelp.utils.FullyLinearLayoutManager;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MyLinearLayoutManager;
@@ -35,8 +36,10 @@ import com.camhelp.utils.MyLinearLayoutManager;
 import org.litepal.crud.DataSupport;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,7 +52,8 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
-    User mUser = new User();
+//    User mUser = new User();
+    UserVO mUser = new UserVO();
 
     private CircleImageView cimg_mine_avatar;
 
@@ -63,7 +67,7 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_published);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        mUser = getUser();
+        mUser = getUserVO();
         initcolor();
         inittitle();
         initdata();
@@ -151,6 +155,22 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
             L.d(TAG, e1.toString());
         }
         return user;
+    }
+
+    public UserVO getUserVO() {
+        String temp = pref.getString(CommonGlobal.userobj, "");
+        L.d(TAG,temp);
+        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
+        UserVO userVO = null;
+        try {
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            userVO = (UserVO) ois.readObject();
+        } catch (IOException e) {
+            L.d(TAG, e.toString());
+        } catch (ClassNotFoundException e1) {
+            L.d(TAG, e1.toString());
+        }
+        return userVO;
     }
 
     @Override

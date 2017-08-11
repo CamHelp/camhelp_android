@@ -25,6 +25,7 @@ import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.User;
+import com.camhelp.entity.UserVO;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MyProcessDialog;
 import com.camhelp.utils.SharePrefUser;
@@ -66,6 +67,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView btnLoginAdmin;
 
     User user = new User();
+    UserVO userVO = new UserVO();
     Dialog dialogProcess;
 
     @Override
@@ -189,6 +191,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         editor.apply();
     }
+    public void saveUserVO(UserVO userVO) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        editor = pref.edit();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(userVO);
+            String temp = new String(Base64.encode(baos.toByteArray(), Base64.DEFAULT));
+            editor.putString(CommonGlobal.userobj, temp);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        editor.apply();
+    }
 
     public User getUser() {
         String temp = pref.getString(CommonGlobal.userobj, "");
@@ -257,22 +273,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         @Override
                         public void run() {
                             dialogProcess.dismiss();
-                            Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "登录"+msg, Toast.LENGTH_SHORT).show();
                         }
                     });
 
-                    user = gson.fromJson(result, User.class);
-                    if (user.getUserID()==null){
-                        user.setUserID(0);
-                    }
-                    saveUser(user);
-                    L.d(TAG, "user:" + user.toString());
+                    final JsonObject dataJson = element.getAsJsonObject("data");
+                    userVO = gson.fromJson(dataJson, UserVO.class);
 
+                    saveUserVO(userVO);
+                    L.d(TAG, "得到的userVO:" + userVO.toString());
                     editor = pref.edit();
                     if (checkboxAutologin.isChecked()) {                           //自动登录验证
                         editor.putBoolean(CommonGlobal.isAutoLogin, true);
                     }
-//                editor.putInt(CommonGlobal.user_id, user.getUserID());
+                    editor.putInt(CommonGlobal.user_id, userVO.getUserID());
                     editor.apply();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);

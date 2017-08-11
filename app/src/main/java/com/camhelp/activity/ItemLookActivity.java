@@ -28,6 +28,7 @@ import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.entity.User;
+import com.camhelp.entity.UserVO;
 import com.camhelp.utils.L;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -79,7 +80,8 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private LinearLayout ll_look_share, ll_look_like, ll_look_collect;//分享，喜欢，收藏
     private ImageView iv_like, iv_collect;//喜欢，收藏按钮（点击改变）
 
-    User mUser = new User();//用户
+//    User mUser = new User();//用户
+    UserVO mUser = new UserVO();//用户
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,7 +288,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
      */
     public void initUser() {
         item_top_iv_avatar.setImageResource(R.drawable.avatar);
-        mUser = getUser();//得到user
+        mUser = getUserVO();//得到user
     }
 
     public User getUser() {
@@ -305,6 +307,22 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         return user;
     }
 
+    public UserVO getUserVO() {
+        String temp = pref.getString(CommonGlobal.userobj, "");
+        L.d(TAG,temp);
+        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
+        UserVO userVO = null;
+        try {
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            userVO = (UserVO) ois.readObject();
+        } catch (IOException e) {
+            L.d(TAG, e.toString());
+        } catch (ClassNotFoundException e1) {
+            L.d(TAG, e1.toString());
+        }
+        return userVO;
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -314,7 +332,9 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.item_top_iv_avatar://点击头像查看
                 Intent intentLookOtherPeople = new Intent(this, LookOtherPeopleActivity.class);
-                intentLookOtherPeople.putExtra(CommonGlobal.user_id, commonProperty.getUserId());//把用户id传过去
+                if (mUser.getUserID()!=null){
+                    intentLookOtherPeople.putExtra(CommonGlobal.user_id, mUser.getUserID());//把用户id传过去
+                }
                 startActivity(intentLookOtherPeople);
                 break;
             case R.id.ll_look_share://分享

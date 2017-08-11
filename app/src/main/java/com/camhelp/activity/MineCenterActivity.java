@@ -39,7 +39,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.User;
+import com.camhelp.entity.UserVO;
 import com.camhelp.fragment.MineFragment;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
@@ -62,7 +64,8 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
-    User mUser = new User();
+//    User mUser = new User();
+    UserVO mUser = new UserVO();
 
     final int TAKE_PHOTO = 1;
     final int TAKE_PHOTO2 = 12;
@@ -155,6 +158,17 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         address = mUser.getAddress();
         birthday = mUser.getBirthday();
 
+
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photo2path)
+                .error(R.drawable.mine_bg)
+                .placeholder(R.drawable.mine_bg)
+                .into(iv_mine_back);
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photo2path)
+                .error(R.drawable.avatar)
+                .placeholder(R.drawable.avatar)
+                .into(cimg_mine_avatar);
+        Toast.makeText(this, ""+photo2path, Toast.LENGTH_SHORT).show();
+
         if (mUser.getSex()==null){
             sex = -1;
         }else {
@@ -187,21 +201,14 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
             radiobtn_secret.setChecked(true);
         }
 
-        Glide.with(this).load(photo1path)
-                .error(R.drawable.mine_bg)
-                .placeholder(R.drawable.mine_bg)
-                .into(iv_mine_back);
-        Glide.with(this).load(photo2path)
-                .error(R.drawable.avatar)
-                .placeholder(R.drawable.avatar)
-                .into(cimg_mine_avatar);
+
     }
 
     /**
      * 获取用户
      */
     public void userInit() {
-        mUser = getUser();
+        mUser = getUserVO();
     }
 
     @Override
@@ -270,20 +277,35 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         editor.apply();
     }
 
-    public User getUser() {
+    public UserVO getUserVO() {
         String temp = pref.getString(CommonGlobal.userobj, "");
-        L.d(TAG, temp);
+        L.d(TAG,temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
-        User user = null;
+        UserVO userVO = null;
         try {
             ObjectInputStream ois = new ObjectInputStream(bais);
-            user = (User) ois.readObject();
+            userVO = (UserVO) ois.readObject();
         } catch (IOException e) {
             L.d(TAG, e.toString());
         } catch (ClassNotFoundException e1) {
             L.d(TAG, e1.toString());
         }
-        return user;
+        return userVO;
+    }
+
+    public void saveUserVO(UserVO userVO) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        editor = pref.edit();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(userVO);
+            String temp = new String(Base64.encode(baos.toByteArray(), Base64.DEFAULT));
+            editor.putString(CommonGlobal.userobj, temp);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        editor.apply();
     }
 
     /*保存*/
@@ -309,7 +331,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         mUser.setSex(sex);
         mUser.setBgpicture(photo1path);
         mUser.setAvatar(photo2path);
-        saveUser(mUser);
+        saveUserVO(mUser);
 
         hintKbTwo();
         Toast.makeText(this, "保存本地成功", Toast.LENGTH_SHORT).show();
