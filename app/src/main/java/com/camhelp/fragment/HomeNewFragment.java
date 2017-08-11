@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.camhelp.R;
 import com.camhelp.adapter.EndLessOnScrollListener;
 import com.camhelp.adapter.HomeNewAndFocusAdapter;
+import com.camhelp.common.CommonGlobal;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.utils.FullyLinearLayoutManager;
 
@@ -115,7 +116,7 @@ public class HomeNewFragment extends Fragment {
         srl_home_new.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                FIRST = true;
+                CommonGlobal.homenewfragmentfirst = true;
                 srl_home_new.setRefreshing(true);
                 onResume();
             }
@@ -201,6 +202,7 @@ public class HomeNewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        FIRST = CommonGlobal.homenewfragmentfirst;
         if (FIRST) {
             srl_home_new.setRefreshing(true);
             commonPropertyList.clear();
@@ -212,11 +214,14 @@ public class HomeNewFragment extends Fragment {
             homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyList, getActivity());
             recycler_home_new.setAdapter(homeNewAndFocusAdapter);
             srl_home_new.setRefreshing(false);
-            FIRST = false;
+
+            CommonGlobal.homenewfragmentfirst = true;//bug
+            FIRST = CommonGlobal.homenewfragmentfirst;
         } else {
 //            homeNewAndFocusAdapter.notifyDataSetChanged();
 //            srl_home_new.setRefreshing(false);
         }
+
     }
 
 

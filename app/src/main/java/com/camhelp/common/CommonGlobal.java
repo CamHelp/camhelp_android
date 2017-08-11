@@ -9,6 +9,8 @@ import com.camhelp.R;
 
 public class CommonGlobal {
 
+    public static boolean homenewfragmentfirst = true;
+
     /*一些SharedPreferences存取命名*/
     public static  String isAutoLogin = "isautologin";
     public static  String isFirstLogin = "isFirstLogin";
