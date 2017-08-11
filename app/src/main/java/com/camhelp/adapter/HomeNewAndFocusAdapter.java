@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
 import com.camhelp.activity.ItemLookActivity;
+import com.camhelp.activity.LoginActivity;
 import com.camhelp.activity.LookOtherPeopleActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.FindValueForID;
@@ -22,6 +23,7 @@ import com.camhelp.entity.User;
 import com.camhelp.utils.LookLargeImg;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +38,8 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
     private User user = new User();
 
     private boolean isliked, iscollected;
+    List<Boolean> isLikedList = new ArrayList<Boolean>();
+    List<Boolean> isCollectList = new ArrayList<Boolean>();
 
     public HomeNewAndFocusAdapter(List<CommonProperty> CommonPropertys, Context context) {
         mList = CommonPropertys;
@@ -95,12 +99,12 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         holder.ll_publishfoot_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isliked) {
-
-                    isliked = false;
+                if (isLikedList.get(position)) {
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    isLikedList.set(position,false);
                 } else {
-
-                    isliked = true;
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    isLikedList.set(position,true);
                 }
             }
         });
@@ -108,12 +112,12 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         holder.ll_publishfoot_collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (iscollected) {
-
-                    iscollected = false;
+                if (isCollectList.get(position)) {
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    isCollectList.set(position,false);
                 } else {
-
-                    iscollected = true;
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    isCollectList.set(position,true);
                 }
             }
         });
@@ -151,6 +155,10 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
     @Override
     public int getItemCount() {
+        for (int i = 0;i<mList.size();i++){
+            isLikedList.add(false);
+            isCollectList.add(false);
+        }
         return mList.size();
     }
 
@@ -241,6 +249,21 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             }
 
             item_foot_praisenum.setText("" + mCommonProperty.getPraisenum() + "条热度");
+
+            if (isLikedList.get(position)) {
+                iv_like.setImageResource(R.drawable.item_foot_liked);
+                isLikedList.set(position,false);
+            } else {
+                iv_like.setImageResource(R.drawable.item_foot_like);
+                isLikedList.set(position,true);
+            }
+            if (isCollectList.get(position)) {
+                iv_collect.setImageResource(R.drawable.item_foot_collected);
+                isCollectList.set(position,false);
+            } else {
+                iv_collect.setImageResource(R.drawable.item_foot_collection);
+                isCollectList.set(position,true);
+            }
         }
     }
 }
