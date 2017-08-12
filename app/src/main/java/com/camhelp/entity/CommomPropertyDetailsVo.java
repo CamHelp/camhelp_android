@@ -11,7 +11,34 @@ import java.util.List;
  * 查看具体详情实体类
  */
 
-public class CommomPropertyDetailsVo extends DataSupport implements Serializable {
+public class CommomPropertyDetailsVo{
+
+    @Override
+    public String toString() {
+        return "CommomPropertyDetailsVo{" +
+                "userID=" + userID +
+                ", nickname='" + nickname + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", commonid=" + commonid +
+                ", categoryType=" + categoryType +
+                ", commonTitle='" + commonTitle + '\'' +
+                ", commonIntro='" + commonIntro + '\'' +
+                ", commonContent='" + commonContent + '\'' +
+                ", commonPic1='" + commonPic1 + '\'' +
+                ", commonPic2='" + commonPic2 + '\'' +
+                ", commonPic3='" + commonPic3 + '\'' +
+                ", commonPic4='" + commonPic4 + '\'' +
+                ", createtime=" + createtime +
+                ", praisenum=" + praisenum +
+                ", browsenum=" + browsenum +
+                ", expstartTime='" + expstartTime + '\'' +
+                ", expendTime='" + expendTime + '\'' +
+                ", proType=" + proType +
+                ", goodscontact='" + goodscontact + '\'' +
+                ", commentList=" + commentList +
+                '}';
+    }
+
     private Integer userID;
 
     private String nickname;
@@ -257,4 +284,5 @@ public class CommomPropertyDetailsVo extends DataSupport implements Serializable
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
     }
+
 }

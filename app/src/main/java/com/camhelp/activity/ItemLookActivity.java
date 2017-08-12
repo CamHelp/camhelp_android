@@ -25,10 +25,12 @@ import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;
 import com.camhelp.common.FindValueForID;
+import com.camhelp.entity.CommomPropertyDetailsVo;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.entity.User;
 import com.camhelp.entity.UserVO;
+import com.camhelp.utils.GsonUtil;
 import com.camhelp.utils.L;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -68,7 +70,8 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
     private FindValueForID findValueForID = new FindValueForID();
     private int commonPropertyID;
-    private CommonProperty commonProperty = new CommonProperty();
+//    private CommonProperty commonProperty = new CommonProperty();
+    private CommomPropertyDetailsVo commonProperty = new CommomPropertyDetailsVo();
 
     private boolean isLike, isCollection;
 
@@ -152,7 +155,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void initdata() {
-        item_top_tv_nickname.setText(mUser.getNickname());
+        item_top_tv_nickname.setText(commonProperty.getNickname());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (commonProperty.getCreatetime()!=null){
@@ -160,7 +163,9 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
             item_top_tv_createtime.setText(sCreatetime);
         }
 
-        item_top_iv_type.setText(findValueForID.findCategoryType(commonProperty.getCategoryType()));
+        if (commonProperty.getCategoryType()!=null){
+            item_top_iv_type.setText(findValueForID.findCategoryType(commonProperty.getCategoryType()));
+        }
 
         String stitle = commonProperty.getCommonTitle();
         String sintro = commonProperty.getCommonIntro();
@@ -181,9 +186,6 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         } else {
             item_look_content.setVisibility(View.GONE);
         }
-
-        item_look_intro.setText(commonProperty.getCommonIntro());
-        item_look_content.setText(commonProperty.getCommonContent());
 
         item_foot_praisenum.setText(commonProperty.getPraisenum() + "热度");
         item_foot_browsenum.setText(commonProperty.getBrowsenum() + "浏览量");
@@ -261,12 +263,12 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
                 if (code == 0) {
                     final JsonObject dataJson = element.getAsJsonObject("data");
-//                    commonProperty = gson.fromJson(dataJson,CommonProperty.class);
+                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
 
                     ItemLookActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(ItemLookActivity.this, dataJson.toString(), Toast.LENGTH_SHORT).show();
+                            initdata();
                         }
                     });
                 } else {

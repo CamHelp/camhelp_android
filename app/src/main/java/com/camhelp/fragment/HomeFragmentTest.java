@@ -10,10 +10,14 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +29,9 @@ import android.widget.TextView;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -37,9 +43,12 @@ import java.util.List;
  * create an instance of this fragment.
  * <p>
  * 首页fragment
+ *
+ *
+ * 保存fragment状态blog：http://blog.csdn.net/zzulangtaotian/article/details/71078829
  */
-public class HomeFragment extends Fragment implements View.OnClickListener{
-
+public class HomeFragmentTest extends Fragment implements View.OnClickListener{
+    private String TAG = "HomeFragmentTest";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
@@ -49,43 +58,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private LinearLayout ll_home_toptab;
     public ViewPager mViewPager;
-    private FragmentPagerAdapter mAdapter;
+        private FragmentPagerAdapter mAdapter;
+//    private FragmentStatePagerAdapter mAdapter;
     private List<Fragment> mDatas;
-
+    List<SavedState> mSavedState = new ArrayList<SavedState>();
+    FragmentManager mFragmentManager;
     private TextView tv_01, tv_02;
     private LinearLayout ll_tab1, ll_tab2;
-
     private ImageView mTabline,id_iv_tabline_new,id_iv_tabline_focus;
     private int mScreen1_3;
 
     private int mCurrentPageIndex;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
-
-    public HomeFragment() {
+    public HomeFragmentTest() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static HomeFragmentTest newInstance(String param1, String param2) {
+        HomeFragmentTest fragment = new HomeFragmentTest();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -177,7 +171,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
          * 解决viewpager滑动数据未保存问题
          * blog地址：http://blog.csdn.net/w372426096/article/details/49951317
          * */
-        mAdapter = new FragmentPagerAdapter(this.getChildFragmentManager()) {
+        mFragmentManager = this.getChildFragmentManager();
+        mAdapter = new FragmentPagerAdapter(mFragmentManager) {
             @Override
             public Fragment getItem(int position) {
                 Fragment fragment = null;
@@ -213,7 +208,124 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public Parcelable saveState() {
-                return super.saveState();
+
+                Bundle state = null;
+                if (mSavedState.size() > 0) {
+                    state = new Bundle();
+                    Fragment.SavedState[] fss = new Fragment.SavedState[mSavedState.size()];
+                    mSavedState.toArray(fss);
+                    state.putParcelableArray("states", fss);
+                }
+                for (int i = 0; i < mDatas.size(); i++) {
+                    Fragment f = mDatas.get(i);
+                    if (f != null && f.isAdded()) {
+                        if (state == null) {
+                            state = new Bundle();
+                        }
+                        String key = "f" + i;
+                        mFragmentManager.putFragment(state, key, f);
+//                Log.d(TAG, "saveState,i=" + i);
+                        //save fragment view state
+                        Class userCla = (Class) f.getClass().getSuperclass().getSuperclass();
+                        Field[] fs = userCla.getDeclaredFields();
+                        for (int k = 0; k < fs.length; k++) {
+                            Field filed = fs[k];
+                            filed.setAccessible(true); //设置些属性是可以访问的
+                            if (TextUtils.equals("mView", filed.getName())) {
+                                try {
+                                    View view = (View) filed.get(f);
+                                    SparseArray<Parcelable> stateArray = new SparseArray<Parcelable>();
+                                    view.saveHierarchyState(stateArray);
+                                    if (null == state) {
+                                        state = new Bundle();
+                                    }
+                                    state.putSparseParcelableArray("spa:view:" + i, stateArray);
+//                            Log.d(TAG, "saveViewState+++++++++++++++++++" + stateArray);
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                            }
+                        }
+                        //
+                    }
+                }
+                return state;
+            }
+
+            @Override
+            public void restoreState(Parcelable state, ClassLoader loader) {
+                if (state != null) {
+                    Bundle bundle = (Bundle) state;
+                    bundle.setClassLoader(loader);
+                    Parcelable[] fss = bundle.getParcelableArray("states");
+                    mSavedState.clear();
+                    mDatas.clear();
+                    if (fss != null) {
+                        for (int i = 0; i < fss.length; i++) {
+                            mSavedState.add((Fragment.SavedState) fss[i]);
+//                    Log.d(TAG, "restoreState,fss,i=" + i + "");
+                        }
+                    }
+
+                    HashMap<Integer, SparseArray<Parcelable>> fragViewState = new HashMap<Integer, SparseArray<Parcelable>>();
+                    Iterable<String> keys = bundle.keySet();
+                    for (String key : keys) {
+                        if (key.startsWith("spa:view:")) {
+                            int index = Integer.parseInt(key.substring(9));
+                            SparseArray<Parcelable> savedViewState = bundle.getSparseParcelableArray("spa:view:" + index);
+                            if (null != savedViewState) {
+                                fragViewState.put(index, savedViewState);
+//                        Log.d(TAG, "restoreState,mFragViewState,index=" + index + ",viewstate="+savedViewState);
+                            }
+                        }
+                    }
+
+                    for (String key : keys) {
+                        if (key.startsWith("f")) {
+                            int index = Integer.parseInt(key.substring(1));
+                            Fragment f;
+                            try {
+                                f = mFragmentManager.getFragment(bundle, key);
+                                if (f != null) {
+                                    while (mDatas.size() <= index) {
+                                        mDatas.add(null);
+                                    }
+                                    f.setMenuVisibility(false);
+
+                                    SparseArray<Parcelable> savedViewState = fragViewState.get(index);
+                                    if (null != savedViewState) {
+                                        Class userCla = (Class) f.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass();
+                                        Field[] fs = userCla.getDeclaredFields();
+                                        for (int k = 0; k < fs.length; k++) {
+                                            Field filed = fs[k];
+                                            filed.setAccessible(true); //设置些属性是可以访问的
+                                            if (TextUtils.equals("mView", filed.getName())) {
+                                                try {
+                                                    View view = (View) filed.get(f);
+                                                    if(null != view) {
+                                                        view.restoreHierarchyState(savedViewState);
+//                                            Log.d(TAG, view + "+++++++++++++++++++");
+                                                    }
+                                                } catch (IllegalAccessException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    mDatas.set(index, f);
+
+//                            Log.d(TAG, "restoreState,setFragment,i=" + i + "");
+                                } else {
+                                    Log.w(TAG, "Bad fragment at key " + key);
+                                }
+                            } catch (Exception e) {
+                                Log.w(TAG, "Bad fragment  IllegalStateException" + e.getMessage());
+                            }
+                        }
+                    }
+                }
             }
         };
 

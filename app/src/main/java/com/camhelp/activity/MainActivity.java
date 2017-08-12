@@ -25,7 +25,7 @@ import com.camhelp.R;
 import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.fragment.CategoryFragment;
-import com.camhelp.fragment.HomeFragment;
+import com.camhelp.fragment.HomeFragmentTest;
 import com.camhelp.fragment.MineFragment;
 import com.camhelp.fragment.PublishFragment;
 import com.camhelp.fragment.QueryFragment;
@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private BottomNavigationBar bottomNavigationBar;
     int lastSelectedPosition = 0;
     private String TAG = MainActivity.class.getSimpleName();
-    private HomeFragment homeFragment;
+    private HomeFragmentTest homeFragment;
     private QueryFragment queryFragment;
     private PublishFragment publishFragment;
     private CategoryFragment categoryFragment;

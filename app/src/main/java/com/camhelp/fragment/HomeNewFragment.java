@@ -1,5 +1,6 @@
 package com.camhelp.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.camhelp.R;
+import com.camhelp.activity.LoginActivity;
 import com.camhelp.activity.MainActivity;
 import com.camhelp.activity.RegisterActivity;
 import com.camhelp.activity.RegisterPerfectActivity;
@@ -34,6 +36,7 @@ import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.utils.FullyLinearLayoutManager;
 import com.camhelp.utils.GsonUtil;
 import com.camhelp.utils.L;
+import com.camhelp.utils.MyProcessDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -90,6 +93,8 @@ public class HomeNewFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
+
+    Dialog dialogProcess;
 
     public HomeNewFragment() {
     }
@@ -188,6 +193,9 @@ public class HomeNewFragment extends Fragment {
                 }
             }
         });
+
+        dialogProcess = MyProcessDialog.showDialog(getActivity());
+        dialogProcess.show();
     }
 
     /**
@@ -223,8 +231,8 @@ public class HomeNewFragment extends Fragment {
             recycler_home_new.setNestedScrollingEnabled(false);
             homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
             recycler_home_new.setAdapter(homeNewAndFocusAdapter);
-            srl_home_new.setRefreshing(false);
 
+            srl_home_new.setRefreshing(false);
             CommonGlobal.homenewfragmentfirst = true;//bug
             FIRST = CommonGlobal.homenewfragmentfirst;
         } else {
@@ -236,6 +244,8 @@ public class HomeNewFragment extends Fragment {
 
     /**请求服务器数据*/
     private void okhttpHomeNew() {
+        dialogProcess.show();
+
         final String url = CommonUrls.SERVER_COMMONLIST_ALL;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
@@ -251,6 +261,7 @@ public class HomeNewFragment extends Fragment {
                     public void run() {
                         Toast.makeText(getActivity(), "无法连接到服务器", Toast.LENGTH_SHORT).show();
                         srl_home_new.setRefreshing(false);
+                        dialogProcess.dismiss();
                     }
                 });
             }
@@ -289,6 +300,7 @@ public class HomeNewFragment extends Fragment {
                                 ll_nodata.setVisibility(View.GONE);
                             }
                             onResume();
+                            dialogProcess.dismiss();
                         }
                     });
                 } else {
@@ -296,6 +308,7 @@ public class HomeNewFragment extends Fragment {
                         @Override
                         public void run() {
                             Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            dialogProcess.dismiss();
                         }
                     });
                 }
