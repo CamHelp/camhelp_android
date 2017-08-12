@@ -13,8 +13,8 @@
         <LinearLayout
             android:id="@+id/ll_tab1"
             android:layout_width="3dp"
-            android:orientation="horizontal"
-            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center" >
 
@@ -22,14 +22,23 @@
                 android:id="@+id/id_tv_club"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="活动"
                 android:textColor="#00FF00" />
+            <ImageView
+                android:layout_gravity="bottom|center"
+                android:id="@+id/iv_top_category_01"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/colorAccent" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_tab2"
             android:layout_width="3dp"
-            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center" >
 
@@ -37,14 +46,23 @@
                 android:id="@+id/id_tv_problem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="问题"
                 android:textColor="@color/white" />
+            <ImageView
+                android:layout_gravity="bottom|center"
+                android:id="@+id/iv_top_category_02"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/colorAccent" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_tab3"
             android:layout_width="3dp"
-            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center" >
 
@@ -52,15 +70,24 @@
                 android:id="@+id/id_tv_lose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:textColor="@color/white"
                 android:text="失物" />
+            <ImageView
+                android:layout_gravity="bottom|center"
+                android:id="@+id/iv_top_category_03"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/colorAccent" />
         </LinearLayout>
 
 
         <LinearLayout
             android:id="@+id/ll_tab4"
             android:layout_width="3dp"
-            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center" >
 
@@ -68,8 +95,16 @@
                 android:id="@+id/id_tv_pickup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:textColor="@color/white"
                 android:text="捡物" />
+            <ImageView
+                android:layout_gravity="bottom|center"
+                android:id="@+id/iv_top_category_04"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/colorAccent" />
         </LinearLayout>
 
     </LinearLayout>

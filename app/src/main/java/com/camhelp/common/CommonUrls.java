@@ -54,5 +54,12 @@ public class CommonUrls {
      * post：userid
      */
     public static final String SERVER_USER_ONE= SERVER_ADDRESS + "/user/find";
+    /**
+     * 通过userid返回该人发布的信息
+     * 方式：post
+     * 路径：classify/find/publishbyuser
+     * post：userid
+     */
+    public static final String SERVER_USER_PUBLISHED= SERVER_ADDRESS + "/user/find";
 
 }

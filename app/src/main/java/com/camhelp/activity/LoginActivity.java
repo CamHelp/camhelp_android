@@ -116,12 +116,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.btn_login_admin://调试默认登录
 //                login("18084938391", "123456");
                 initTestuser();
-                saveUser(user);
                 editor = pref.edit();
                 if (checkboxAutologin.isChecked()) {                           //自动登录验证
                     editor.putBoolean(CommonGlobal.isAutoLogin, true);
                 }
-                editor.putInt(CommonGlobal.user_id, user.getUserID());
+                editor.putInt(CommonGlobal.user_id, userVO.getUserID());
                 editor.apply();
                 Intent intent = new Intent(LoginActivity.this, MainViewpaperActivity.class);
                 startActivity(intent);
@@ -161,20 +160,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initTestuser() {
-        user.setUserID(0);
-        user.setAccount("18084938391");
-        user.setAvatar("http://www.stormstone.xin/img/avatar-storm.jpg");
-        user.setBgpicture("http://www.stormstone.xin/img/about-bg.jpg");
-        user.setBirthday("1997-03-10");
-        user.setEmail("stormstone@qq.com");
-        user.setTelephone("18883747347");
-        user.setNickname("石头人m");
-        user.setIntro("撵上一个时代");
-        user.setSex(0);
-        user.setAddress("swpu");
-        user.setRoleID(1);
+        userVO.setUserID(0);
+        userVO.setAccount("18084938391");
+        userVO.setAvatar("http://www.stormstone.xin/img/avatar-storm.jpg");
+        userVO.setBgpicture("http://www.stormstone.xin/img/about-bg.jpg");
+        userVO.setBirthday("1997-03-10");
+        userVO.setEmail("stormstone@qq.com");
+        userVO.setTelephone("18883747347");
+        userVO.setNickname("石头人m");
+        userVO.setIntro("撵上一个时代");
+        userVO.setSex(0);
+        userVO.setAddress("swpu");
+        userVO.setRoleID(1);
 
-        saveUser(user);
+        saveUserVO(userVO);
     }
 
     public void saveUser(User user) {

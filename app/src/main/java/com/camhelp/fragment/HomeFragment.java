@@ -43,13 +43,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
-
+    LinearLayout ll_base_home;
     HomeNewFragment tab01;
     HomeFocusFragment tab02;
 
     private LinearLayout ll_home_toptab;
     public ViewPager mViewPager;
-    private FragmentPagerAdapter mAdapter;
+    private FragmentPagerAdapter mHomeAdapter;
     private List<Fragment> mDatas;
 
     private TextView tv_01, tv_02;
@@ -146,6 +146,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initView() {
+        ll_base_home = (LinearLayout) getActivity().findViewById(R.id.ll_base_home);
+        ll_base_home.setBackgroundColor(Color.parseColor(colorPrimary));
         id_iv_tabline_new = (ImageView) getActivity().findViewById(R.id.id_iv_tabline_new);
         id_iv_tabline_focus = (ImageView) getActivity().findViewById(R.id.id_iv_tabline_focus);
         id_iv_tabline_focus.setVisibility(View.GONE)
@@ -177,7 +179,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
          * 解决viewpager滑动数据未保存问题
          * blog地址：http://blog.csdn.net/w372426096/article/details/49951317
          * */
-        mAdapter = new FragmentPagerAdapter(this.getChildFragmentManager()) {
+        mHomeAdapter = new FragmentPagerAdapter(this.getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 Fragment fragment = null;
@@ -217,7 +219,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         };
 
-        mViewPager.setAdapter(mAdapter);
+        mViewPager.setAdapter(mHomeAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {

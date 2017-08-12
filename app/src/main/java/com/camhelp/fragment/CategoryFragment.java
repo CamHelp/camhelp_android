@@ -35,6 +35,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
+    LinearLayout ll_base_category;
 
     CategoryClubFragment tab01;
     CategoryProblemFragment tab02;
@@ -48,6 +49,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private TextView tv_01, tv_02, tv_03, tv_04;
     private LinearLayout ll_tab1, ll_tab2, ll_tab3, ll_tab4;//顶部四个选项栏
+    private ImageView iv_top_category_01,iv_top_category_02,iv_top_category_03,iv_top_category_04;
 
     private ImageView mTabline;
     private int mScreen1_3;
@@ -140,6 +142,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initView() {
+        ll_base_category = (LinearLayout) getActivity().findViewById(R.id.ll_base_category);
+        ll_base_category.setBackgroundColor(Color.parseColor(colorPrimary));
         ll_category_toptab = (LinearLayout) getActivity().findViewById(R.id.ll_category_toptab);
         ll_category_toptab.setBackgroundColor(Color.parseColor(colorPrimary));
 
@@ -162,6 +166,14 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         ll_tab2.setOnClickListener(this);
         ll_tab3.setOnClickListener(this);
         ll_tab4.setOnClickListener(this);
+
+        iv_top_category_01 = (ImageView) getActivity().findViewById(R.id.iv_top_category_01);
+        iv_top_category_02 = (ImageView) getActivity().findViewById(R.id.iv_top_category_02);
+        iv_top_category_03 = (ImageView) getActivity().findViewById(R.id.iv_top_category_03);
+        iv_top_category_04 = (ImageView) getActivity().findViewById(R.id.iv_top_category_04);
+        iv_top_category_02.setVisibility(View.GONE);
+        iv_top_category_03.setVisibility(View.GONE);
+        iv_top_category_04.setVisibility(View.GONE);
 
         mDatas = new ArrayList<Fragment>();
 
@@ -222,15 +234,31 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 switch (position) {
                     case 0:
                         tv_01.setTextColor(Color.WHITE);
+                        iv_top_category_01.setVisibility(View.VISIBLE);
+                        iv_top_category_02.setVisibility(View.GONE);
+                        iv_top_category_03.setVisibility(View.GONE);
+                        iv_top_category_04.setVisibility(View.GONE);
                         break;
                     case 1:
                         tv_02.setTextColor(Color.WHITE);
+                        iv_top_category_01.setVisibility(View.GONE);
+                        iv_top_category_02.setVisibility(View.VISIBLE);
+                        iv_top_category_03.setVisibility(View.GONE);
+                        iv_top_category_04.setVisibility(View.GONE);
                         break;
                     case 2:
                         tv_03.setTextColor(Color.WHITE);
+                        iv_top_category_01.setVisibility(View.GONE);
+                        iv_top_category_02.setVisibility(View.GONE);
+                        iv_top_category_03.setVisibility(View.VISIBLE);
+                        iv_top_category_04.setVisibility(View.GONE);
                         break;
                     case 3:
                         tv_04.setTextColor(Color.WHITE);
+                        iv_top_category_01.setVisibility(View.GONE);
+                        iv_top_category_02.setVisibility(View.GONE);
+                        iv_top_category_03.setVisibility(View.GONE);
+                        iv_top_category_04.setVisibility(View.VISIBLE);
                         break;
                 }
                 mCurrentPageIndex = position;

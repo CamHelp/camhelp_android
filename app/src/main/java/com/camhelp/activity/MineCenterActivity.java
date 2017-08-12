@@ -167,11 +167,6 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
                 .error(R.drawable.avatar)
                 .placeholder(R.drawable.avatar)
                 .into(cimg_mine_avatar);
-        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photo2path)
-                .error(R.drawable.avatar)
-                .placeholder(R.drawable.avatar)
-                .into(cimg_mine_avatar);
-        Toast.makeText(this, ""+photo2path, Toast.LENGTH_SHORT).show();
 
         if (mUser.getSex()==null){
             sex = -1;

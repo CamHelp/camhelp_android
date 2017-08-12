@@ -73,6 +73,7 @@ public class HomeNewFragment extends Fragment {
     private SwipeRefreshLayout srl_home_new;
     private RecyclerView recycler_home_new;
     private LinearLayout ll_nodata;
+    LinearLayout ll_base_home_new;
 
     //    private LinearLayoutManager mLinearLayoutManager;
     private FullyLinearLayoutManager fullyLinearLayoutManager;
@@ -142,6 +143,8 @@ public class HomeNewFragment extends Fragment {
     }
 
     public void initview() {
+        ll_base_home_new = (LinearLayout) getActivity().findViewById(R.id.ll_base_home_new);
+
         ll_nodata = (LinearLayout) getActivity().findViewById(R.id.ll_noanydata);
         tv_loading = (TextView) getActivity().findViewById(R.id.tv_loading);
         recycler_home_new = (RecyclerView) getActivity().findViewById(R.id.recycler_home_new);
@@ -215,7 +218,7 @@ public class HomeNewFragment extends Fragment {
         mCommonPropertyVO.setUserID(1);
         mCommonPropertyVO.setCategoryType(1);
         mCommonPropertyVO.setNickname("nick");
-        commonPropertyVOList.add(mCommonPropertyVO);
+//        commonPropertyVOList.add(mCommonPropertyVO);
     }
 
     /**

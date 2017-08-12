@@ -40,13 +40,17 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * 查看其他用户发布的列表
+ * 根据传过来的用户id查询
+ * */
 public class LookOtherPeopleActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "LookOtherPeopleActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
-    private int user_id;//上一个activity传过来的用户id，根据此得到用户
+    private int user_id;//上一个activity传过来的用户id，根据此得到用户发布的列表
 //    User mUser = new User();//用户
     UserVO mUser = new UserVO();//用户
 
