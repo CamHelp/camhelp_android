@@ -17,7 +17,7 @@
             android:orientation="horizontal" >
 
             <LinearLayout
-                android:id="@+id/ll_tab1"
+                android:id="@+id/ll_home_tab1"
                 android:layout_width="3dp"
                 android:orientation="vertical"
                 android:layout_height="match_parent"
@@ -41,7 +41,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_tab2"
+                android:id="@+id/ll_home_tab2"
                 android:layout_width="3dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

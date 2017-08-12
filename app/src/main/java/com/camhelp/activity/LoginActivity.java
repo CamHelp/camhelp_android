@@ -123,7 +123,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 editor.putInt(CommonGlobal.user_id, user.getUserID());
                 editor.apply();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, MainViewpaperActivity.class);
                 startActivity(intent);
                 LoginActivity.this.finish();
                 break;
@@ -288,7 +288,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     }
                     editor.putInt(CommonGlobal.user_id, userVO.getUserID());
                     editor.apply();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainViewpaperActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();
                 } else {

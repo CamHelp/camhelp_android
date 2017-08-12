@@ -115,7 +115,7 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
     }
 
     public void initview() {
-        ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
+        ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base_publish);
         ll_base.setBackgroundColor(Color.parseColor(colorPrimary));
 
         ll_publish_01 = (LinearLayout) getActivity().findViewById(R.id.ll_publish_01);
@@ -197,5 +197,11 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initview();
     }
 }

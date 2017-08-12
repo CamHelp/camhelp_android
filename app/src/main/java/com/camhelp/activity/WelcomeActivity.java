@@ -50,7 +50,7 @@ public class WelcomeActivity extends BaseActivity {
             {
                 boolean autoLogin = pref.getBoolean(CommonGlobal.isAutoLogin,false);
                 if (autoLogin){
-                    Intent ss = new Intent(WelcomeActivity.this, MainActivity.class);
+                    Intent ss = new Intent(WelcomeActivity.this, MainViewpaperActivity.class);
 //                    Toast.makeText(WelcomeActivity.this,"已自动登录",Toast.LENGTH_SHORT).show();
                     startActivity(ss);
                     WelcomeActivity.this.finish();//跳转到主界面后销毁WelcomeActivity

@@ -112,7 +112,7 @@ public class QueryFragment extends Fragment implements View.OnClickListener{
     }
 
     public void initview(){
-        ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
+        ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base_query);
         ll_base.setBackgroundColor(Color.parseColor(colorPrimary));
 
         et_search = (EditText) getActivity().findViewById(R.id.et_search);

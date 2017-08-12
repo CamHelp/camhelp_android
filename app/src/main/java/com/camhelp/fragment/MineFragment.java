@@ -153,7 +153,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 .placeholder(R.drawable.avatar)
                 .into(mine_cimg_avatar);
 
-        ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base);
+        ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base_mine);
         ll_base.setBackgroundColor(Color.parseColor(colorPrimary));
 
         tv_username = (TextView) getActivity().findViewById(R.id.tv_username);

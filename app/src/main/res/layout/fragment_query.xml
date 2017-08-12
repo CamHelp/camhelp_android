@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/ll_base"
+    android:id="@+id/ll_base_query"
     android:background="@color/colorPrimary"
     tools:context="com.camhelp.fragment.QueryFragment">
 

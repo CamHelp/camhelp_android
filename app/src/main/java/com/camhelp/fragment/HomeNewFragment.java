@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.CircularArray;
@@ -94,6 +95,8 @@ public class HomeNewFragment extends Fragment {
     private String mParam2;
     private OnFragmentInteractionListener mListener;
 
+    boolean firstComming = true;
+    boolean firstOnresume = true;
     Dialog dialogProcess;
 
     public HomeNewFragment() {
@@ -135,6 +138,7 @@ public class HomeNewFragment extends Fragment {
 //        recycler_home_new.setNestedScrollingEnabled(false);
 //        homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyList, getActivity());
 //        recycler_home_new.setAdapter(homeNewAndFocusAdapter);
+
     }
 
     public void initview() {
@@ -195,7 +199,10 @@ public class HomeNewFragment extends Fragment {
         });
 
         dialogProcess = MyProcessDialog.showDialog(getActivity());
-        dialogProcess.show();
+        if (firstComming) {
+            dialogProcess.show();
+            firstComming = false;
+        }
     }
 
     /**
@@ -204,6 +211,11 @@ public class HomeNewFragment extends Fragment {
     public void initdata() {
         srl_home_new.setRefreshing(true);
         okhttpHomeNew();
+        CommonPropertyVO mCommonPropertyVO = new CommonPropertyVO();
+        mCommonPropertyVO.setUserID(1);
+        mCommonPropertyVO.setCategoryType(1);
+        mCommonPropertyVO.setNickname("nick");
+        commonPropertyVOList.add(mCommonPropertyVO);
     }
 
     /**
@@ -223,28 +235,27 @@ public class HomeNewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        FIRST = CommonGlobal.homenewfragmentfirst;
-        if (FIRST) {
-
+        if (firstOnresume){
             fullyLinearLayoutManager = new FullyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             recycler_home_new.setLayoutManager(fullyLinearLayoutManager);
             recycler_home_new.setNestedScrollingEnabled(false);
             homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
             recycler_home_new.setAdapter(homeNewAndFocusAdapter);
-
-            srl_home_new.setRefreshing(false);
-            CommonGlobal.homenewfragmentfirst = true;//bug
-            FIRST = CommonGlobal.homenewfragmentfirst;
-        } else {
-//            homeNewAndFocusAdapter.notifyDataSetChanged();
-//            srl_home_new.setRefreshing(false);
+            firstOnresume = true;
+        }else {
+            homeNewAndFocusAdapter.notifyDataSetChanged();
         }
-
+        srl_home_new.setRefreshing(false);
     }
 
-    /**请求服务器数据*/
+    /**
+     * 请求服务器数据
+     */
     private void okhttpHomeNew() {
-        dialogProcess.show();
+        if (firstComming) {
+            dialogProcess.show();
+            firstComming = false;
+        }
 
         final String url = CommonUrls.SERVER_COMMONLIST_ALL;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
@@ -270,7 +281,7 @@ public class HomeNewFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
 
                 String result = response.body().string();
-                Log.d("TAG"+"onresponse result:", result);
+                Log.d("TAG" + "onresponse result:", result);
 
                 Gson gson = new Gson();
                 //  获得 解析者
@@ -291,12 +302,13 @@ public class HomeNewFragment extends Fragment {
                 if (code == 0) {
                     final JsonArray dataJson = element.getAsJsonArray("data");
 //                    commonPropertyVOList = GsonUtil.parseJsonArrayWithGson(dataJson.toString(), CommonPropertyVO.class);
-                    commonPropertyVOList = gson.fromJson(dataJson,new TypeToken<List<CommonPropertyVO>>(){}.getType());
+                    commonPropertyVOList = gson.fromJson(dataJson, new TypeToken<List<CommonPropertyVO>>() {
+                    }.getType());
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (commonPropertyVOList.size()>0){
+                            if (commonPropertyVOList.size() > 0) {
                                 ll_nodata.setVisibility(View.GONE);
                             }
                             onResume();

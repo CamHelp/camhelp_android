@@ -140,12 +140,12 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
                         editor.apply();
                         DataSupport.deleteAll(CommonProperty.class);
                         if (EXITORLOGOUT == 0) {
-                            MainActivity.mInstace.finish();
+                            MainViewpaperActivity.mInstace.finish();
                             finish();
                         } else if (EXITORLOGOUT == 1) {
                             Intent loginIntent = new Intent(SetupActivity.this, LoginActivity.class);
                             startActivity(loginIntent);//注销后跳转到登录界面重新登录
-                            MainActivity.mInstace.finish();
+                            MainViewpaperActivity.mInstace.finish();
                             finish();
                         }
                     }

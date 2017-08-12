@@ -159,8 +159,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         tv_01.setTextColor(Color.WHITE);
         tv_02.setTextColor(Color.parseColor(colorAccent));
 
-        ll_tab1 = (LinearLayout) getActivity().findViewById(R.id.ll_tab1);
-        ll_tab2 = (LinearLayout) getActivity().findViewById(R.id.ll_tab2);
+        ll_tab1 = (LinearLayout) getActivity().findViewById(R.id.ll_home_tab1);
+        ll_tab2 = (LinearLayout) getActivity().findViewById(R.id.ll_home_tab2);
 
         ll_tab1.setOnClickListener(this);
         ll_tab2.setOnClickListener(this);
@@ -283,7 +283,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 mViewPager.setCurrentItem(0);
                 break;
             case R.id.ll_tab2:
-                mViewPager.setCurrentItem(1);
+                mViewPager.setCurrentItem(2);
                 break;
         }
     }

@@ -136,11 +136,11 @@ public class SetupColorChangeActivity extends BaseActivity implements View.OnCli
 
         editor.apply();
 
-        /*改变主题色后跳转到MainActivity，并关闭其他的activity*/
-        Intent refreshIntent = new Intent(SetupColorChangeActivity.this, MainActivity.class);
+        /*改变主题色后跳转到MainViewpaperActivity，并关闭其他的activity*/
+        Intent refreshIntent = new Intent(SetupColorChangeActivity.this, MainViewpaperActivity.class);
         startActivity(refreshIntent);
         SetupActivity.mInstace.finish();
-        MainActivity.mInstace.finish();
+        MainViewpaperActivity.mInstace.finish();
         finish();
     }
 

@@ -78,6 +78,7 @@
         android:id="@+id/id_iv_tabline"
         android:layout_width="100dp"
         android:layout_height="2dp"
-        android:background="@color/colorAccent" />
+        android:background="@color/colorAccent"
+        android:visibility="gone"/>
 
 </LinearLayout>

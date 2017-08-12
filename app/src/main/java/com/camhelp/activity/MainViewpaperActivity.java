@@ -3,7 +3,9 @@ package com.camhelp.activity;
 import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,8 +19,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -33,6 +38,7 @@ import com.camhelp.fragment.HomeOnlyNewFragment;
 import com.camhelp.fragment.MineFragment;
 import com.camhelp.fragment.PublishFragment;
 import com.camhelp.fragment.QueryFragment;
+import com.camhelp.utils.NoSlideViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +62,10 @@ public class MainViewpaperActivity extends BaseActivity implements BottomNavigat
     private MineFragment mineFragment;
     private long exitTime = 0;
 
-    public ViewPager mViewPager;
+    public NoSlideViewPager mViewPager;
     private FragmentPagerAdapter mAdapter;
     private List<Fragment> mDatas;
+    private int mCurrentPageIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +113,121 @@ public class MainViewpaperActivity extends BaseActivity implements BottomNavigat
                 .addItem(new BottomNavigationItem(R.drawable.icon_mine, "我的"))
                 .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise();
-
-
         bottomNavigationBar.setTabSelectedListener(this);
+
+
+        mViewPager = (NoSlideViewPager) findViewById(R.id.viewpager_main);
+//        mViewPager.setIsCanScroll(false);//设置不允许滑动
+        mDatas = new ArrayList<Fragment>();
+        homeFragment = new HomeFragment();
+        queryFragment = new QueryFragment();
+        publishFragment = new PublishFragment();
+        categoryFragment = new CategoryFragment();
+        mineFragment = new MineFragment();
+        mDatas.add(homeFragment);
+        mDatas.add(queryFragment);
+        mDatas.add(publishFragment);
+        mDatas.add(categoryFragment);
+        mDatas.add(mineFragment);
+
+        mAdapter = new FragmentPagerAdapter(this.getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                Fragment fragment = null;
+                fragment = mDatas.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", "" + position);
+                fragment.setArguments(bundle);
+                return fragment;
+            }
+
+            @Override
+            public int getCount() {
+                return mDatas.size();
+            }
+
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                Fragment fragment = (Fragment) super.instantiateItem(container, position);
+                getSupportFragmentManager().beginTransaction().show(fragment).commit();
+                return fragment;
+            }
+
+            @Override
+            public int getItemPosition(Object object) {
+                return super.getItemPosition(object);
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                Fragment fragment = mDatas.get(position);
+                getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+            }
+
+            @Override
+            public Parcelable saveState() {
+                return super.saveState();
+            }
+        };
+
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                }
+                mCurrentPageIndex = position;
+                bottomNavigationBar.selectTab(position);
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPx) {
+                Log.e("TAG", position + " , " + positionOffset + " , "
+                        + positionOffsetPx);
+
+
+                if (mCurrentPageIndex == 0 && position == 0)// 0->1
+                {
+                } else if (mCurrentPageIndex == 1 && position == 0)// 1->0
+                {
+                } else if (mCurrentPageIndex == 1 && position == 1) // 1->2
+                {
+                } else if (mCurrentPageIndex == 2 && position == 1) // 2->1
+                {
+                } else if (mCurrentPageIndex == 2 && position == 2) // 2->3
+                {
+                } else if (mCurrentPageIndex == 3 && position == 2) // 3->2
+                {
+                } else if (mCurrentPageIndex == 3 && position == 3) // 3->4
+                {
+                } else if (mCurrentPageIndex == 4 && position == 3) // 4->3
+                {
+                } else if (mCurrentPageIndex == 4 && position == 4) // 4->5
+                {
+                } else if (mCurrentPageIndex == 5 && position == 4) // 5->4
+                {
+                } else if (mCurrentPageIndex == 5 && position == 5) // 5->5
+                {
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+
+            }
+        });
     }
 
     /**
@@ -131,14 +250,19 @@ public class MainViewpaperActivity extends BaseActivity implements BottomNavigat
         FragmentTransaction transaction = fm.beginTransaction();
         switch (position) {
             case 0:
+                mViewPager.setCurrentItem(0);
                 break;
             case 1:
+                mViewPager.setCurrentItem(1);
                 break;
             case 2:
+                mViewPager.setCurrentItem(2);
                 break;
             case 3:
+                mViewPager.setCurrentItem(3);
                 break;
             case 4:
+                mViewPager.setCurrentItem(4);
                 break;
             default:
                 break;
