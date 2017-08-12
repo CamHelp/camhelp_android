@@ -126,6 +126,10 @@
         <activity
             android:name=".activity.RegisterPerfectActivity"
             android:label="@string/title_activity_register_perfect"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.MainViewpaperActivity"
+            android:label="@string/title_activity_main_viewpaper"
             android:theme="@style/AppTheme"></activity>
     </application>
 

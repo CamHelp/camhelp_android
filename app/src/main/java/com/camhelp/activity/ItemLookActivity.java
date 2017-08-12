@@ -1,5 +1,6 @@
 package com.camhelp.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +33,7 @@ import com.camhelp.entity.User;
 import com.camhelp.entity.UserVO;
 import com.camhelp.utils.GsonUtil;
 import com.camhelp.utils.L;
+import com.camhelp.utils.MyProcessDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -86,12 +88,14 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 //    User mUser = new User();//用户
     UserVO mUser = new UserVO();//用户
 
+    Dialog dialogProcess;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_look);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
+        dialogProcess = MyProcessDialog.showDialog(this);
         commonPropertyID = getIntent().getIntExtra(CommonGlobal.commonPropertyID,-1);
         okhttpLookOne(commonPropertyID);
 
@@ -152,6 +156,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         ll_look_collect.setOnClickListener(this);
         iv_like = (ImageView) findViewById(R.id.iv_like);
         iv_collect = (ImageView) findViewById(R.id.iv_collect);
+
     }
 
     public void initdata() {
@@ -219,6 +224,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
     /**请求服务器数据*/
     private void okhttpLookOne(Integer commonid) {
+        dialogProcess.show();
         final String url = CommonUrls.SERVER_COMMONLIST_ONE;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
@@ -235,6 +241,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void run() {
                         Toast.makeText(ItemLookActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
+                        dialogProcess.dismiss();
                     }
                 });
             }
@@ -263,11 +270,12 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
                 if (code == 0) {
                     final JsonObject dataJson = element.getAsJsonObject("data");
-                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
+//                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
 
                     ItemLookActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            dialogProcess.dismiss();
                             initdata();
                         }
                     });
@@ -275,6 +283,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                     ItemLookActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            dialogProcess.dismiss();
                             Toast.makeText(ItemLookActivity.this, msg, Toast.LENGTH_SHORT).show();
                         }
                     });

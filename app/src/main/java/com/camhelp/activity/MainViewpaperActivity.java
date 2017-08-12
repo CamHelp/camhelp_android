@@ -1,23 +1,24 @@
 package com.camhelp.activity;
 
 import android.Manifest;
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -28,27 +29,25 @@ import com.camhelp.common.CommonGlobal;
 import com.camhelp.fragment.CategoryFragment;
 import com.camhelp.fragment.CategoryTypeFragment;
 import com.camhelp.fragment.HomeFragment;
-import com.camhelp.fragment.HomeFragmentTest;
 import com.camhelp.fragment.HomeOnlyNewFragment;
 import com.camhelp.fragment.MineFragment;
 import com.camhelp.fragment.PublishFragment;
 import com.camhelp.fragment.QueryFragment;
-import com.camhelp.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
+public class MainViewpaperActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
-    public static MainActivity mInstace = null;//用于设置里关掉MainActivity，达到退出效果
+    public static MainViewpaperActivity mInstace = null;//用于设置里关掉MainViewpaperActivity，达到退出效果
 
     private BottomNavigationBar bottomNavigationBar;
     int lastSelectedPosition = 0;
-    private String TAG = MainActivity.class.getSimpleName();
+    private String TAG = MainViewpaperActivity.class.getSimpleName();
     List<Fragment> fragments;
     private HomeFragment homeFragment;
     private QueryFragment queryFragment;
@@ -57,17 +56,19 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private MineFragment mineFragment;
     private long exitTime = 0;
 
+    public ViewPager mViewPager;
+    private FragmentPagerAdapter mAdapter;
+    private List<Fragment> mDatas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_viewpaper);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         initcolor();
         mInstace = this;
         initview();
         setDefaultFragment();
-//        fragments = getFragments();
         requestPermission();
     }
 
@@ -117,7 +118,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         homeFragment = homeFragment.newInstance("HOME", "");
-        transaction.replace(R.id.tabs, homeFragment);
+//        transaction.replace(R.id.tabs, homeFragment);
         transaction.commit();
     }
 
@@ -130,34 +131,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         FragmentTransaction transaction = fm.beginTransaction();
         switch (position) {
             case 0:
-                if (homeFragment == null) {
-                    homeFragment = homeFragment.newInstance("HOME", "");
-                }
-                transaction.replace(R.id.tabs, homeFragment);
                 break;
             case 1:
-                if (queryFragment == null) {
-                    queryFragment = queryFragment.newInstance("QUERY", "");
-                }
-                transaction.replace(R.id.tabs, queryFragment);
                 break;
             case 2:
-                if (publishFragment == null) {
-                    publishFragment = publishFragment.newInstance("PUBLISH", "");
-                }
-                transaction.replace(R.id.tabs, publishFragment);
                 break;
             case 3:
-                if (categoryFragment == null) {
-                    categoryFragment = categoryFragment.newInstance("CATEGORY", "");
-                }
-                transaction.replace(R.id.tabs, categoryFragment);
                 break;
             case 4:
-                if (mineFragment == null) {
-                    mineFragment = mineFragment.newInstance("MINE", "");
-                }
-                transaction.replace(R.id.tabs, mineFragment);
                 break;
             default:
                 break;
@@ -174,16 +155,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     public void onTabReselected(int position) {
     }
 
-    private ArrayList<Fragment> getFragments() {
-        ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(HomeOnlyNewFragment.newInstance("HOME", ""));
-        fragments.add(QueryFragment.newInstance("QUERY", ""));
-        fragments.add(PublishFragment.newInstance("PUBLISH", ""));
-        fragments.add(CategoryTypeFragment.newInstance("CATEGORY", ""));
-        fragments.add(MineFragment.newInstance("MINE", ""));
-        return fragments;
-    }
-
     /*再按一次返回键退出程序*/
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -193,7 +164,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();
-                MainActivity.this.finish();
+                MainViewpaperActivity.this.finish();
             }
             return true;
         }
@@ -217,18 +188,18 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 5;
 
     private void requestPermission() {
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
+        if (ContextCompat.checkSelfPermission(MainViewpaperActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
+            ActivityCompat.requestPermissions(MainViewpaperActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
 
             //权限还没有授予，需要在这里写申请权限的代码
-        } else if (ContextCompat.checkSelfPermission(MainActivity.this,
+        } else if (ContextCompat.checkSelfPermission(MainViewpaperActivity.this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
+            ActivityCompat.requestPermissions(MainViewpaperActivity.this,
                     new String[]{Manifest.permission.CAMERA},
                     MY_PERMISSIONS_REQUEST_TAKE_PHOTO);
         } else {
@@ -241,14 +212,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
-                    Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainViewpaperActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
 
                 }
                 break;
             case MY_PERMISSIONS_REQUEST_TAKE_PHOTO:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
-                    Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainViewpaperActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
