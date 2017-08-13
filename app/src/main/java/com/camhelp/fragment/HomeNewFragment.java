@@ -61,12 +61,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeNewFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeNewFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * 首页最新数据展示
+ * 每次更新保存最新数据到本地sqlite数据库，下次进入首先加载本地数据再加载最新数据，
+ * 如果加载最新数据失败，不至于空白显示
  */
 public class HomeNewFragment extends Fragment {
 
@@ -220,15 +217,7 @@ public class HomeNewFragment extends Fragment {
      * 加载上一次数据
      */
     public void initolddata() {
-        CommonPropertyVO mCommonPropertyVO = new CommonPropertyVO();
-        mCommonPropertyVO.setUserID(1);
-        mCommonPropertyVO.setCategoryType(1);
-        mCommonPropertyVO.setNickname("nick");
-        commonPropertyVOList.add(mCommonPropertyVO);
-        commonPropertyVOList.add(mCommonPropertyVO);
-        commonPropertyVOList.add(mCommonPropertyVO);
-        commonPropertyVOList.add(mCommonPropertyVO);
-        commonPropertyVOList.add(mCommonPropertyVO);
+        commonPropertyVOList = DataSupport.findAll(CommonPropertyVO.class);
     }
 
     /**
@@ -330,6 +319,7 @@ public class HomeNewFragment extends Fragment {
                         public void run() {
                             if (commonPropertyVOList.size() > 0) {
                                 ll_nodata.setVisibility(View.GONE);
+                                saveLocal();//把最新的保存本地
                             }
 //                            onResume();
                             onStart();
@@ -347,6 +337,14 @@ public class HomeNewFragment extends Fragment {
                 }
             }
         });
+    }
+
+    /*把最新的数据保存本地*/
+    private void saveLocal(){
+        DataSupport.deleteAll(CommonPropertyVO.class);
+        for (int i= 0;i<commonPropertyVOList.size();i++){
+            commonPropertyVOList.get(i).save();
+        }
     }
 
     public void onButtonPressed(Uri uri) {

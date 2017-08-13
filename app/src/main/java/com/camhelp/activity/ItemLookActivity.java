@@ -59,6 +59,8 @@ import okhttp3.Response;
 
 /**
  * 查看具体的内容activity
+ * 先把传递过来的已经有的值显示，再加载具体内容，
+ * 加载完毕再更新界面
  */
 public class ItemLookActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "ItemLookActivity";
@@ -73,7 +75,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private FindValueForID findValueForID = new FindValueForID();
     private int commonPropertyID;
     private CommonPropertyVO commonPropertyVO = new CommonPropertyVO();
-//    private CommonProperty commonProperty = new CommonProperty();
+    //    private CommonProperty commonProperty = new CommonProperty();
     private CommomPropertyDetailsVo commonProperty = new CommomPropertyDetailsVo();
 
     private boolean isLike, isCollection;
@@ -86,10 +88,11 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private LinearLayout ll_look_share, ll_look_like, ll_look_collect;//分享，喜欢，收藏
     private ImageView iv_like, iv_collect;//喜欢，收藏按钮（点击改变）
 
-//    User mUser = new User();//用户
+    //    User mUser = new User();//用户
     UserVO mUser = new UserVO();//用户
 
     Dialog dialogProcess;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +100,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         dialogProcess = MyProcessDialog.showDialog(this);
-        commonPropertyID = getIntent().getIntExtra(CommonGlobal.commonPropertyID,-1);
+        commonPropertyID = getIntent().getIntExtra(CommonGlobal.commonPropertyID, -1);
         commonPropertyVO = (CommonPropertyVO) getIntent().getSerializableExtra(CommonGlobal.commonProperty);
 
         initcolor();
@@ -163,18 +166,18 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void initFirstData() {
-        Glide.with(this).load(commonPropertyVO.getAvatar())
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getAvatar())
                 .placeholder(R.drawable.avatar)
                 .into(item_top_iv_avatar);
         item_top_tv_nickname.setText(commonPropertyVO.getNickname());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        if (commonPropertyVO.getCreatetime()!=null){
+        if (commonPropertyVO.getCreatetime() != null) {
             String sCreatetime = sdf.format(commonPropertyVO.getCreatetime());
             item_top_tv_createtime.setText(sCreatetime);
         }
 
-        if (commonPropertyVO.getCategoryType()!=null){
+        if (commonPropertyVO.getCategoryType() != null) {
             item_top_iv_type.setText(findValueForID.findCategoryType(commonPropertyVO.getCategoryType()));
         }
 
@@ -186,7 +189,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
             item_look_title.setVisibility(View.GONE);
         }
 
-        item_foot_praisenum.setText(""+commonPropertyVO.getPraisenum() + "热度");
+        item_foot_praisenum.setText("" + commonPropertyVO.getPraisenum() + "热度");
 
         String pic1 = commonPropertyVO.getCommonPic1();
         String pic2 = commonPropertyVO.getCommonPic2();
@@ -194,22 +197,22 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         String pic4 = commonPropertyVO.getCommonPic4();
 
         if (pic1 != null) {
-            Glide.with(this).load(pic1).into(item_iv_pic1);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1).into(item_iv_pic1);
         } else {
             item_iv_pic1.setVisibility(View.GONE);
         }
         if (pic2 != null) {
-            Glide.with(this).load(pic2).into(item_iv_pic2);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2).into(item_iv_pic2);
         } else {
             item_iv_pic2.setVisibility(View.GONE);
         }
         if (pic3 != null) {
-            Glide.with(this).load(pic3).into(item_iv_pic3);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3).into(item_iv_pic3);
         } else {
             item_iv_pic3.setVisibility(View.GONE);
         }
         if (pic4 != null) {
-            Glide.with(this).load(pic4).into(item_iv_pic4);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4).into(item_iv_pic4);
         } else {
             item_iv_pic4.setVisibility(View.GONE);
         }
@@ -219,12 +222,12 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         item_top_tv_nickname.setText(commonProperty.getNickname());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        if (commonProperty.getCreatetime()!=null){
+        if (commonProperty.getCreatetime() != null) {
             String sCreatetime = sdf.format(commonProperty.getCreatetime());
             item_top_tv_createtime.setText(sCreatetime);
         }
 
-        if (commonProperty.getCategoryType()!=null){
+        if (commonProperty.getCategoryType() != null) {
             item_top_iv_type.setText(findValueForID.findCategoryType(commonProperty.getCategoryType()));
         }
 
@@ -257,35 +260,37 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         String pic4 = commonProperty.getCommonPic4();
 
         if (pic1 != null) {
-            Glide.with(this).load(pic1).into(item_iv_pic1);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1).into(item_iv_pic1);
         } else {
             item_iv_pic1.setVisibility(View.GONE);
         }
         if (pic2 != null) {
-            Glide.with(this).load(pic2).into(item_iv_pic2);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2).into(item_iv_pic2);
         } else {
             item_iv_pic2.setVisibility(View.GONE);
         }
         if (pic3 != null) {
-            Glide.with(this).load(pic3).into(item_iv_pic3);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3).into(item_iv_pic3);
         } else {
             item_iv_pic3.setVisibility(View.GONE);
         }
         if (pic4 != null) {
-            Glide.with(this).load(pic4).into(item_iv_pic4);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4).into(item_iv_pic4);
         } else {
             item_iv_pic4.setVisibility(View.GONE);
         }
     }
 
-    /**请求服务器数据*/
+    /**
+     * 请求服务器数据
+     */
     private void okhttpLookOne(Integer commonid) {
         dialogProcess.show();
         final String url = CommonUrls.SERVER_COMMONLIST_ONE;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
         FormBody body = new FormBody.Builder()
-                .add("commonid",""+commonid)
+                .add("commonid", "" + commonid)
                 .build();
         Request request = new Request.Builder().url(url).post(body).build();
         Call call = client.newCall(request);
@@ -306,7 +311,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
             public void onResponse(Call call, Response response) throws IOException {
 
                 String result = response.body().string();
-                Log.d("TAG"+"onresponse result:", result);
+                Log.d("TAG" + "onresponse result:", result);
 
                 Gson gson = new Gson();
                 //  获得 解析者
@@ -332,7 +337,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void run() {
                             dialogProcess.dismiss();
-                            if (commonProperty.getUserID()!=null){
+                            if (commonProperty.getUserID() != null) {
                                 initdata();
                             }
                         }
@@ -378,7 +383,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
     public UserVO getUserVO() {
         String temp = pref.getString(CommonGlobal.userobj, "");
-        L.d(TAG,temp);
+        L.d(TAG, temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
         UserVO userVO = null;
         try {
@@ -401,7 +406,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.item_top_iv_avatar://点击头像查看
                 Intent intentLookOtherPeople = new Intent(this, LookOtherPeopleActivity.class);
-                if (mUser.getUserID()!=null){
+                if (mUser.getUserID() != null) {
                     intentLookOtherPeople.putExtra(CommonGlobal.user_id, mUser.getUserID());//把用户id传过去
                 }
                 startActivity(intentLookOtherPeople);
@@ -410,19 +415,19 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(this, "分享功能待完成", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ll_look_like://喜欢
-                if (isLike){
+                if (isLike) {
                     iv_like.setImageResource(R.drawable.item_foot_like);
                     deletelike();
-                }else {
+                } else {
                     iv_like.setImageResource(R.drawable.item_foot_liked);
                     addlike();
                 }
                 break;
             case R.id.ll_look_collect://收藏
-                if (isCollection){
+                if (isCollection) {
                     iv_collect.setImageResource(R.drawable.item_foot_collection);
                     deletecollection();
-                }else {
+                } else {
                     iv_collect.setImageResource(R.drawable.item_foot_collected);
                     addcollection();
                 }
@@ -432,9 +437,9 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
     /*关闭软键盘*/
     private void hintKbTwo() {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm.isActive()&&getCurrentFocus()!=null){
-            if (getCurrentFocus().getWindowToken()!=null) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive() && getCurrentFocus() != null) {
+            if (getCurrentFocus().getWindowToken() != null) {
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
