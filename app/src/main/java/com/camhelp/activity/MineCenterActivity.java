@@ -396,9 +396,9 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         }
         if (Build.VERSION.SDK_INT >= 24) {
             if (BACK) {
-                imageUri = FileProvider.getUriForFile(this, "com.camhelp.fileprovider", mFile);
+                imageUri = FileProvider.getUriForFile(this, CommonUrls.FILEPROVIDER_PACKAGE_NAME, mFile);
             } else {
-                imageUri2 = FileProvider.getUriForFile(this, "com.camhelp.fileprovider", mFile);
+                imageUri2 = FileProvider.getUriForFile(this, CommonUrls.FILEPROVIDER_PACKAGE_NAME, mFile);
             }
         } else {
             if (BACK) {

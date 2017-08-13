@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.camhelp.R;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
@@ -44,7 +45,7 @@ import java.util.Date;
 /**
  * 共同的发布activity
  * 通过类型判断发布的是活动、问题、失物还是捡物
- * */
+ */
 public class PublishCommonPropertyActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PublishCommonPropertyActivity";
     int categoryType;//发布类型
@@ -62,23 +63,23 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     /*拍照相关*/
     final int TAKE_PHOTO = 1, TAKE_PHOTO2 = 12, TAKE_PHOTO3 = 13, TAKE_PHOTO4 = 14;
     final int GET_PHOTO = 2;
-    Uri imageUri, imageUri2, imageUri3, imageUri4;
+    Uri mImageUri, mImageUri2, mImageUri3, mImageUri4;
     private Dialog photodialog = null;//拍照和相册dialog
-    Boolean isPhoto1, isPhoto2, isPhoto3, isPhoto4;
+    Boolean isPhoto1 = false, isPhoto2 = false, isPhoto3 = false, isPhoto4 = false;
 
     /*问题类型，活动开始时间，活动结束时间，物品联系方式*/
-    private LinearLayout ll_proType, ll_time_start, ll_time_end,ll_contact;
-    private View view_proType, view_time_start, view_time_end,view_contact;
+    private LinearLayout ll_proType, ll_time_start, ll_time_end, ll_contact;
+    private View view_proType, view_time_start, view_time_end, view_contact;
 
     /*标题，简介，内容，问题类型，物品联系方式*/
-    private EditText et_title, et_intro, et_content, et_proType,et_contact;
+    private EditText et_title, et_intro, et_content, et_proType, et_contact;
     private Button btn_time_start, btn_time_end;//活动开始时间，活动结束时间
     private ImageView iv_photo1, iv_photo2, iv_photo3, iv_photo4;//照片
 
-    private String title, intro, content,contact;//标题，简介，内容，物品联系方式
+    private String title, intro, content, contact;//标题，简介，内容，物品联系方式
     private String protype;//问题类型
     private Date startDate, endDate;//活动开始结束时间
-    private String sStartTime,sEndTime;//活动开始结束时间yyyy-mm-dd
+    private String sStartTime, sEndTime;//活动开始结束时间yyyy-mm-dd
     private String photopath1, photopath2, photopath3, photopath4;//照片路径
 
     @Override
@@ -162,19 +163,19 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
 
     /*隐藏类型没有的属性*/
     public void initgone() {
-        if (categoryType == 1){
+        if (categoryType == 1) {
             ll_proType.setVisibility(View.GONE);
             ll_contact.setVisibility(View.GONE);
             view_proType.setVisibility(View.GONE);
             view_contact.setVisibility(View.GONE);
-        } else if(categoryType == 2){
+        } else if (categoryType == 2) {
             ll_time_start.setVisibility(View.GONE);
             ll_time_end.setVisibility(View.GONE);
             ll_contact.setVisibility(View.GONE);
             view_time_start.setVisibility(View.GONE);
             view_time_end.setVisibility(View.GONE);
             view_contact.setVisibility(View.GONE);
-        } else if (categoryType == 3 || categoryType ==4){
+        } else if (categoryType == 3 || categoryType == 4) {
             ll_proType.setVisibility(View.GONE);
             ll_time_start.setVisibility(View.GONE);
             ll_time_end.setVisibility(View.GONE);
@@ -233,16 +234,16 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                 showphotodialg(view);
                 break;
             case R.id.iv_photo2:
-                isPhoto2 = true;
                 showphotodialg(view);
+                isPhoto2 = true;
                 break;
             case R.id.iv_photo3:
-                isPhoto3 = true;
                 showphotodialg(view);
+                isPhoto3 = true;
                 break;
             case R.id.iv_photo4:
-                isPhoto4 = true;
                 showphotodialg(view);
+                isPhoto4 = true;
                 break;
             case R.id.takePhoto:
                 creatFile();
@@ -279,7 +280,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         mCommonProperty.setCommonPic2(photopath2);
         mCommonProperty.setCommonPic3(photopath3);
         mCommonProperty.setCommonPic4(photopath4);
-        Date creattime =new Date();
+        Date creattime = new Date();
         mCommonProperty.setCreatetime(creattime);
         mCommonProperty.setPraisenum(0);
         mCommonProperty.setBrowsenum(0);
@@ -289,16 +290,16 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         mCommonProperty.setProType(protype);
         mCommonProperty.setGoodscontact(contact);
 
-        if ("".equals(title)&&"".equals(intro)&&"".equals(content)){
-            Toast.makeText(this, "请填写内容" , Toast.LENGTH_SHORT).show();
-        }else {
-            if (mCommonProperty.save()){
-                L.d(TAG,"mCommonProperty::"+mCommonProperty.toString());
+        if ("".equals(title) && "".equals(intro) && "".equals(content)) {
+            Toast.makeText(this, "请填写内容", Toast.LENGTH_SHORT).show();
+        } else {
+            if (mCommonProperty.save()) {
+                L.d(TAG, "mCommonProperty::" + mCommonProperty.toString());
                 Toast.makeText(this, "本地保存成功", Toast.LENGTH_SHORT).show();
                 hintKbTwo();
                 finish();
-            }else{
-                Toast.makeText(this, "本地保存失败" , Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "本地保存失败", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -334,13 +335,14 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
 
     /*关闭软键盘*/
     private void hintKbTwo() {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm.isActive()&&getCurrentFocus()!=null){
-            if (getCurrentFocus().getWindowToken()!=null) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive() && getCurrentFocus() != null) {
+            if (getCurrentFocus().getWindowToken() != null) {
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
     }
+
     /**
      * 拍照相册相关
      * 判断四张照片中的哪一张，头一张选好，把下一张的加号显示
@@ -358,23 +360,23 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         }
         if (Build.VERSION.SDK_INT >= 24) {
             if (isPhoto1) {
-                imageUri = FileProvider.getUriForFile(this, "com.camhelp.fileprovider", mFile);
+                mImageUri = FileProvider.getUriForFile(this, CommonUrls.FILEPROVIDER_PACKAGE_NAME, mFile);
             } else if (isPhoto2) {
-                imageUri2 = FileProvider.getUriForFile(this, "com.camehelp.fileprovider", mFile);
+                mImageUri2 = FileProvider.getUriForFile(this, CommonUrls.FILEPROVIDER_PACKAGE_NAME, mFile);
             } else if (isPhoto3) {
-                imageUri3 = FileProvider.getUriForFile(this, "com.camehelp.fileprovider", mFile);
+                mImageUri3 = FileProvider.getUriForFile(this, CommonUrls.FILEPROVIDER_PACKAGE_NAME, mFile);
             } else if (isPhoto4) {
-                imageUri4 = FileProvider.getUriForFile(this, "com.camehelp.fileprovider", mFile);
+                mImageUri4 = FileProvider.getUriForFile(this, CommonUrls.FILEPROVIDER_PACKAGE_NAME, mFile);
             }
         } else {
             if (isPhoto1) {
-                imageUri = Uri.fromFile(mFile);
+                mImageUri = Uri.fromFile(mFile);
             } else if (isPhoto2) {
-                imageUri2 = Uri.fromFile(mFile);
+                mImageUri2 = Uri.fromFile(mFile);
             } else if (isPhoto3) {
-                imageUri3 = Uri.fromFile(mFile);
+                mImageUri3 = Uri.fromFile(mFile);
             } else if (isPhoto4) {
-                imageUri4 = Uri.fromFile(mFile);
+                mImageUri4 = Uri.fromFile(mFile);
             }
         }
     }
@@ -390,16 +392,16 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         int id;
         Intent mIntent = new Intent("android.media.action.IMAGE_CAPTURE");
         if (isPhoto1) {
-            uri = imageUri;
+            uri = mImageUri;
             id = TAKE_PHOTO;
         } else if (isPhoto2) {
-            uri = imageUri2;
+            uri = mImageUri2;
             id = TAKE_PHOTO2;
         } else if (isPhoto3) {
-            uri = imageUri3;
+            uri = mImageUri3;
             id = TAKE_PHOTO3;
         } else {
-            uri = imageUri4;
+            uri = mImageUri4;
             id = TAKE_PHOTO4;
         }
         mIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -414,8 +416,8 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     if (!iv_photo1.getScaleType().equals(ImageView.ScaleType.CENTER_CROP)) {
                         iv_photo1.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     }
-                    photopath1 = imageUri.getPath();
-                    Glide.with(this).load(imageUri).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo1);
+                    photopath1 = mImageUri.getPath();
+                    Glide.with(this).load(mImageUri).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo1);
                 }
                 isPhoto1 = false;
                 if (photopath1 != null) {
@@ -427,8 +429,8 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     if (!iv_photo2.getScaleType().equals(ImageView.ScaleType.CENTER_CROP)) {
                         iv_photo2.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     }
-                    photopath2 = imageUri2.getPath();
-                    Glide.with(this).load(imageUri2).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo2);
+                    photopath2 = mImageUri2.getPath();
+                    Glide.with(this).load(mImageUri2).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo2);
                 }
                 isPhoto2 = false;
                 if (photopath2 != null) {
@@ -440,8 +442,8 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     if (!iv_photo3.getScaleType().equals(ImageView.ScaleType.CENTER_CROP)) {
                         iv_photo3.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     }
-                    photopath3 = imageUri3.getPath();
-                    Glide.with(this).load(imageUri3).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo3);
+                    photopath3 = mImageUri3.getPath();
+                    Glide.with(this).load(mImageUri3).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo3);
                 }
                 isPhoto3 = false;
                 if (photopath3 != null) {
@@ -453,8 +455,8 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     if (!iv_photo4.getScaleType().equals(ImageView.ScaleType.CENTER_CROP)) {
                         iv_photo4.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     }
-                    photopath4 = imageUri4.getPath();
-                    Glide.with(this).load(imageUri4).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo4);
+                    photopath4 = mImageUri4.getPath();
+                    Glide.with(this).load(mImageUri4).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo4);
                 }
                 isPhoto4 = false;
                 break;
@@ -473,7 +475,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                             iv_photo1.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                         Glide.with(this).load(selectedImage).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo1);
-                        imageUri = selectedImage;
+                        mImageUri = selectedImage;
                         photopath1 = path;
                         isPhoto1 = false;
                         if (photopath1 != null) {
@@ -484,7 +486,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                             iv_photo2.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                         Glide.with(this).load(selectedImage).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo2);
-                        imageUri2 = selectedImage;
+                        mImageUri2 = selectedImage;
                         photopath2 = path;
                         isPhoto2 = false;
                         if (photopath2 != null) {
@@ -495,7 +497,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                             iv_photo3.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                         Glide.with(this).load(selectedImage).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo3);
-                        imageUri3 = selectedImage;
+                        mImageUri3 = selectedImage;
                         photopath3 = path;
                         isPhoto3 = false;
                         if (photopath3 != null) {
@@ -506,7 +508,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                             iv_photo4.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                         Glide.with(this).load(selectedImage).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_photo4);
-                        imageUri4 = selectedImage;
+                        mImageUri4 = selectedImage;
                         photopath4 = path;
                         isPhoto4 = false;
                     }

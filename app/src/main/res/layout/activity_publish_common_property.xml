@@ -11,6 +11,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,29 +28,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="4dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:text="标题"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
+
                     <EditText
                         android:id="@+id/et_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@null"
-                        android:maxLines="2"
-                        android:maxLength="20"
                         android:hint=" 不超过20字"
+                        android:maxLength="20"
+                        android:maxLines="2"
                         android:padding="4dp"
                         android:textSize="18dp" />
                 </LinearLayout>
+
                 <View
-                    android:layout_marginTop="-4dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
                     android:background="@color/colorAccent" />
 
                 <!--简介-->
@@ -58,28 +62,31 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:padding="4dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:text="简介"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
+
                     <EditText
                         android:id="@+id/et_intro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@null"
-                        android:maxLength="40"
                         android:hint=" 简介（40字以内）"
+                        android:maxLength="40"
                         android:padding="4dp"
                         android:textSize="18dp" />
                 </LinearLayout>
+
                 <View
-                    android:layout_marginTop="-4dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
                     android:background="@color/colorAccent" />
 
                 <!--详情-->
@@ -88,30 +95,33 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:padding="4dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:text="详情"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
+
                     <EditText
                         android:id="@+id/et_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:gravity="center|left"
                         android:background="@null"
-                        android:minLines="3"
-                        android:maxLength="1000"
+                        android:gravity="center|left"
                         android:hint=" 详细描述（上线1000字）"
+                        android:maxLength="1000"
+                        android:minLines="3"
                         android:padding="4dp"
                         android:textSize="18dp" />
                 </LinearLayout>
+
                 <View
-                    android:layout_marginTop="-4dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
                     android:background="@color/colorAccent" />
 
                 <!--问题类型-->
@@ -121,30 +131,33 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:padding="4dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:text="类型"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
+
                     <EditText
                         android:id="@+id/et_proType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@null"
-                        android:maxLines="1"
-                        android:maxLength="10"
                         android:hint=" 不超过10字"
+                        android:maxLength="10"
+                        android:maxLines="1"
                         android:padding="4dp"
                         android:textSize="18dp" />
                 </LinearLayout>
+
                 <View
                     android:id="@+id/view_proType"
-                    android:layout_marginTop="-4dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
                     android:background="@color/colorAccent" />
 
                 <!--开始时间-->
@@ -154,28 +167,31 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:padding="4dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:text="开始时间"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
+
                     <Button
                         android:id="@+id/btn_time_start"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@null"
                         android:gravity="center"
                         android:text="请选择日期"
-                        android:background="@null"
-                        android:textSize="16dp"/>
+                        android:textSize="16dp" />
                 </LinearLayout>
+
                 <View
                     android:id="@+id/view_time_start"
-                    android:layout_marginTop="-4dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
                     android:background="@color/colorAccent" />
 
                 <!--结束时间-->
@@ -185,28 +201,31 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:padding="4dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:text="结束时间"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
+
                     <Button
                         android:id="@+id/btn_time_end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@null"
                         android:gravity="center"
                         android:text="请选择日期"
-                        android:background="@null"
-                        android:textSize="16dp"/>
+                        android:textSize="16dp" />
                 </LinearLayout>
+
                 <View
                     android:id="@+id/view_time_end"
-                    android:layout_marginTop="-4dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
                     android:background="@color/colorAccent" />
 
                 <!--联系方式-->
@@ -216,33 +235,36 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:padding="4dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:text="联系方式"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
+
                     <EditText
                         android:id="@+id/et_contact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@null"
-                        android:maxLines="2"
-                        android:maxLength="40"
                         android:hint="QQ/微信/电话/邮箱"
+                        android:maxLength="40"
+                        android:maxLines="2"
                         android:padding="4dp"
                         android:textSize="18dp" />
                 </LinearLayout>
+
                 <View
                     android:id="@+id/view_contact"
-                    android:layout_marginTop="-4dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="-4dp"
                     android:background="@color/colorAccent" />
 
-                <include layout="@layout/publish_common_addpic"/>
+                <include layout="@layout/publish_common_addpic" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

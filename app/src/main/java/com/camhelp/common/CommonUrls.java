@@ -8,6 +8,7 @@ package com.camhelp.common;
 public class CommonUrls {
     public static String DATABASEPATH = "/data/data/com.camhelp/database";//数据库存放路径（主要是包名）
     public static String DATABASENAME = "camhelp.db";//数据库名称
+    public static String FILEPROVIDER_PACKAGE_NAME = "com.camhelp.fileprovider";//图片的包名
 
     /*交电费*/
     public static final String URL_ELECTRICITY = "http://zxzf.swpu.edu.cn/OnlinePay/login.aspx";
