@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -76,8 +77,8 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
     //    private List<CommonProperty> commonPropertyList = new ArrayList<CommonProperty>();
     private List<ZLMinePublishedCommonProperty> zlPublishedCommonPropertyList = new ArrayList<ZLMinePublishedCommonProperty>();
     private RecyclerView recycler_publish_otherpeople;
-    private LinearLayout ll_nodata, ll_recyclerView;
-
+    private LinearLayout ll_nodata_other, ll_recyclerView;
+    private FrameLayout fl_nodata_other;
 
     Dialog dialogProcess;
     @Override
@@ -94,7 +95,6 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
         initcolor();
         initview();
         inittitle();
-
 
         dialogProcess = MyProcessDialog.showDialog(this);
         dialogProcess.show();
@@ -153,14 +153,17 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
     }
 
     public void initview() {
-        ll_nodata = (LinearLayout) findViewById(R.id.ll_nodata);
+        ll_nodata_other = (LinearLayout) findViewById(R.id.ll_nodata_other);
+        ll_nodata_other.setOnClickListener(this);
+        fl_nodata_other = (FrameLayout) findViewById(R.id.fl_nodata_other);
+        fl_nodata_other.setOnClickListener(this);
         ll_recyclerView = (LinearLayout) findViewById(R.id.ll_recyclerView);
         ll_recyclerView.bringToFront();
 
         recycler_publish_otherpeople = (RecyclerView) findViewById(R.id.recycler_publish_otherpeople);
 
         if (zlPublishedCommonPropertyList.size() == 0) {
-            ll_nodata.setVisibility(View.VISIBLE);
+            ll_nodata_other.setVisibility(View.VISIBLE);
         }
     }
 
@@ -171,6 +174,23 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
                 Intent intentLookOthersData = new Intent(this, LookOthersDataActivity.class);
                 intentLookOthersData.putExtra(CommonGlobal.user_id, user_id);
                 startActivity(intentLookOthersData);
+                break;
+            case R.id.fl_nodata_other://点击重试
+                dialogProcess.show();
+                okhttpOthersPublished(user_id);
+                Handler handler;
+                handler = new android.os.Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        recycler_publish_otherpeople.setLayoutManager(new FullyLinearLayoutManager(LookOtherPeopleActivity.this, LinearLayoutManager.VERTICAL, true));
+                        recycler_publish_otherpeople.setNestedScrollingEnabled(false);
+
+                        lookOtherPeopleAdapter = new LookOtherPeopleAdapter(zlPublishedCommonPropertyList, LookOtherPeopleActivity.this);
+                        recycler_publish_otherpeople.setAdapter(lookOtherPeopleAdapter);
+                        dialogProcess.dismiss();
+                    }
+                };
+                handler.sendEmptyMessageDelayed(1, 2000);//handler延迟2秒执行
                 break;
         }
     }

@@ -59,10 +59,10 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
         holder.queryItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentLook = new Intent(mContext, ItemLookMinePublishedActivity.class);
-                intentLook.putExtra(CommonGlobal.commonPropertyID, commonProperty.getCommonid());
-                intentLook.putExtra(CommonGlobal.commonProperty, commonProperty);
-                mContext.startActivity(intentLook);
+                Intent intentLookMinew = new Intent(mContext, ItemLookMinePublishedActivity.class);
+                intentLookMinew.putExtra(CommonGlobal.commonPropertyID, commonProperty.getCommonid());
+                intentLookMinew.putExtra(CommonGlobal.commonProperty, commonProperty);
+                mContext.startActivity(intentLookMinew);
             }
         });
         /*分享*/
@@ -97,28 +97,28 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
         holder.item_iv_pic1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic1();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonProperty.getCommonPic1();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic2();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonProperty.getCommonPic2();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic3();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonProperty.getCommonPic3();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic4();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonProperty.getCommonPic4();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });

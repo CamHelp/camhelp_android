@@ -134,7 +134,11 @@
         <activity
             android:name=".activity.ItemLookMinePublishedActivity"
             android:label="@string/title_activity_item_look_mine_published"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".activity.ItemLookOtherPublishedActivity"
+            android:label="@string/title_activity_item_look_mine_published"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

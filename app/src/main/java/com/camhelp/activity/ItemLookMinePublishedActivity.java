@@ -134,7 +134,7 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
 
     public void initview() {
         item_top_iv_avatar = (ImageView) findViewById(R.id.item_top_iv_avatar);
-        item_top_iv_avatar.setOnClickListener(this);
+//        item_top_iv_avatar.setOnClickListener(this);//不能再点击头像进入了
         item_top_tv_nickname = (TextView) findViewById(R.id.item_top_tv_nickname);
         item_top_tv_createtime = (TextView) findViewById(R.id.item_top_tv_createtime);
         item_top_iv_type = (TextView) findViewById(R.id.item_top_iv_type);
@@ -168,7 +168,7 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
 
         if (zlMinePublishedCommonProperty.getCreatetime() != null) {
             String sCreatetime = zlMinePublishedCommonProperty.getCreatetime();
-            String formatCreatetime = dateConversionUtils.sdateToStrign(sCreatetime);
+            String formatCreatetime = dateConversionUtils.sdateToString(sCreatetime);
             item_top_tv_createtime.setText(formatCreatetime);
         }
 

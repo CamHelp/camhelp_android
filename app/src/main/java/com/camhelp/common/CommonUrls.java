@@ -50,10 +50,10 @@ public class CommonUrls {
     /**
      * 功能：得到某一用户的信息
      * 方式：post
-     * 路径：/user/find
+     * 路径：/find/user
      * post：userid
      */
-    public static final String SERVER_USER_ONE= SERVER_ADDRESS + "/user/find";
+    public static final String SERVER_USER_ONE= SERVER_ADDRESS + "/user/find/user";
     /**
      * 通过userid返回该人发布的信息
      * 方式：post

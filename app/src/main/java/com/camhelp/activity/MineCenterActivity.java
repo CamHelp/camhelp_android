@@ -43,6 +43,7 @@ import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.User;
 import com.camhelp.entity.UserVO;
 import com.camhelp.fragment.MineFragment;
+import com.camhelp.utils.DateConversionUtils;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
 
@@ -89,6 +90,8 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     private RadioGroup radiogroup_sex;
     private RadioButton radiobtn_male, radiobtn_fmale, radiobtn_secret;
     private Button btn_birthday;
+
+    private DateConversionUtils dateConversionUtils = new DateConversionUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +162,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         birthday = mUser.getBirthday();
 
 
-        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photo2path)
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photo1path)
                 .error(R.drawable.mine_bg)
                 .placeholder(R.drawable.mine_bg)
                 .into(iv_mine_back);
@@ -190,7 +193,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
             et_mine_address.setText(address);
         }
         if (birthday != null || "".equals(birthday)) {
-            btn_birthday.setText(birthday);
+            btn_birthday.setText(dateConversionUtils.sdateToStringBirthday(birthday));
         }
         if (sex == 0) {
             radiobtn_male.setChecked(true);

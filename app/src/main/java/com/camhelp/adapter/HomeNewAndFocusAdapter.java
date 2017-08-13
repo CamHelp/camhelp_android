@@ -105,6 +105,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             @Override
             public void onClick(View v) {
                 Intent intentLook = new Intent(mContext, ItemLookActivity.class);
+                intentLook.putExtra(CommonGlobal.commonPropertyID, commonPropertyVO.getCommonid());
                 intentLook.putExtra(CommonGlobal.commonProperty, commonPropertyVO);
                 mContext.startActivity(intentLook);
             }
@@ -139,28 +140,28 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         holder.item_iv_pic1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonPropertyVO.getCommonPic1();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonPropertyVO.getCommonPic1();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonPropertyVO.getCommonPic2();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonPropertyVO.getCommonPic2();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonPropertyVO.getCommonPic3();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonPropertyVO.getCommonPic3();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonPropertyVO.getCommonPic4();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonPropertyVO.getCommonPic4();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });

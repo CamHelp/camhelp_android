@@ -332,7 +332,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 if (code == 0) {
                     final JsonObject dataJson = element.getAsJsonObject("data");
 //                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
-
+                    L.d(TAG,"详细信息"+dataJson.toString());
                     ItemLookActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -406,9 +406,9 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.item_top_iv_avatar://点击头像查看
                 Intent intentLookOtherPeople = new Intent(this, LookOtherPeopleActivity.class);
-                if (mUser.getUserID() != null) {
-                    intentLookOtherPeople.putExtra(CommonGlobal.user_id, mUser.getUserID());//把用户id传过去
-                }
+                intentLookOtherPeople.putExtra(CommonGlobal.user_id, commonPropertyVO.getUserID());//把用户id传过去
+                intentLookOtherPeople.putExtra(CommonGlobal.userAvatar, commonPropertyVO.getAvatar());//把用户头像传过去
+                intentLookOtherPeople.putExtra(CommonGlobal.userNickname, commonPropertyVO.getNickname());//把用户昵称传过去
                 startActivity(intentLookOtherPeople);
                 break;
             case R.id.ll_look_share://分享

@@ -53,7 +53,7 @@ import okhttp3.Response;
  */
 
 public class ItemLookOtherPublishedActivity extends AppCompatActivity implements View.OnClickListener {
-    private String TAG = "ItemLookActivity";
+    private String TAG = "ItemLookOtherPublishedActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
@@ -80,6 +80,7 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
 
     //    User mUser = new User();//用户
     UserVO mUser = new UserVO();//用户
+    private int user_id;
 
     Dialog dialogProcess;
     private DateConversionUtils dateConversionUtils = new DateConversionUtils();
@@ -92,8 +93,10 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
 
         dialogProcess = MyProcessDialog.showDialog(this);
         commonPropertyID = getIntent().getIntExtra(CommonGlobal.commonPropertyID, -1);
+        user_id = getIntent().getIntExtra(CommonGlobal.user_id, -1);
+        mUser = getUserById(user_id);
         zlMinePublishedCommonProperty = (ZLMinePublishedCommonProperty) getIntent().getSerializableExtra(CommonGlobal.commonProperty);
-        mUser = getUserVO();
+
         initcolor();
         inittitle();
         initview();
@@ -127,7 +130,7 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
 
     public void initview() {
         item_top_iv_avatar = (ImageView) findViewById(R.id.item_top_iv_avatar);
-        item_top_iv_avatar.setOnClickListener(this);
+//        item_top_iv_avatar.setOnClickListener(this);//不允许再点击头像进入
         item_top_tv_nickname = (TextView) findViewById(R.id.item_top_tv_nickname);
         item_top_tv_createtime = (TextView) findViewById(R.id.item_top_tv_createtime);
         item_top_iv_type = (TextView) findViewById(R.id.item_top_iv_type);
@@ -161,7 +164,7 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
 
         if (zlMinePublishedCommonProperty.getCreatetime() != null) {
             String sCreatetime = zlMinePublishedCommonProperty.getCreatetime();
-            String formatCreatetime = dateConversionUtils.sdateToStrign(sCreatetime);
+            String formatCreatetime = dateConversionUtils.sdateToString(sCreatetime);
             item_top_tv_createtime.setText(formatCreatetime);
         }
 
@@ -357,6 +360,11 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
             L.d(TAG, e1.toString());
         }
         return userVO;
+    }
+
+    /*得到用户，暂时模拟得到本地用户*/
+    public UserVO getUserById(int userid){
+        return getUserVO();
     }
 
     @Override

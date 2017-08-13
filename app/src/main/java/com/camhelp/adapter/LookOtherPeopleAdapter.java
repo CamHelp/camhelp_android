@@ -63,10 +63,11 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
         holder.queryItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentLook = new Intent(mContext, ItemLookOtherPublishedActivity.class);
-                intentLook.putExtra(CommonGlobal.commonPropertyID, commonProperty.getCommonid());
-                intentLook.putExtra(CommonGlobal.commonProperty, commonProperty);
-                mContext.startActivity(intentLook);
+                Intent intentLookOther = new Intent(mContext, ItemLookOtherPublishedActivity.class);
+                intentLookOther.putExtra(CommonGlobal.commonPropertyID, commonProperty.getCommonid());
+                intentLookOther.putExtra(CommonGlobal.commonProperty, commonProperty);
+                intentLookOther.putExtra(CommonGlobal.user_id, commonProperty.getUsermapperid());//把用户id传过去
+                mContext.startActivity(intentLookOther);
             }
         });
         /*分享*/
@@ -86,9 +87,11 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
         holder.ll_publishfoot_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentLook = new Intent(mContext, ItemLookActivity.class);
-                intentLook.putExtra("commonProperty", commonProperty);
-                mContext.startActivity(intentLook);
+                Intent intentLookOther = new Intent(mContext, ItemLookOtherPublishedActivity.class);
+                intentLookOther.putExtra(CommonGlobal.commonPropertyID, commonProperty.getCommonid());
+                intentLookOther.putExtra(CommonGlobal.commonProperty, commonProperty);
+                intentLookOther.putExtra(CommonGlobal.user_id, commonProperty.getUsermapperid());//把用户id传过去
+                mContext.startActivity(intentLookOther);
             }
         });
         /*喜欢*/
@@ -121,28 +124,28 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
         holder.item_iv_pic1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic1();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonProperty.getCommonPic1();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic2();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonProperty.getCommonPic2();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic3();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonProperty.getCommonPic3();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = commonProperty.getCommonPic4();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonProperty.getCommonPic4();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });

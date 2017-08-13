@@ -9,8 +9,16 @@ import java.util.Calendar;
  */
 
 public class DateConversionUtils {
-    public String sdateToStrign(String stime){
+    public String sdateToString(String stime){
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        long now = Long.parseLong(stime);
+        calendar.setTimeInMillis(now);
+        String formatTime = formatter.format(calendar.getTime());
+        return formatTime;
+    }
+    public String sdateToStringBirthday(String stime){
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         long now = Long.parseLong(stime);
         calendar.setTimeInMillis(now);
