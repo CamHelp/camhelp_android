@@ -82,6 +82,8 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             public void onClick(View v) {
                 Intent intentLookOtherPeople = new Intent(mContext, LookOtherPeopleActivity.class);
                 intentLookOtherPeople.putExtra(CommonGlobal.user_id, commonPropertyVO.getUserID());//把用户id传过去
+                intentLookOtherPeople.putExtra(CommonGlobal.userAvatar, commonPropertyVO.getAvatar());//把用户头像传过去
+                intentLookOtherPeople.putExtra(CommonGlobal.userNickname, commonPropertyVO.getNickname());//把用户昵称传过去
                 mContext.startActivity(intentLookOtherPeople);
             }
         });

@@ -24,6 +24,7 @@ import com.camhelp.basic.ActivityCollector;
 import com.camhelp.basic.BaseActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.entity.CommonProperty;
+import com.camhelp.entity.ZLMinePublishedCommonProperty;
 
 import org.litepal.crud.DataSupport;
 
@@ -139,6 +140,7 @@ public class SetupActivity extends BaseActivity implements View.OnClickListener 
                         editor.clear();
                         editor.apply();
                         DataSupport.deleteAll(CommonProperty.class);
+                        DataSupport.deleteAll(ZLMinePublishedCommonProperty.class);
                         if (EXITORLOGOUT == 0) {
                             MainViewpaperActivity.mInstace.finish();
                             finish();

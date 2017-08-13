@@ -31,6 +31,7 @@ import com.camhelp.activity.MineFocusActivity;
 import com.camhelp.activity.MinePublishedActivity;
 import com.camhelp.activity.SetupActivity;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.User;
 import com.camhelp.entity.UserVO;
 import com.camhelp.utils.L;
@@ -58,14 +59,14 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private String TAG = "MineFragment";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private String colorPrimary,colorPrimaryBlew,colorPrimaryDark,colorAccent;
-//    User mUser = new User();
+    private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
+    //    User mUser = new User();
     UserVO userVO = new UserVO();
 
     private LinearLayout ll_base;
 
     TextView tv_username, tv_intro;
-    LinearLayout ll_my_published,ll_my_collection,ll_my_focus;
+    LinearLayout ll_my_published, ll_my_collection, ll_my_focus;
     LinearLayout ll_setup;
     LinearLayout ll_personal;
     private CircleImageView mine_cimg_avatar;
@@ -133,22 +134,22 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
 
     /*获取主题色*/
-    public void initcolor(){
-        String defaultColorPrimary = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimary));
-        String defaultColorPrimaryBlew = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
-        String defaultColorPrimaryDark = "#"+Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
-        String defaultColorAccent = "#"+Integer.toHexString(getResources().getColor(R.color.colorAccent));
+    public void initcolor() {
+        String defaultColorPrimary = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimary));
+        String defaultColorPrimaryBlew = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryBlew));
+        String defaultColorPrimaryDark = "#" + Integer.toHexString(getResources().getColor(R.color.colorPrimaryDark));
+        String defaultColorAccent = "#" + Integer.toHexString(getResources().getColor(R.color.colorAccent));
 
-        colorPrimary = pref.getString(CommonGlobal.colorPrimary,defaultColorPrimary);
-        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew,defaultColorPrimaryBlew);
-        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark,defaultColorPrimaryDark);
-        colorAccent = pref.getString(CommonGlobal.colorAccent,defaultColorAccent);
+        colorPrimary = pref.getString(CommonGlobal.colorPrimary, defaultColorPrimary);
+        colorPrimaryBlew = pref.getString(CommonGlobal.colorPrimaryBlew, defaultColorPrimaryBlew);
+        colorPrimaryDark = pref.getString(CommonGlobal.colorPrimaryDark, defaultColorPrimaryDark);
+        colorAccent = pref.getString(CommonGlobal.colorAccent, defaultColorAccent);
     }
 
     public void initview() {
         mine_cimg_avatar = (CircleImageView) getActivity().findViewById(R.id.mine_cimg_avatar);
         mine_cimg_avatar.setOnClickListener(this);
-        Glide.with(this).load(userVO.getAvatar())
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + userVO.getAvatar())
                 .error(R.drawable.avatar)
                 .placeholder(R.drawable.avatar)
                 .into(mine_cimg_avatar);
@@ -227,7 +228,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
     public UserVO getUserVO() {
         String temp = pref.getString(CommonGlobal.userobj, "");
-        L.d(TAG,temp);
+        L.d(TAG, temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
         UserVO userVO = null;
         try {

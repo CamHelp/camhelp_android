@@ -60,6 +60,6 @@ public class CommonUrls {
      * 路径：classify/find/publishbyuser
      * post：userid
      */
-    public static final String SERVER_USER_PUBLISHED= SERVER_ADDRESS + "/user/find";
+    public static final String SERVER_USER_PUBLISHED= SERVER_ADDRESS + "/classify/find/publishbyuser";
 
 }

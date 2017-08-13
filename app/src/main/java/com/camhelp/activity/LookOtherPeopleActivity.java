@@ -1,18 +1,19 @@
 package com.camhelp.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,28 +23,41 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
 import com.camhelp.adapter.LookOtherPeopleAdapter;
-import com.camhelp.adapter.MinePublishedAdapter;
 import com.camhelp.common.CommonGlobal;
-import com.camhelp.entity.CommonProperty;
-import com.camhelp.entity.User;
+import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.UserVO;
+import com.camhelp.entity.ZLMinePublishedCommonProperty;
 import com.camhelp.utils.FullyLinearLayoutManager;
 import com.camhelp.utils.L;
-
-import org.litepal.crud.DataSupport;
+import com.camhelp.utils.MyProcessDialog;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import android.os.Handler;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * 查看其他用户发布的列表
  * 根据传过来的用户id查询
- * */
+ */
 public class LookOtherPeopleActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "LookOtherPeopleActivity";
     private SharedPreferences pref;
@@ -51,16 +65,21 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
     private int user_id;//上一个activity传过来的用户id，根据此得到用户发布的列表
-//    User mUser = new User();//用户
-    UserVO mUser = new UserVO();//用户
+    private String  user_avatar;//上一个activity传过来的用户头像
+    private String  user_nickname;//上一个activity传过来的用户昵称
+
+    private String user_photoBg;//背景图片，待获取
 
     private CircleImageView cimg_mine_avatar;
 
     LookOtherPeopleAdapter lookOtherPeopleAdapter;
-    private List<CommonProperty> commonPropertyList = new ArrayList<CommonProperty>();
+    //    private List<CommonProperty> commonPropertyList = new ArrayList<CommonProperty>();
+    private List<ZLMinePublishedCommonProperty> zlPublishedCommonPropertyList = new ArrayList<ZLMinePublishedCommonProperty>();
     private RecyclerView recycler_publish_otherpeople;
     private LinearLayout ll_nodata, ll_recyclerView;
 
+
+    Dialog dialogProcess;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,18 +87,32 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         user_id = getIntent().getIntExtra(CommonGlobal.user_id, 0);//得到userid
-        getUserById(user_id);
+        user_avatar = getIntent().getStringExtra(CommonGlobal.userAvatar);//得到头像
+        user_nickname = getIntent().getStringExtra(CommonGlobal.userNickname);//得到昵称
+        okhttpOthersPublished(user_id);//查询该用户发布的列表
 
         initcolor();
-        inittitle();
-        initdata();
         initview();
+        inittitle();
 
-        recycler_publish_otherpeople.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
-        recycler_publish_otherpeople.setNestedScrollingEnabled(false);
 
-        lookOtherPeopleAdapter = new LookOtherPeopleAdapter(commonPropertyList, this);
-        recycler_publish_otherpeople.setAdapter(lookOtherPeopleAdapter);
+        dialogProcess = MyProcessDialog.showDialog(this);
+        dialogProcess.show();
+        /**暂时利用等待2秒来加载获取的数据！！！*/
+        Handler handler;
+        handler = new android.os.Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                recycler_publish_otherpeople.setLayoutManager(new FullyLinearLayoutManager(LookOtherPeopleActivity.this, LinearLayoutManager.VERTICAL, true));
+                recycler_publish_otherpeople.setNestedScrollingEnabled(false);
+
+                lookOtherPeopleAdapter = new LookOtherPeopleAdapter(zlPublishedCommonPropertyList, LookOtherPeopleActivity.this);
+                recycler_publish_otherpeople.setAdapter(lookOtherPeopleAdapter);
+                dialogProcess.dismiss();
+            }
+        };
+        handler.sendEmptyMessageDelayed(1, 2000);//handler延迟2秒执行
+
     }
 
     /*获取主题色*/
@@ -96,9 +129,6 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
     }
 
     public void inittitle() {
-        String nickname = mUser.getNickname();//昵称
-        String photoBg = mUser.getBgpicture();//背景
-        String photoAvatar = mUser.getAvatar();//头像
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         ImageView iv_bg = (ImageView) findViewById(R.id.iv_bg);
@@ -110,13 +140,13 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        collapsingToolbar.setTitle(nickname);
+        collapsingToolbar.setTitle(user_nickname);
 
-        Glide.with(this).load(photoBg)
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+user_photoBg)
                 .error(R.drawable.mine_bg)
                 .placeholder(R.drawable.mine_bg)
                 .into(iv_bg);
-        Glide.with(this).load(photoAvatar)
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+user_avatar)
                 .error(R.drawable.avatar)
                 .placeholder(R.drawable.avatar)
                 .into(cimg_mine_avatar);
@@ -129,13 +159,9 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
 
         recycler_publish_otherpeople = (RecyclerView) findViewById(R.id.recycler_publish_otherpeople);
 
-        if (commonPropertyList.size() == 0) {
+        if (zlPublishedCommonPropertyList.size() == 0) {
             ll_nodata.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void initdata() {
-        commonPropertyList = DataSupport.findAll(CommonProperty.class);
     }
 
     @Override
@@ -143,31 +169,76 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
         switch (view.getId()) {
             case R.id.cimg_mine_avatar://点击头像查看用户信息
                 Intent intentLookOthersData = new Intent(this, LookOthersDataActivity.class);
-                intentLookOthersData.putExtra(CommonGlobal.userobj, mUser);
+                intentLookOthersData.putExtra(CommonGlobal.user_id, user_id);
                 startActivity(intentLookOthersData);
                 break;
         }
     }
 
-    public UserVO getUserVO() {
-        String temp = pref.getString(CommonGlobal.userobj, "");
-        L.d(TAG,temp);
-        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
-        UserVO userVO = null;
-        try {
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            userVO = (UserVO) ois.readObject();
-        } catch (IOException e) {
-            L.d(TAG, e.toString());
-        } catch (ClassNotFoundException e1) {
-            L.d(TAG, e1.toString());
-        }
-        return userVO;
-    }
+    /**
+     * 请求服务器数据
+     */
+    private void okhttpOthersPublished(int userid) {
+        final String url = CommonUrls.SERVER_USER_PUBLISHED;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
-    public UserVO getUserById(int id) {
-        mUser = getUserVO();//得到user
-        return mUser;
+        FormBody body = new FormBody.Builder().add("userid", "" + userid).build();
+        Request request = new Request.Builder().url(url).post(body).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("TAG", "onFailure" + e.toString());
+                LookOtherPeopleActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LookOtherPeopleActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String result = response.body().string();
+                Log.d("TAG" + "onresponse result:", result);
+
+                Gson gson = new Gson();
+                //  获得 解析者
+                JsonParser parser = new JsonParser();
+                //  获得 根节点元素
+                JsonElement root = parser.parse(result);
+                //  根据 文档判断根节点属于 什么类型的 Gson节点对象
+                // 假如文档 显示 根节点 为对象类型
+                // 获得 根节点 的实际 节点类型
+                JsonObject element = root.getAsJsonObject();
+                //  取得 节点 下 的某个节点的 value
+                // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                final String msg = msgJson.getAsString();
+
+                if (code == 0) {
+                    final JsonArray dataJson = element.getAsJsonArray("data");
+                    zlPublishedCommonPropertyList = gson.fromJson(dataJson, new TypeToken<List<ZLMinePublishedCommonProperty>>() {
+                    }.getType());
+
+                    LookOtherPeopleActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    });
+                } else {
+                    LookOtherPeopleActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LookOtherPeopleActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override

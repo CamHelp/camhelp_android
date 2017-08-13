@@ -130,6 +130,10 @@
         <activity
             android:name=".activity.MainViewpaperActivity"
             android:label="@string/title_activity_main_viewpaper"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.ItemLookMinePublishedActivity"
+            android:label="@string/title_activity_item_look_mine_published"
             android:theme="@style/AppTheme"></activity>
     </application>
 

@@ -59,6 +59,7 @@ public class LookOthersDataActivity extends AppCompatActivity implements View.On
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 //    User mUser = new User();
     UserVO mUser = new UserVO();
+    private int user_id;//用户id，从上一个activity得到
 
     private LinearLayout top_rl_title;
     private ImageView top_return;
@@ -183,10 +184,12 @@ public class LookOthersDataActivity extends AppCompatActivity implements View.On
 
     /**
      * 获取用户
+     * 暂时获取本地用户
      */
     public void userInit() {
-        mUser = (UserVO) getIntent().getSerializableExtra(CommonGlobal.userobj);
+        user_id = getIntent().getIntExtra(CommonGlobal.user_id,0);
 
+        mUser = (UserVO) getIntent().getSerializableExtra(CommonGlobal.userobj);
     }
 
     @Override

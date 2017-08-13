@@ -24,4 +24,5 @@
     <string name="title_activity_look_others_data">LookOthersDataActivity</string>
     <string name="title_activity_register_perfect">RegisterPerfectActivity</string>
     <string name="title_activity_main_viewpaper">MainViewpaperActivity</string>
+    <string name="title_activity_item_look_mine_published">ItemLookMinePublishedActivity</string>
 </resources>

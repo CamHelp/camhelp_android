@@ -14,9 +14,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
 import com.camhelp.activity.ItemLookActivity;
+import com.camhelp.activity.ItemLookMinePublishedActivity;
 import com.camhelp.common.CommonGlobal;
+import com.camhelp.common.CommonUrls;
 import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
+import com.camhelp.entity.ZLMinePublishedCommonProperty;
 import com.camhelp.utils.LookLargeImg;
 
 import java.util.List;
@@ -27,12 +30,12 @@ import java.util.List;
  */
 
 public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdapter.ViewHolder> {
-    private List<CommonProperty> mList;
+    private List<ZLMinePublishedCommonProperty> mList;
     private Context mContext;
     private FindValueForID findValueForID = new FindValueForID();
     private LookLargeImg lookLargeImg = new LookLargeImg();
 
-    public MinePublishedAdapter(List<CommonProperty> CommonPropertys, Context context) {
+    public MinePublishedAdapter(List<ZLMinePublishedCommonProperty> CommonPropertys, Context context) {
         mList = CommonPropertys;
         mContext = context;
     }
@@ -49,14 +52,15 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        final CommonProperty commonProperty = mList.get(position);
+        final ZLMinePublishedCommonProperty commonProperty = mList.get(position);
         holder.dataBinding(commonProperty, position, mContext);
 
         /*每一项的点击事件*/
         holder.queryItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentLook = new Intent(mContext, ItemLookActivity.class);
+                Intent intentLook = new Intent(mContext, ItemLookMinePublishedActivity.class);
+                intentLook.putExtra(CommonGlobal.commonPropertyID, commonProperty.getCommonid());
                 intentLook.putExtra(CommonGlobal.commonProperty, commonProperty);
                 mContext.startActivity(intentLook);
             }
@@ -146,7 +150,7 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
             item_iv_pic4 = (ImageView) itemView.findViewById(R.id.item_iv_pic4);
         }
 
-        public void dataBinding(final CommonProperty mCommonProperty, final int position, Context context) {
+        public void dataBinding(final ZLMinePublishedCommonProperty mCommonProperty, final int position, Context context) {
             String stitle = mCommonProperty.getCommonTitle();
             String sintro = mCommonProperty.getCommonIntro();
             String scontent = mCommonProperty.getCommonContent();
@@ -169,22 +173,22 @@ public class MinePublishedAdapter extends RecyclerView.Adapter<MinePublishedAdap
             tv_minepublish_type.setText(findValueForID.findCategoryType(type));
 
             if (pic1 != null) {
-                Glide.with(context).load(pic1).into(item_iv_pic1);
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic1).into(item_iv_pic1);
             } else {
                 item_iv_pic1.setVisibility(View.GONE);
             }
             if (pic2 != null) {
-                Glide.with(context).load(pic2).into(item_iv_pic2);
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic2).into(item_iv_pic2);
             } else {
                 item_iv_pic2.setVisibility(View.GONE);
             }
             if (pic3 != null) {
-                Glide.with(context).load(pic3).into(item_iv_pic3);
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic3).into(item_iv_pic3);
             } else {
                 item_iv_pic3.setVisibility(View.GONE);
             }
             if (pic4 != null) {
-                Glide.with(context).load(pic4).into(item_iv_pic4);
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic4).into(item_iv_pic4);
             } else {
                 item_iv_pic4.setVisibility(View.GONE);
             }
