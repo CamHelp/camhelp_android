@@ -132,7 +132,8 @@ public class HomeNewFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initview();
-        initdata();
+        initolddata();
+        initnewdata();
 
 //        fullyLinearLayoutManager = new FullyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        recycler_home_new.setLayoutManager(fullyLinearLayoutManager);
@@ -158,7 +159,6 @@ public class HomeNewFragment extends Fragment {
             public void onRefresh() {
                 CommonGlobal.homenewfragmentfirst = true;
                 srl_home_new.setRefreshing(true);
-                commonPropertyVOList.clear();
                 okhttpHomeNew();
             }
         });
@@ -211,14 +211,24 @@ public class HomeNewFragment extends Fragment {
     /**
      * 加载最新数据
      */
-    public void initdata() {
+    public void initnewdata() {
         srl_home_new.setRefreshing(true);
         okhttpHomeNew();
+    }
+
+    /**
+     * 加载上一次数据
+     */
+    public void initolddata() {
         CommonPropertyVO mCommonPropertyVO = new CommonPropertyVO();
         mCommonPropertyVO.setUserID(1);
         mCommonPropertyVO.setCategoryType(1);
         mCommonPropertyVO.setNickname("nick");
-//        commonPropertyVOList.add(mCommonPropertyVO);
+        commonPropertyVOList.add(mCommonPropertyVO);
+        commonPropertyVOList.add(mCommonPropertyVO);
+        commonPropertyVOList.add(mCommonPropertyVO);
+        commonPropertyVOList.add(mCommonPropertyVO);
+        commonPropertyVOList.add(mCommonPropertyVO);
     }
 
     /**
@@ -236,19 +246,25 @@ public class HomeNewFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        fullyLinearLayoutManager = new FullyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        recycler_home_new.setLayoutManager(fullyLinearLayoutManager);
+        recycler_home_new.setNestedScrollingEnabled(false);
+        homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
+        recycler_home_new.setAdapter(homeNewAndFocusAdapter);
+        srl_home_new.setRefreshing(false);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        if (firstOnresume){
-            fullyLinearLayoutManager = new FullyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            recycler_home_new.setLayoutManager(fullyLinearLayoutManager);
-            recycler_home_new.setNestedScrollingEnabled(false);
-            homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
-            recycler_home_new.setAdapter(homeNewAndFocusAdapter);
-            firstOnresume = true;
-        }else {
-            homeNewAndFocusAdapter.notifyDataSetChanged();
-        }
-        srl_home_new.setRefreshing(false);
+//        fullyLinearLayoutManager = new FullyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        recycler_home_new.setLayoutManager(fullyLinearLayoutManager);
+//        recycler_home_new.setNestedScrollingEnabled(false);
+//        homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
+//        recycler_home_new.setAdapter(homeNewAndFocusAdapter);
+//        srl_home_new.setRefreshing(false);
     }
 
     /**
@@ -303,6 +319,7 @@ public class HomeNewFragment extends Fragment {
                 final String msg = msgJson.getAsString();
 
                 if (code == 0) {
+                    commonPropertyVOList.clear();//得到新数据把旧数据清空
                     final JsonArray dataJson = element.getAsJsonArray("data");
 //                    commonPropertyVOList = GsonUtil.parseJsonArrayWithGson(dataJson.toString(), CommonPropertyVO.class);
                     commonPropertyVOList = gson.fromJson(dataJson, new TypeToken<List<CommonPropertyVO>>() {
@@ -314,7 +331,8 @@ public class HomeNewFragment extends Fragment {
                             if (commonPropertyVOList.size() > 0) {
                                 ll_nodata.setVisibility(View.GONE);
                             }
-                            onResume();
+//                            onResume();
+                            onStart();
                             dialogProcess.dismiss();
                         }
                     });

@@ -72,6 +72,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             public void onClick(View v) {
                 Intent intentLook = new Intent(mContext, ItemLookActivity.class);
                 intentLook.putExtra(CommonGlobal.commonPropertyID, commonPropertyVO.getCommonid());
+                intentLook.putExtra(CommonGlobal.commonProperty, commonPropertyVO);
                 mContext.startActivity(intentLook);
             }
         });

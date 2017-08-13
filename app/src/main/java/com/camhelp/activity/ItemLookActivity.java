@@ -72,6 +72,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
     private FindValueForID findValueForID = new FindValueForID();
     private int commonPropertyID;
+    private CommonPropertyVO commonPropertyVO = new CommonPropertyVO();
 //    private CommonProperty commonProperty = new CommonProperty();
     private CommomPropertyDetailsVo commonProperty = new CommomPropertyDetailsVo();
 
@@ -97,13 +98,15 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
         dialogProcess = MyProcessDialog.showDialog(this);
         commonPropertyID = getIntent().getIntExtra(CommonGlobal.commonPropertyID,-1);
-        okhttpLookOne(commonPropertyID);
+        commonPropertyVO = (CommonPropertyVO) getIntent().getSerializableExtra(CommonGlobal.commonProperty);
 
         initcolor();
         inittitle();
         initview();
         initUser();
-        initdata();
+        initFirstData();//先把传递过来的数据显示
+        okhttpLookOne(commonPropertyID);//查询详细信息
+//        initdata();
     }
 
     /*获取主题色*/
@@ -157,6 +160,59 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         iv_like = (ImageView) findViewById(R.id.iv_like);
         iv_collect = (ImageView) findViewById(R.id.iv_collect);
 
+    }
+
+    public void initFirstData() {
+        Glide.with(this).load(commonPropertyVO.getAvatar())
+                .placeholder(R.drawable.avatar)
+                .into(item_top_iv_avatar);
+        item_top_tv_nickname.setText(commonPropertyVO.getNickname());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if (commonPropertyVO.getCreatetime()!=null){
+            String sCreatetime = sdf.format(commonPropertyVO.getCreatetime());
+            item_top_tv_createtime.setText(sCreatetime);
+        }
+
+        if (commonPropertyVO.getCategoryType()!=null){
+            item_top_iv_type.setText(findValueForID.findCategoryType(commonPropertyVO.getCategoryType()));
+        }
+
+        String stitle = commonPropertyVO.getCommonTitle();
+
+        if (stitle != null && !"".equals(stitle)) {
+            item_look_title.setText(stitle);
+        } else {
+            item_look_title.setVisibility(View.GONE);
+        }
+
+        item_foot_praisenum.setText(""+commonPropertyVO.getPraisenum() + "热度");
+
+        String pic1 = commonPropertyVO.getCommonPic1();
+        String pic2 = commonPropertyVO.getCommonPic2();
+        String pic3 = commonPropertyVO.getCommonPic3();
+        String pic4 = commonPropertyVO.getCommonPic4();
+
+        if (pic1 != null) {
+            Glide.with(this).load(pic1).into(item_iv_pic1);
+        } else {
+            item_iv_pic1.setVisibility(View.GONE);
+        }
+        if (pic2 != null) {
+            Glide.with(this).load(pic2).into(item_iv_pic2);
+        } else {
+            item_iv_pic2.setVisibility(View.GONE);
+        }
+        if (pic3 != null) {
+            Glide.with(this).load(pic3).into(item_iv_pic3);
+        } else {
+            item_iv_pic3.setVisibility(View.GONE);
+        }
+        if (pic4 != null) {
+            Glide.with(this).load(pic4).into(item_iv_pic4);
+        } else {
+            item_iv_pic4.setVisibility(View.GONE);
+        }
     }
 
     public void initdata() {
@@ -276,7 +332,9 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void run() {
                             dialogProcess.dismiss();
-                            initdata();
+                            if (commonProperty.getUserID()!=null){
+                                initdata();
+                            }
                         }
                     });
                 } else {
