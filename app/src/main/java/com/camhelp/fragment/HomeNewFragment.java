@@ -96,6 +96,7 @@ public class HomeNewFragment extends Fragment {
     boolean firstComming = true;
     boolean firstOnresume = true;
     Dialog dialogProcess;
+    private int positionSelected = 0;
 
     public HomeNewFragment() {
     }
@@ -372,5 +373,28 @@ public class HomeNewFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    /**
+     * RecyclerView 移动到当前位置，
+     *
+     * @param manager   设置RecyclerView对应的manager
+     * @param mRecyclerView  当前的RecyclerView
+     * @param n  要跳转的位置
+     */
+    public static void MoveToPosition(LinearLayoutManager manager, RecyclerView mRecyclerView, int n) {
+
+
+        int firstItem = manager.findFirstVisibleItemPosition();
+        int lastItem = manager.findLastVisibleItemPosition();
+        if (n <= firstItem) {
+            mRecyclerView.scrollToPosition(n);
+        } else if (n <= lastItem) {
+            int top = mRecyclerView.getChildAt(n - firstItem).getTop();
+            mRecyclerView.scrollBy(0, top);
+        } else {
+            mRecyclerView.scrollToPosition(n);
+        }
+
     }
 }
