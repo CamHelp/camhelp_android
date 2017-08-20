@@ -326,7 +326,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         }
         mUser.setNickname(username);
         mUser.setIntro(intro);
-        mUser.setBirthday(birthday);
+        mUser.setBirthday(birthdayDate.toString());
         mUser.setTelephone(phone);
         mUser.setEmail(email);
         mUser.setAddress(address);

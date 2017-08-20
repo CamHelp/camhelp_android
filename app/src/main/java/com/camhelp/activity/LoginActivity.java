@@ -164,7 +164,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         userVO.setAccount("18084938391");
         userVO.setAvatar("http://www.stormstone.xin/img/avatar-storm.jpg");
         userVO.setBgpicture("http://www.stormstone.xin/img/about-bg.jpg");
-        userVO.setBirthday("1997-03-10");
+        userVO.setBirthday("1502279328");
         userVO.setEmail("stormstone@qq.com");
         userVO.setTelephone("18883747347");
         userVO.setNickname("石头人m");
