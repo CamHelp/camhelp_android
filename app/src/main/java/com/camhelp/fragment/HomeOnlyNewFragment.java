@@ -143,6 +143,12 @@ public class HomeOnlyNewFragment extends Fragment {
 //            }
 //        };
 //        handler.sendEmptyMessageDelayed(1, 2000);//handler延迟2秒执行
+
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        recycler_home_new.setLayoutManager(mLinearLayoutManager);
+        homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
+        recycler_home_new.setAdapter(homeNewAndFocusAdapter);
+        srl_home_new.setRefreshing(false);
     }
 
 
@@ -259,25 +265,12 @@ public class HomeOnlyNewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        recycler_home_new.setLayoutManager(mLinearLayoutManager);
-        homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
-        recycler_home_new.setAdapter(homeNewAndFocusAdapter);
-        srl_home_new.setRefreshing(false);
-
-//        Handler handler;
-//        handler = new Handler() {
-//            @Override
-//            public void handleMessage(Message msg) {
-//                mLinearLayoutManager = new LinearLayoutManager(getActivity());
-//                recycler_home_new.setLayoutManager(mLinearLayoutManager);
-//                homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
-//                recycler_home_new.setAdapter(homeNewAndFocusAdapter);
-//                srl_home_new.setRefreshing(false);
-//            }
-//        };
-//        handler.sendEmptyMessageDelayed(1, 2);//handler延迟2秒执行
+        homeNewAndFocusAdapter.notifyDataSetChanged();
+//        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+//        recycler_home_new.setLayoutManager(mLinearLayoutManager);
+//        homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
+//        recycler_home_new.setAdapter(homeNewAndFocusAdapter);
+//        srl_home_new.setRefreshing(false);
     }
 
     /**

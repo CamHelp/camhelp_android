@@ -34,6 +34,7 @@ import com.camhelp.common.CommonGlobal;
 import com.camhelp.fragment.CategoryFragment;
 import com.camhelp.fragment.CategoryTypeFragment;
 import com.camhelp.fragment.HomeFragment;
+import com.camhelp.fragment.HomeNewFragment;
 import com.camhelp.fragment.HomeOnlyNewFragment;
 import com.camhelp.fragment.MineFragment;
 import com.camhelp.fragment.PublishFragment;
@@ -56,6 +57,7 @@ public class MainViewpaperActivity extends BaseActivity implements BottomNavigat
     private String TAG = MainViewpaperActivity.class.getSimpleName();
     List<Fragment> fragments;
     private HomeFragment homeFragment;
+//    private HomeNewFragment homeFragment;
     private QueryFragment queryFragment;
     private PublishFragment publishFragment;
     private CategoryFragment categoryFragment;
@@ -120,6 +122,7 @@ public class MainViewpaperActivity extends BaseActivity implements BottomNavigat
 //        mViewPager.setIsCanScroll(false);//设置不允许滑动
         mDatas = new ArrayList<Fragment>();
         homeFragment = new HomeFragment();
+//        homeFragment = new HomeNewFragment();
         queryFragment = new QueryFragment();
         publishFragment = new PublishFragment();
         categoryFragment = new CategoryFragment();
