@@ -126,6 +126,7 @@ public class MineCollectionActivity extends AppCompatActivity implements View.On
                 R.color.green
         );
     }
+
     /**
      * 请求服务器数据
      */
@@ -187,8 +188,8 @@ public class MineCollectionActivity extends AppCompatActivity implements View.On
                     MineCollectionActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (commonPropertyVOList.size() > 0) {
-                                ll_mine_collection_nodata.setVisibility(View.GONE);
+                            if (commonPropertyVOList.size() == 0) {
+                                ll_mine_collection_nodata.setVisibility(View.VISIBLE);
                             }
                             mLinearLayoutManager = new LinearLayoutManager(MineCollectionActivity.this);
                             recycler_mine_collection.setLayoutManager(mLinearLayoutManager);
@@ -207,6 +208,7 @@ public class MineCollectionActivity extends AppCompatActivity implements View.On
                             }else {
                                 ll_mine_collection_nodata.setVisibility(View.GONE);
                             }
+                            srl_mine_collection.setRefreshing(false);
                         }
                     });
                 }
