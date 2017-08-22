@@ -161,7 +161,6 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         address = mUser.getAddress();
         birthday = mUser.getBirthday();
 
-
         Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photo1path)
                 .error(R.drawable.mine_bg)
                 .placeholder(R.drawable.mine_bg)
@@ -326,7 +325,9 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         }
         mUser.setNickname(username);
         mUser.setIntro(intro);
-        mUser.setBirthday(birthdayDate.toString());
+        if (birthdayDate!=null){
+            mUser.setBirthday(""+birthdayDate.getTime());
+        }
         mUser.setTelephone(phone);
         mUser.setEmail(email);
         mUser.setAddress(address);

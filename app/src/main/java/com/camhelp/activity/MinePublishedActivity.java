@@ -86,10 +86,9 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         inittitle();
         initdata();
         initview();
-//        recycler_mine_published.setLayoutManager(mLinearLayoutManager);
+
         recycler_mine_published.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         recycler_mine_published.setNestedScrollingEnabled(false);
-
         minePublishedAdapter = new MinePublishedAdapter(zlMinePublishedCommonPropertyList, this);
         recycler_mine_published.setAdapter(minePublishedAdapter);
     }
@@ -243,7 +242,10 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
                         @Override
                         public void run() {
                             saveLocalMinePublished();
-//                            minePublishedAdapter.notifyDataSetChanged();
+                            recycler_mine_published.setLayoutManager(new FullyLinearLayoutManager(MinePublishedActivity.this, LinearLayoutManager.VERTICAL, true));
+                            recycler_mine_published.setNestedScrollingEnabled(false);
+                            minePublishedAdapter = new MinePublishedAdapter(zlMinePublishedCommonPropertyList, MinePublishedActivity.this);
+                            recycler_mine_published.setAdapter(minePublishedAdapter);
                         }
                     });
                 } else {
@@ -266,7 +268,6 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         }
 
         minePublishedAdapter.notifyDataSetChanged();
-        Toast.makeText(this, "保存本地成功", Toast.LENGTH_SHORT).show();
         L.d(TAG,"保存本地成功");
     }
     @Override
