@@ -134,11 +134,15 @@
         <activity
             android:name=".activity.ItemLookMinePublishedActivity"
             android:label="@string/title_activity_item_look_mine_published"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.ItemLookOtherPublishedActivity"
             android:label="@string/title_activity_item_look_mine_published"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.CategoryEachActivity"
+            android:label="@string/title_activity_category_each"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

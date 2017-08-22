@@ -175,7 +175,7 @@ public class HomeOnlyNewFragment extends Fragment {
         fl_home_top.setBackgroundColor(Color.parseColor(colorPrimary));
 
         ll_nodata = (LinearLayout) getActivity().findViewById(R.id.ll_noanydata);
-        tv_loading = (TextView) getActivity().findViewById(R.id.tv_loading);
+        tv_loading = (TextView) getActivity().findViewById(R.id.tv_loading_onlynew);
         recycler_home_new = (RecyclerView) getActivity().findViewById(R.id.recycler_home_new);
         if (commonPropertyVOList.size() == 0) {
             ll_nodata.setVisibility(View.VISIBLE);

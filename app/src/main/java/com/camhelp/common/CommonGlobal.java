@@ -30,10 +30,20 @@ public class CommonGlobal {
     public static final int categoryType_problem =2;
     public static final int categoryType_lose =3;
     public static final int categoryType_pickup =4;
+    public static final int categoryType_fresh = 5;
+    public static final int categoryType_unburden =6;
+    public static final int categoryType_focus =7;
+    public static final int categoryType_new =8;
+    public static final int categoryType_hot =9;
     public static final String sCategoryType_experience = "活动";
     public static final String sCategoryType_problem ="问题";
     public static final String sCategoryType_lose ="失物";
     public static final String sCategoryType_pickup ="捡物";
+    public static final String sCategoryType_fresh = "新鲜事";
+    public static final String sCategoryType_unburden ="表白墙";
+    public static final String sCategoryType_focus ="关注";
+    public static final String sCategoryType_new ="最新";
+    public static final String sCategoryType_hot ="最热";
 
     public static final String  commonProperty = "commonProperty";
     public static final String  commonPropertyID = "commonPropertyID";

@@ -25,4 +25,5 @@
     <string name="title_activity_register_perfect">RegisterPerfectActivity</string>
     <string name="title_activity_main_viewpaper">MainViewpaperActivity</string>
     <string name="title_activity_item_look_mine_published">ItemLookMinePublishedActivity</string>
+    <string name="title_activity_category_each">CategoryEachActivity</string>
 </resources>

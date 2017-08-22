@@ -1,6 +1,7 @@
 package com.camhelp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.camhelp.R;
+import com.camhelp.activity.CategoryEachActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.utils.MyProcessDialog;
 
@@ -136,22 +138,49 @@ public class CategoryTypeFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.ll_categoryType_focus:
+                Intent intentFocus = new Intent(getActivity(), CategoryEachActivity.class);
+                intentFocus.putExtra(CommonGlobal.categoryType,CommonGlobal.sCategoryType_focus);
+                startActivity(intentFocus);
                 break;
             case R.id.ll_categoryType_new:
+                Intent intentNew = new Intent(getActivity(), CategoryEachActivity.class);
+                intentNew.putExtra(CommonGlobal.categoryType,CommonGlobal.sCategoryType_new);
+                startActivity(intentNew);
                 break;
             case R.id.ll_categoryType_hot:
+                Intent intentHot = new Intent(getActivity(), CategoryEachActivity.class);
+                intentHot.putExtra(CommonGlobal.categoryType,CommonGlobal.sCategoryType_hot);
+                startActivity(intentHot);
                 break;
             case R.id.ll_categoryType_fresh:
+                Intent intentFresh = new Intent(getActivity(), CategoryEachActivity.class);
+                intentFresh.putExtra(CommonGlobal.categoryType,CommonGlobal.sCategoryType_fresh);
+                startActivity(intentFresh);
                 break;
             case R.id.ll_categoryType_party:
+                Intent intentParty = new Intent(getActivity(), CategoryEachActivity.class);
+                intentParty.putExtra(CommonGlobal.categoryType,CommonGlobal.sCategoryType_experience);
+                startActivity(intentParty);
                 break;
             case R.id.ll_categoryType_lose:
+                Intent intentLose = new Intent(getActivity(), CategoryEachActivity.class);
+                intentLose.putExtra(CommonGlobal.categoryType,CommonGlobal.sCategoryType_lose);
+                startActivity(intentLose);
                 break;
             case R.id.ll_categoryType_pickup:
+                Intent intentPickup = new Intent(getActivity(), CategoryEachActivity.class);
+                intentPickup.putExtra(CommonGlobal.categoryType,CommonGlobal.sCategoryType_pickup);
+                startActivity(intentPickup);
                 break;
             case R.id.ll_categoryType_problem:
+                Intent intentProblem = new Intent(getActivity(), CategoryEachActivity.class);
+                intentProblem.putExtra(CommonGlobal.categoryType,CommonGlobal.sCategoryType_problem);
+                startActivity(intentProblem);
                 break;
             case R.id.ll_categoryType_unburden:
+                Intent intentUnburden = new Intent(getActivity(), CategoryEachActivity.class);
+                intentUnburden.putExtra(CommonGlobal.categoryType,CommonGlobal.sCategoryType_unburden);
+                startActivity(intentUnburden);
                 break;
         }
     }
