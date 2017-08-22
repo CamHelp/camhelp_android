@@ -25,112 +25,117 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
+            android:paddingTop="4dp"
+            android:padding="-2dp"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="120dp">
+
                 <LinearLayout
-                    android:gravity="center"
+                    android:id="@+id/ll_categoryType_focus"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:orientation="vertical"
-                    android:background="@color/danger_label">
+                    android:layout_gravity="center"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/brown"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/icon_category"/>
+                        android:src="@drawable/icon_categorytype_focus" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="关注"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    android:id="@+id/ll_categoryType_new"
+                        android:layout_gravity="center"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="18dp"
-                        android:background="@color/brown">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/icon_category" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                        android:text="最新"
-                        android:textColor="@color/white"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_margin="2dp"
                         android:background="@color/cadetblue">
-
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/icon_category" />
-
+                            android:src="@drawable/icon_categorytype_new"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                        android:text="最热"
-                        android:textColor="@color/white"/>
+                            android:text="最新"
+                            android:textColor="@color/white"/>
                     </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
-                <LinearLayout
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:orientation="vertical"
-                    android:background="@color/exitRed">
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/icon_category"/>
-                    <TextView
+                android:layout_height="120dp">
+                    <LinearLayout
+                        android:id="@+id/ll_categoryType_hot"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="新鲜事"
-                        android:textColor="@color/white"/>
-                </LinearLayout>
-
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_margin="2dp"
+                        android:background="@color/darkgoldenrod">
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/icon_categorytype_hot"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="最热"
+                            android:textColor="@color/white"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_categoryType_fresh"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_margin="2dp"
+                        android:background="@color/saddlebrown">
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/icon_categorytype_fresh"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="新鲜事"
+                            android:textColor="@color/white"/>
+                    </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/ll_categoryType_party"
+                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
                     android:orientation="vertical"
-                    android:background="@color/forestgreen">
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:background="@color/slategray">
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/icon_category"/>
+                        android:src="@drawable/icon_categorytype_party"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -138,113 +143,91 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
+                android:layout_height="120dp">
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/ll_categoryType_lose"
+                        android:layout_gravity="center"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="18dp"
-                        android:background="@color/goldenrod">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/icon_category" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                        android:text="失物"
-                        android:textColor="@color/white"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="18dp"
-                        android:background="@color/khaki">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/icon_category" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                        android:text="捡物"
-                        android:textColor="@color/white"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:orientation="vertical"
-                    android:background="@color/peru">
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/icon_category"/>
-                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="问题"
-                        android:textColor="@color/white"/>
-                </LinearLayout>
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_margin="2dp"
+                        android:background="@color/darkolivegreen">
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/icon_categorytype_lose"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="失物"
+                            android:textColor="@color/white"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_categoryType_pickup"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_margin="2dp"
+                        android:background="@color/darkslategrey">
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/icon_categorytype_pickup"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="捡物"
+                            android:textColor="@color/white"/>
+                    </LinearLayout>
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="120dp">
                 <LinearLayout
+                    android:id="@+id/ll_categoryType_problem"
+                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
                     android:orientation="vertical"
-                    android:background="@color/maroon">
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:background="@color/darkcyan">
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/icon_category"/>
+                        android:src="@drawable/icon_categorytype_problem"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="待定1"
+                        android:text="  问题  "
                         android:textColor="@color/white"/>
                 </LinearLayout>
-
                 <LinearLayout
+                    android:id="@+id/ll_categoryType_unburden"
+                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
                     android:orientation="vertical"
-                    android:background="@color/navigation">
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:background="@color/unknown_label">
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/icon_category"/>
+                        android:src="@drawable/icon_categorytype_unburden"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="待定2"
+                        android:text="表白墙"
                         android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>

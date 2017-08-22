@@ -24,14 +24,18 @@ import com.camhelp.utils.MyProcessDialog;
 /**
  * 选择类型fragment
  */
-public class CategoryTypeFragment extends Fragment {
+public class CategoryTypeFragment extends Fragment implements View.OnClickListener{
 
-    private String TAG = "HomeOnlyNewFragment";
+    private String TAG = "CategoryTypeFragment";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
     private FrameLayout fl_category_top;
+    private LinearLayout ll_base_categoryType;
+    private LinearLayout ll_categoryType_focus,ll_categoryType_new,ll_categoryType_hot,
+            ll_categoryType_fresh,ll_categoryType_party,ll_categoryType_lose,
+            ll_categoryType_pickup,ll_categoryType_problem,ll_categoryType_unburden;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,7 +79,7 @@ public class CategoryTypeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_category_type, container, false);
+        return inflater.inflate(R.layout.fragment_category_type02, container, false);
     }
 
     @Override
@@ -102,9 +106,55 @@ public class CategoryTypeFragment extends Fragment {
 
     public void initview(){
         fl_category_top = (FrameLayout) getActivity().findViewById(R.id.fl_category_top);
+        ll_base_categoryType = (LinearLayout) getActivity().findViewById(R.id.ll_base_categoryType);
         fl_category_top.setBackgroundColor(Color.parseColor(colorPrimary));
+        ll_base_categoryType.setBackgroundColor(Color.parseColor(colorPrimary));
+
+        ll_categoryType_focus = (LinearLayout) getActivity().findViewById(R.id.ll_categoryType_focus);
+        ll_categoryType_new = (LinearLayout) getActivity().findViewById(R.id.ll_categoryType_new);
+        ll_categoryType_hot = (LinearLayout) getActivity().findViewById(R.id.ll_categoryType_hot);
+        ll_categoryType_fresh = (LinearLayout) getActivity().findViewById(R.id.ll_categoryType_fresh);
+        ll_categoryType_party = (LinearLayout) getActivity().findViewById(R.id.ll_categoryType_party);
+        ll_categoryType_lose = (LinearLayout) getActivity().findViewById(R.id.ll_categoryType_lose);
+        ll_categoryType_pickup = (LinearLayout) getActivity().findViewById(R.id.ll_categoryType_pickup);
+        ll_categoryType_problem = (LinearLayout) getActivity().findViewById(R.id.ll_categoryType_problem);
+        ll_categoryType_unburden = (LinearLayout) getActivity().findViewById(R.id.ll_categoryType_unburden);
+
+        ll_categoryType_focus.setOnClickListener(this);
+        ll_categoryType_new.setOnClickListener(this);
+        ll_categoryType_hot.setOnClickListener(this);
+        ll_categoryType_fresh.setOnClickListener(this);
+        ll_categoryType_party.setOnClickListener(this);
+        ll_categoryType_lose.setOnClickListener(this);
+        ll_categoryType_pickup.setOnClickListener(this);
+        ll_categoryType_problem.setOnClickListener(this);
+        ll_categoryType_unburden.setOnClickListener(this);
     }
 
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.ll_categoryType_focus:
+                break;
+            case R.id.ll_categoryType_new:
+                break;
+            case R.id.ll_categoryType_hot:
+                break;
+            case R.id.ll_categoryType_fresh:
+                break;
+            case R.id.ll_categoryType_party:
+                break;
+            case R.id.ll_categoryType_lose:
+                break;
+            case R.id.ll_categoryType_pickup:
+                break;
+            case R.id.ll_categoryType_problem:
+                break;
+            case R.id.ll_categoryType_unburden:
+                break;
+        }
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -118,6 +168,7 @@ public class CategoryTypeFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

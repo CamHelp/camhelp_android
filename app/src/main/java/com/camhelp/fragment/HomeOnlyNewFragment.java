@@ -42,6 +42,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,7 @@ import static com.camhelp.R.id.fl_home_top;
 
 /**
  * Created by storm on 2017-08-12.
+ * 首页fragment，只有最新列表
  */
 
 public class HomeOnlyNewFragment extends Fragment {
@@ -94,6 +97,7 @@ public class HomeOnlyNewFragment extends Fragment {
     private HomeOnlyNewFragment.OnFragmentInteractionListener mListener;
 
     Dialog dialogProcess;
+    boolean firstComming = true;
 
     public HomeOnlyNewFragment() {
     }
@@ -130,7 +134,8 @@ public class HomeOnlyNewFragment extends Fragment {
 
         initcolor();
         initview();
-        initdata();
+        initolddata();
+        initnewdata();
 //        Handler handler;
 //        handler = new Handler() {
 //            @Override
@@ -181,9 +186,7 @@ public class HomeOnlyNewFragment extends Fragment {
             @Override
             public void onRefresh() {
                 srl_home_new.setRefreshing(true);
-//                onResume();
-                commonPropertyVOList.clear();
-                initdata();
+                okhttpHomeNew();
             }
         });
         //这个是下拉刷新出现的那个圈圈要显示的颜色
@@ -230,16 +233,16 @@ public class HomeOnlyNewFragment extends Fragment {
     /**
      * 加载最新数据
      */
-    public void initdata() {
+    public void initnewdata() {
         srl_home_new.setRefreshing(true);
         okhttpHomeNew();
+    }
 
-        CommonPropertyVO commonPropertyVO = new CommonPropertyVO();
-        commonPropertyVO.setCategoryType(1);
-        commonPropertyVO.setUserID(1);
-        commonPropertyVO.setAvatar("");
-        commonPropertyVO.setNickname("nickname");
-//        commonPropertyVOList.add(commonPropertyVO);
+    /**
+     * 加载上一次数据
+     */
+    public void initolddata() {
+        commonPropertyVOList = DataSupport.findAll(CommonPropertyVO.class);
     }
 
     /**
@@ -250,35 +253,28 @@ public class HomeOnlyNewFragment extends Fragment {
         for (int i = 0; i < total; i++) {
             commonPropertyVOList.add(commonPropertyVOList.get(i));
         }
-        Handler handler;
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                homeNewAndFocusAdapter.notifyDataSetChanged();
-                srl_home_new.setRefreshing(false);
-                tv_loading.setVisibility(View.GONE);
-            }
-        };
-        handler.sendEmptyMessageDelayed(1, 2000);//handler延迟2秒执行
+        homeNewAndFocusAdapter.notifyDataSetChanged();
+        srl_home_new.setRefreshing(false);
+//        homeNewAndFocusAdapter.notifyItemRemoved(homeNewAndFocusAdapter.getItemCount());
+        tv_loading.setVisibility(View.GONE);
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
-        homeNewAndFocusAdapter.notifyDataSetChanged();
-//        mLinearLayoutManager = new LinearLayoutManager(getActivity());
-//        recycler_home_new.setLayoutManager(mLinearLayoutManager);
-//        homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
-//        recycler_home_new.setAdapter(homeNewAndFocusAdapter);
-//        srl_home_new.setRefreshing(false);
+//        homeNewAndFocusAdapter.notifyDataSetChanged();
     }
 
     /**
      * 请求服务器数据
      */
     private void okhttpHomeNew() {
-        srl_home_new.setRefreshing(true);
-        dialogProcess.show();
+        if (firstComming) {
+            dialogProcess.show();
+            firstComming = false;
+        }
+
         final String url = CommonUrls.SERVER_COMMONLIST_ALL;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
@@ -322,7 +318,9 @@ public class HomeOnlyNewFragment extends Fragment {
                 final String msg = msgJson.getAsString();
 
                 if (code == 0) {
+                    commonPropertyVOList.clear();//得到新数据把旧数据清空
                     final JsonArray dataJson = element.getAsJsonArray("data");
+//                    commonPropertyVOList = GsonUtil.parseJsonArrayWithGson(dataJson.toString(), CommonPropertyVO.class);
                     commonPropertyVOList = gson.fromJson(dataJson, new TypeToken<List<CommonPropertyVO>>() {
                     }.getType());
 
@@ -331,9 +329,15 @@ public class HomeOnlyNewFragment extends Fragment {
                         public void run() {
                             if (commonPropertyVOList.size() > 0) {
                                 ll_nodata.setVisibility(View.GONE);
+                                saveLocal();//把最新的保存本地
                             }
-                            onResume();
+//                            onResume();
                             dialogProcess.dismiss();
+                            mLinearLayoutManager = new LinearLayoutManager(getActivity());
+                            recycler_home_new.setLayoutManager(mLinearLayoutManager);
+                            homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
+                            recycler_home_new.setAdapter(homeNewAndFocusAdapter);
+                            srl_home_new.setRefreshing(false);
                         }
                     });
                 } else {
@@ -341,13 +345,20 @@ public class HomeOnlyNewFragment extends Fragment {
                         @Override
                         public void run() {
                             Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                            srl_home_new.setRefreshing(false);
                             dialogProcess.dismiss();
                         }
                     });
                 }
             }
         });
+    }
+
+    /*把最新的数据保存本地*/
+    private void saveLocal(){
+        DataSupport.deleteAll(CommonPropertyVO.class);
+        for (int i= 0;i<commonPropertyVOList.size();i++){
+            commonPropertyVOList.get(i).save();
+        }
     }
 
     public void onButtonPressed(Uri uri) {

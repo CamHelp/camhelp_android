@@ -44,6 +44,9 @@ import com.camhelp.utils.NoSlideViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 将mainactivity里的五个fragment全部替换为viewpaper
+ */
 public class MainViewpaperActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
 
     private SharedPreferences pref;
@@ -56,11 +59,12 @@ public class MainViewpaperActivity extends BaseActivity implements BottomNavigat
     int lastSelectedPosition = 0;
     private String TAG = MainViewpaperActivity.class.getSimpleName();
     List<Fragment> fragments;
-    private HomeFragment homeFragment;
-//    private HomeNewFragment homeFragment;
+//    private HomeFragment homeFragment;
+    private HomeOnlyNewFragment homeFragment;
     private QueryFragment queryFragment;
     private PublishFragment publishFragment;
-    private CategoryFragment categoryFragment;
+//    private CategoryFragment categoryFragment;
+    private CategoryTypeFragment categoryFragment;
     private MineFragment mineFragment;
     private long exitTime = 0;
 
@@ -121,11 +125,12 @@ public class MainViewpaperActivity extends BaseActivity implements BottomNavigat
         mViewPager = (NoSlideViewPager) findViewById(R.id.viewpager_main);
 //        mViewPager.setIsCanScroll(false);//设置不允许滑动
         mDatas = new ArrayList<Fragment>();
-        homeFragment = new HomeFragment();
-//        homeFragment = new HomeNewFragment();
+//        homeFragment = new HomeFragment();
+        homeFragment = new HomeOnlyNewFragment();
         queryFragment = new QueryFragment();
         publishFragment = new PublishFragment();
-        categoryFragment = new CategoryFragment();
+//        categoryFragment = new CategoryFragment();
+        categoryFragment = new CategoryTypeFragment();
         mineFragment = new MineFragment();
         mDatas.add(homeFragment);
         mDatas.add(queryFragment);
