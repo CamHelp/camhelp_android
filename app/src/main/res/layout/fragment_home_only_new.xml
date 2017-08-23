@@ -18,6 +18,7 @@
             android:src="@drawable/campus001"/>
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/fl_base_home_onlynew"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_gray">

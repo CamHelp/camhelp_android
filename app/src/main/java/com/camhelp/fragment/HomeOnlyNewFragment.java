@@ -72,6 +72,7 @@ public class HomeOnlyNewFragment extends Fragment {
     private SwipeRefreshLayout srl_home_new;
     private RecyclerView recycler_home_new;
     private LinearLayout ll_nodata;
+    private FrameLayout fl_base_home_onlynew;
 
 
     private LinearLayoutManager mLinearLayoutManager;
@@ -172,7 +173,9 @@ public class HomeOnlyNewFragment extends Fragment {
 
     public void initview() {
         fl_home_top = (FrameLayout) getActivity().findViewById(R.id.fl_home_top);
+        fl_base_home_onlynew = (FrameLayout) getActivity().findViewById(R.id.fl_base_home_onlynew);
         fl_home_top.setBackgroundColor(Color.parseColor(colorPrimary));
+        fl_base_home_onlynew.setBackgroundColor(Color.parseColor(colorPrimary));
 
         ll_nodata = (LinearLayout) getActivity().findViewById(R.id.ll_noanydata);
         tv_loading = (TextView) getActivity().findViewById(R.id.tv_loading_onlynew);
