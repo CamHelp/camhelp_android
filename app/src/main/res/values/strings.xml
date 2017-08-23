@@ -26,4 +26,6 @@
     <string name="title_activity_main_viewpaper">MainViewpaperActivity</string>
     <string name="title_activity_item_look_mine_published">ItemLookMinePublishedActivity</string>
     <string name="title_activity_category_each">CategoryEachActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
 </resources>

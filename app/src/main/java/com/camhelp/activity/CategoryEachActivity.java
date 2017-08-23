@@ -47,6 +47,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * 分类各项浏览activity
+ * 暂时全部使用最新列表
+ */
 public class CategoryEachActivity extends AppCompatActivity implements View.OnClickListener{
 
     private SharedPreferences pref;

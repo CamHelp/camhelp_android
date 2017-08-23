@@ -2,11 +2,12 @@
 <litepal>
     <dbname value="camhelp" ></dbname>
 
-    <version value="3" ></version>
+    <version value="4" ></version>
 
     <list>
         <mapping class="com.camhelp.entity.CommonProperty"></mapping>
         <mapping class="com.camhelp.entity.CommonPropertyVO"></mapping>
         <mapping class="com.camhelp.entity.ZLMinePublishedCommonProperty"></mapping>
+        <mapping class="com.camhelp.entity.SearchHistory"></mapping>
     </list>
 </litepal>

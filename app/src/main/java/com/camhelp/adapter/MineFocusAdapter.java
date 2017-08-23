@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * Created by storm on 2017-08-22.
+ * 我关注的用户的adapter
  */
 
 public class MineFocusAdapter extends RecyclerView.Adapter<MineFocusAdapter.ViewHolder> {

@@ -49,4 +49,7 @@ public class CommonGlobal {
     public static final String  commonPropertyID = "commonPropertyID";
     public static final String  userAvatar = "user_Avatar";
     public static final String  userNickname = "user_nickname";
+
+    /*搜索内容*/
+    public static final String searchContent = "searchContent";
 }

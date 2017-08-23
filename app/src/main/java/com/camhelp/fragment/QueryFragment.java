@@ -1,6 +1,7 @@
 package com.camhelp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import com.camhelp.R;
+import com.camhelp.activity.SearchActivity;
 import com.camhelp.common.CommonGlobal;
 
 /**
@@ -120,6 +122,8 @@ public class QueryFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.ll_search://搜索
+                Intent intentSearch = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intentSearch);
                 break;
         }
     }
