@@ -19,6 +19,7 @@
 
             <!--搜索框-->
             <LinearLayout
+                android:id="@+id/ll_search"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:padding="4dp"
@@ -30,22 +31,14 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/icon_search"/>
-                <EditText
-                    android:id="@+id/et_search"
+                <TextView
                     android:layout_gravity="center"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="请输入搜索内容"
+                    android:hint="搜索全部"
                     android:background="@null"
                     android:maxLines="1"/>
-                <Button
-                    android:id="@+id/bt_search"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="搜索"
-                    android:background="@null"/>
             </LinearLayout>
 
             <TextView

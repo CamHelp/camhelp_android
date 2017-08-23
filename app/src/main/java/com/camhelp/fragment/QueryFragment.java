@@ -35,10 +35,7 @@ public class QueryFragment extends Fragment implements View.OnClickListener{
     private SharedPreferences.Editor editor;
     private String colorPrimary,colorPrimaryBlew,colorPrimaryDark,colorAccent;
 
-    private LinearLayout ll_base;
-
-    private EditText et_search;
-    private Button bt_search;
+    private LinearLayout ll_base,ll_search;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -115,17 +112,14 @@ public class QueryFragment extends Fragment implements View.OnClickListener{
         ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base_query);
         ll_base.setBackgroundColor(Color.parseColor(colorPrimary));
 
-        et_search = (EditText) getActivity().findViewById(R.id.et_search);
-        bt_search = (Button) getActivity().findViewById(R.id.bt_search);
-
-        bt_search.setOnClickListener(this);
+        ll_search = (LinearLayout) getActivity().findViewById(R.id.ll_search);
+        ll_search.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.bt_search://搜索
-
+            case R.id.ll_search://搜索
                 break;
         }
     }
