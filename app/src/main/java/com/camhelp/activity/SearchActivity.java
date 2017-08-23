@@ -30,7 +30,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     private ImageButton imgBtn_search_return,imgBtn_search;
     private EditText et_search_content;
-    private LinearLayout ll_searchHistory_nodata;
+    private LinearLayout ll_searchHistory_nodata,ll_delete_searchHistory;
     private RecyclerView recycler_searchHistory;
 
     private List<SearchHistory> searchHistoryList = new ArrayList<SearchHistory>();
@@ -52,6 +52,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         imgBtn_search.setOnClickListener(this);
         et_search_content = (EditText) findViewById(R.id.et_search_content);
         ll_searchHistory_nodata = (LinearLayout) findViewById(R.id.ll_searchHistory_nodata);
+        ll_delete_searchHistory = (LinearLayout) findViewById(R.id.ll_delete_searchHistory);
+        ll_delete_searchHistory.setOnClickListener(this);
+        ll_delete_searchHistory.setVisibility(View.GONE);
         recycler_searchHistory = (RecyclerView) findViewById(R.id.recycler_searchHistory);
     }
 
@@ -60,6 +63,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         searchHistoryList = DataSupport.findAll(SearchHistory.class);
         if (searchHistoryList.size()>0){
             ll_searchHistory_nodata.setVisibility(View.GONE);
+            ll_delete_searchHistory.setVisibility(View.VISIBLE);
             mLinearLayoutManager = new LinearLayoutManager(this);
             recycler_searchHistory.setLayoutManager(mLinearLayoutManager);
             searchHistoryAdapter = new SearchHistoryAdapter(searchHistoryList, SearchActivity.this);
@@ -81,6 +85,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     search(et_search_content.getText().toString());
                 }
                 break;
+            case R.id.ll_delete_searchHistory://清空历史记录
+                DataSupport.deleteAll(SearchHistory.class);
+                searchHistoryList.clear();
+                searchHistoryAdapter.notifyDataSetChanged();
+                ll_delete_searchHistory.setVisibility(View.GONE);
+                ll_searchHistory_nodata.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -89,6 +100,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         Intent intentSearch = new Intent(this,SearchResultActivity.class);
         intentSearch.putExtra(CommonGlobal.searchContent,sSearchContent);
         startActivity(intentSearch);
+        initSearchHistory();
     }
 
     /**保存搜索历史到本地*/
