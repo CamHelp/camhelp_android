@@ -10,15 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorPrimary">
-        <TextView
+        <ImageView
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="camhelp"
-            android:textSize="18dp"
-            android:textColor="@color/white"
-            android:fontFamily="@string/title_activity_main"/>
+            android:src="@drawable/campus001"/>
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"

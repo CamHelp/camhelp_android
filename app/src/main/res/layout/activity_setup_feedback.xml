@@ -6,19 +6,61 @@
     android:orientation="vertical"
     tools:context="com.camhelp.activity.SetupFeedbackActivity">
 
-    <include layout="@layout/top_returnandtitle"/>
+    <include layout="@layout/top_return_title_tv"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:id="@+id/ll_scroll_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="        如果你有遇到什么问题，或者你有什么意见建议，你可以在这里给我们反馈，我们会在收到你的反馈后以最快的时间处理你的反馈，谢谢你的支持！"/>
+            <TextView
+                android:layout_marginTop="38dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="描述你的问题"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edit_shape_feedback">
+                <Spinner
+                    android:id="@+id/spinner_feedback_type"
+                    android:padding="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/feedback_type">
+                </Spinner>
+                <EditText
+                    android:id="@+id/et_feedback_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_shape_feedback"
+                    android:gravity="top"
+                    android:padding="8dp"
+                    android:hint="描述得越详细越好（最短10个字）"
+                    android:minLines="6" />
+            </LinearLayout>
 
-
+            <TextView
+                android:layout_marginTop="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="你的联系方式"/>
+            <EditText
+                android:id="@+id/et_feedback_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="@drawable/edit_shape_feedback"
+                android:hint="邮箱/手机/QQ/微信"/>
 
         </LinearLayout>
     </ScrollView>

@@ -76,7 +76,8 @@
         <activity
             android:name=".activity.SetupFeedbackActivity"
             android:label="@string/title_activity_setup_feedback"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".activity.PublishExperienceActivity"
             android:label="@string/title_activity_publish_club"

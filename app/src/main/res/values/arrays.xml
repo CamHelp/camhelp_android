@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feedback_type">
+        <item>分类</item>
+        <item>登录出现问题</item>
+        <item>运行错误</item>
+        <item>举报违法行为</item>
+        <item>意见建议</item>
+        <item>其他问题</item>
+    </string-array>
+
+</resources>
