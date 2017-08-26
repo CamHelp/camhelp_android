@@ -216,10 +216,8 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
     public void initdata() {
         item_top_tv_nickname.setText(commonProperty.getNickname());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (commonProperty.getCreatetime() != null) {
-            String sCreatetime = sdf.format(commonProperty.getCreatetime());
-            item_top_tv_createtime.setText(sCreatetime);
+            item_top_tv_createtime.setText(dateConversionUtils.sdateToString(commonProperty.getCreatetime()));
         }
 
         if (commonProperty.getCategoryType() != null) {
@@ -326,7 +324,7 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
 
                 if (code == 0) {
                     final JsonObject dataJson = element.getAsJsonObject("data");
-//                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
+                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
 
                     ItemLookMinePublishedActivity.this.runOnUiThread(new Runnable() {
                         @Override

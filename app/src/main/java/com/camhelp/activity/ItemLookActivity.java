@@ -31,6 +31,7 @@ import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.entity.User;
 import com.camhelp.entity.UserVO;
+import com.camhelp.utils.DateConversionUtils;
 import com.camhelp.utils.GsonUtil;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MyProcessDialog;
@@ -92,6 +93,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     UserVO mUser = new UserVO();//用户
 
     Dialog dialogProcess;
+    DateConversionUtils dateConversionUtils = new DateConversionUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,10 +223,8 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     public void initdata() {
         item_top_tv_nickname.setText(commonProperty.getNickname());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (commonProperty.getCreatetime() != null) {
-            String sCreatetime = sdf.format(commonProperty.getCreatetime());
-            item_top_tv_createtime.setText(sCreatetime);
+            item_top_tv_createtime.setText(dateConversionUtils.sdateToString(commonProperty.getCreatetime()));
         }
 
         if (commonProperty.getCategoryType() != null) {
@@ -331,7 +331,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
                 if (code == 0) {
                     final JsonObject dataJson = element.getAsJsonObject("data");
-//                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
+                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
                     L.d(TAG,"详细信息"+dataJson.toString());
                     ItemLookActivity.this.runOnUiThread(new Runnable() {
                         @Override
