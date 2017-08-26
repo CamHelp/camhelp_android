@@ -83,8 +83,8 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
         initcolor();
         inittitle();
         initview();
-//        okhttpMineFocus();
-        initTestData();
+        okhttpMineFocus();
+//        initTestData();
     }
 
     /*获取主题色*/
@@ -222,7 +222,6 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
                                 ll_mine_focus_nodata.setVisibility(View.VISIBLE);
                                 tv_mine_focus_nodata.setText("你还没有关注任何人");
                             }
-                            Toast.makeText(MineFocusActivity.this, "" + userVOList.size(), Toast.LENGTH_SHORT).show();
                             mLinearLayoutManager = new LinearLayoutManager(MineFocusActivity.this);
                             recycler_mine_focus.setLayoutManager(mLinearLayoutManager);
                             mineFocusAdapter = new MineFocusAdapter(userVOList, MineFocusActivity.this);

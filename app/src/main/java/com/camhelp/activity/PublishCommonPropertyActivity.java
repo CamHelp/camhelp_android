@@ -318,6 +318,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
 //        mCommonProperty.setProType(protype);
         mCommonProperty.setProType(0);//问题类型？？？
         mCommonProperty.setGoodscontact(contact);
+        mCommonProperty.setUsermapperid(muserid);
 
         createDate = new Date();
         if ("".equals(title) && "".equals(intro) && "".equals(content)) {
