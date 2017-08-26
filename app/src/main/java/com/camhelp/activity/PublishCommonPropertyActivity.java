@@ -334,17 +334,33 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
      * 保存到服务器
      */
     private void okhttpPublish() {
-        String startTime,endTime;
-        if (startDate!=null){
-            startTime = ""+startDate.getTime();
-        }else {
-            startTime="-1";
+        String startTime, endTime;
+        if (startDate != null) {
+            startTime = "" + startDate.getTime();
+        } else {
+            startTime = "-1";
         }
-        if (endDate!=null){
-            endTime = ""+endDate.getTime();
-        }else {
-            endTime="-1";
+        if (endDate != null) {
+            endTime = "" + endDate.getTime();
+        } else {
+            endTime = "-1";
         }
+
+        /*判断是否选择了图片*/
+        String sPhotopath1="", sPhotopath2="", sPhotopath3="", sPhotopath4="";
+        if (photopath1 != null) {
+            sPhotopath1 = photopath1;
+        }
+        if (photopath2 != null) {
+            sPhotopath2 = photopath1;
+        }
+        if (photopath2 != null) {
+            sPhotopath2 = photopath1;
+        }
+        if (photopath2 != null) {
+            sPhotopath2 = photopath1;
+        }
+
         final String url = CommonUrls.SERVER_PUBLISH;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
@@ -353,15 +369,12 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                 .add("commonTitle", "" + title)
                 .add("commonIntro", "" + intro)
                 .add("commonContent", "" + content)
-                .add("commonPic1", "" + photopath1)
-                .add("commonPic2", "" + photopath2)
-                .add("commonPic3", "" + photopath3)
-                .add("commonPic4", "" + photopath4)
-                .add("createtime", "" + createDate.getTime())
-                .add("praisenum", "" + 0)
-                .add("browsenum", "" + 0)
-                .add("expstartTime", startTime)
-                .add("expendTime", endTime)
+                .add("commonPic1", "" + sPhotopath1)
+                .add("commonPic2", "" + sPhotopath2)
+                .add("commonPic3", "" + sPhotopath3)
+                .add("commonPic4", "" + sPhotopath4)
+//                .add("expstartTime", startTime)
+//                .add("expendTime", endTime)
                 .add("proType", "" + protype)
                 .add("goodscontact", "" + contact)
                 .add("usermapperid", "" + muserid)
@@ -416,7 +429,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     PublishCommonPropertyActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(PublishCommonPropertyActivity.this, "发布失败:"+msg, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PublishCommonPropertyActivity.this, "发布失败:" + msg, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
