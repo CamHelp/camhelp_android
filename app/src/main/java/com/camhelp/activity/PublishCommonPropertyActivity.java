@@ -15,7 +15,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,14 +35,34 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.camhelp.R;
+import com.camhelp.adapter.MineFocusAdapter;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.CommonProperty;
+import com.camhelp.entity.UserVO;
+import com.camhelp.entity.ZLMinePublishedCommonProperty;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * 共同的发布activity
@@ -49,7 +71,8 @@ import java.util.Date;
 public class PublishCommonPropertyActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PublishCommonPropertyActivity";
     int categoryType;//发布类型
-    private CommonProperty mCommonProperty = new CommonProperty();
+    //    private CommonProperty mCommonProperty = new CommonProperty();
+    private ZLMinePublishedCommonProperty mCommonProperty = new ZLMinePublishedCommonProperty();
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -78,15 +101,18 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
 
     private String title, intro, content, contact;//标题，简介，内容，物品联系方式
     private String protype;//问题类型
-    private Date startDate, endDate;//活动开始结束时间
+    private Date startDate, endDate, createDate;//活动开始结束时间,当前创建时间
     private String sStartTime, sEndTime;//活动开始结束时间yyyy-mm-dd
     private String photopath1, photopath2, photopath3, photopath4;//照片路径
+
+    private int muserid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_common_property);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        muserid = pref.getInt(CommonGlobal.user_id, 0);//得到自己的用户id
         initcolor();
         inittitle();
         initview();
@@ -281,27 +307,121 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         mCommonProperty.setCommonPic3(photopath3);
         mCommonProperty.setCommonPic4(photopath4);
         Date creattime = new Date();
-        mCommonProperty.setCreatetime(creattime);
+//        mCommonProperty.setCreatetime(creattime);
+        mCommonProperty.setCreatetime("" + creattime.getTime());
         mCommonProperty.setPraisenum(0);
         mCommonProperty.setBrowsenum(0);
-        mCommonProperty.setUserId(0);
+//        mCommonProperty.setUserId(0);
+        mCommonProperty.setUsermapperid(0);
         mCommonProperty.setExpstartTime(sStartTime);
         mCommonProperty.setExpendTime(sEndTime);
-        mCommonProperty.setProType(protype);
+//        mCommonProperty.setProType(protype);
+        mCommonProperty.setProType(0);//问题类型？？？
         mCommonProperty.setGoodscontact(contact);
 
+        createDate = new Date();
         if ("".equals(title) && "".equals(intro) && "".equals(content)) {
             Toast.makeText(this, "请填写内容", Toast.LENGTH_SHORT).show();
         } else {
-            if (mCommonProperty.save()) {
-                L.d(TAG, "mCommonProperty::" + mCommonProperty.toString());
-                Toast.makeText(this, "本地保存成功", Toast.LENGTH_SHORT).show();
-                hintKbTwo();
-                finish();
-            } else {
-                Toast.makeText(this, "本地保存失败", Toast.LENGTH_SHORT).show();
-            }
+            L.d(TAG, "mCommonProperty::" + mCommonProperty.toString());
+//            hintKbTwo();
+//            finish();
+            okhttpPublish();
         }
+    }
+
+    /**
+     * 保存到服务器
+     */
+    private void okhttpPublish() {
+        String startTime,endTime;
+        if (startDate!=null){
+            startTime = ""+startDate.getTime();
+        }else {
+            startTime="-1";
+        }
+        if (endDate!=null){
+            endTime = ""+endDate.getTime();
+        }else {
+            endTime="-1";
+        }
+        final String url = CommonUrls.SERVER_PUBLISH;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
+
+        FormBody body = new FormBody.Builder()
+                .add("categoryType", "" + categoryType)
+                .add("commonTitle", "" + title)
+                .add("commonIntro", "" + intro)
+                .add("commonContent", "" + content)
+                .add("commonPic1", "" + photopath1)
+                .add("commonPic2", "" + photopath2)
+                .add("commonPic3", "" + photopath3)
+                .add("commonPic4", "" + photopath4)
+                .add("createtime", "" + createDate.getTime())
+                .add("praisenum", "" + 0)
+                .add("browsenum", "" + 0)
+                .add("expstartTime", startTime)
+                .add("expendTime", endTime)
+                .add("proType", "" + protype)
+                .add("goodscontact", "" + contact)
+                .add("usermapperid", "" + muserid)
+                .build();
+        Request request = new Request.Builder().url(url).post(body).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("TAG", "onFailure" + e.toString());
+                PublishCommonPropertyActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PublishCommonPropertyActivity.this, "发布失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String result = response.body().string();
+                Log.d("TAG" + "onresponse result:", result);
+
+                Gson gson = new Gson();
+                //  获得 解析者
+                JsonParser parser = new JsonParser();
+                //  获得 根节点元素
+                JsonElement root = parser.parse(result);
+                //  根据 文档判断根节点属于 什么类型的 Gson节点对象
+                // 假如文档 显示 根节点 为对象类型
+                // 获得 根节点 的实际 节点类型
+                JsonObject element = root.getAsJsonObject();
+                //  取得 节点 下 的某个节点的 value
+                // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                final String msg = msgJson.getAsString();
+
+                if (code == 0) {
+                    PublishCommonPropertyActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(PublishCommonPropertyActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    hintKbTwo();
+                    finish();
+                } else {
+                    PublishCommonPropertyActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(PublishCommonPropertyActivity.this, "发布失败:"+msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public void showphotodialg(View view) {

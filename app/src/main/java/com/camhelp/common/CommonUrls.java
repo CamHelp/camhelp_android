@@ -17,9 +17,13 @@ public class CommonUrls {
 
     /*服务器相关路径*/
 
-    /**服务器地址*/
+    /**
+     * 服务器地址
+     */
     public static final String SERVER_ADDRESS = "http://39.108.174.87:8080";
-    /**图片的根路径*/
+    /**
+     * 图片的根路径
+     */
     public static final String SERVER_ADDRESS_PIC = "http://39.108.174.87:8081/camhelp/";
 
     /**
@@ -35,32 +39,53 @@ public class CommonUrls {
      * 路径：/user/register
      */
     public static final String SERVER_REGISTER = SERVER_ADDRESS + "/user/register";
+
     /**
      * 功能：得到所有的记录
      * 方式：get
      * 路径：/classify/list
-     * */
+     */
     public static final String SERVER_COMMONLIST_ALL = SERVER_ADDRESS + "/classify/list";
+
     /**
      * 功能：得到某一项具体的记录
      * 方式：post
      * 路径：/classify/details
      * post：commonid
-     * */
+     */
     public static final String SERVER_COMMONLIST_ONE = SERVER_ADDRESS + "/classify/details";
+
     /**
      * 功能：得到某一用户的信息
      * 方式：post
      * 路径：/find/user
      * post：userid
      */
-    public static final String SERVER_USER_ONE= SERVER_ADDRESS + "/user/find/user";
+    public static final String SERVER_USER_ONE = SERVER_ADDRESS + "/user/find/user";
+
     /**
      * 通过userid返回该人发布的信息
      * 方式：post
      * 路径：classify/find/publishbyuser
      * post：userid
      */
-    public static final String SERVER_USER_PUBLISHED= SERVER_ADDRESS + "/classify/find/publishbyuser";
+    public static final String SERVER_USER_PUBLISHED = SERVER_ADDRESS + "/classify/find/publishbyuser";
+
+    /**
+     * 通过用户id得到用户关注的人的列表
+     * 方式：post
+     * 路径：/user/attentionuser
+     * post：userid
+     */
+    public static final String SERVER_MINE_FOCUS = SERVER_ADDRESS + "/user/attentionuser";
+
+    /**
+     * 发布
+     * 方式：post
+     * 路径：/classify/publish
+     *
+     */
+    public static final String SERVER_PUBLISH = SERVER_ADDRESS + "/classify/publish";
+
 
 }

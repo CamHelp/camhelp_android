@@ -50,7 +50,7 @@ import okhttp3.Response;
 
 /**
  * 我关注的
- * */
+ */
 public class MineFocusActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences pref;
@@ -70,13 +70,16 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
     boolean isLoading;
     private LinearLayoutManager mLinearLayoutManager;
     private MineFocusAdapter mineFocusAdapter;
-//    private List<CommonPropertyVO> userVOList = new ArrayList<CommonPropertyVO>();
+    //    private List<CommonPropertyVO> userVOList = new ArrayList<CommonPropertyVO>();
     private List<UserVO> userVOList = new ArrayList<UserVO>();
+    int muserid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_focus);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        muserid = pref.getInt(CommonGlobal.user_id, 0);//得到自己的用户id
         initcolor();
         inittitle();
         initview();
@@ -108,7 +111,7 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
         top_return.setOnClickListener(this);
     }
 
-    private void initview(){
+    private void initview() {
         ll_mine_focus_nodata = (LinearLayout) findViewById(R.id.ll_mine_focus_nodata);
         ll_mine_focus_nodata.setVisibility(View.GONE);
         tv_mine_focus_nodata = (TextView) findViewById(R.id.tv_mine_focus_nodata);
@@ -130,18 +133,18 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
         );
     }
 
-    private void initTestData(){
-        for (int i =0;i<9;i++){
+    private void initTestData() {
+        for (int i = 0; i < 9; i++) {
             UserVO userVo = new UserVO();
-            if (i%2==0){
+            if (i % 2 == 0) {
                 userVo.setUserID(1);
                 userVo.setAvatar("user/first.jpg");
-            }else {
+            } else {
                 userVo.setUserID(2);
                 userVo.setAvatar("user/second.jpg");
             }
-            userVo.setNickname("STORM"+i);
-            userVo.setIntro("intro"+i);
+            userVo.setNickname("STORM" + i);
+            userVo.setIntro("intro" + i);
             userVOList.add(userVo);
         }
 
@@ -158,11 +161,13 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
     private void okhttpMineFocus() {
         srl_mine_focus.setRefreshing(true);
 
-        final String url = CommonUrls.SERVER_ADDRESS+"/attentionuser";
+        final String url = CommonUrls.SERVER_MINE_FOCUS;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
-        FormBody body = new FormBody.Builder().build();
-        Request request = new Request.Builder().url(url).get().build();
+        FormBody body = new FormBody.Builder()
+                .add("userid", "" + muserid)
+                .build();
+        Request request = new Request.Builder().url(url).post(body).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
@@ -171,10 +176,10 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
                 MineFocusActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (userVOList.size() == 0){
+                        if (userVOList.size() == 0) {
                             ll_mine_focus_nodata.setVisibility(View.VISIBLE);
                             tv_mine_focus_nodata.setText("无法连接到服务器");
-                        }else {
+                        } else {
                             ll_mine_focus_nodata.setVisibility(View.GONE);
                         }
                         srl_mine_focus.setRefreshing(false);
@@ -217,7 +222,7 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
                                 ll_mine_focus_nodata.setVisibility(View.VISIBLE);
                                 tv_mine_focus_nodata.setText("你还没有关注任何人");
                             }
-                            Toast.makeText(MineFocusActivity.this, ""+userVOList.size(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MineFocusActivity.this, "" + userVOList.size(), Toast.LENGTH_SHORT).show();
                             mLinearLayoutManager = new LinearLayoutManager(MineFocusActivity.this);
                             recycler_mine_focus.setLayoutManager(mLinearLayoutManager);
                             mineFocusAdapter = new MineFocusAdapter(userVOList, MineFocusActivity.this);
@@ -229,10 +234,10 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
                     MineFocusActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (userVOList.size() == 0){
+                            if (userVOList.size() == 0) {
                                 ll_mine_focus_nodata.setVisibility(View.VISIBLE);
                                 tv_mine_focus_nodata.setText(msg);
-                            }else {
+                            } else {
                                 ll_mine_focus_nodata.setVisibility(View.GONE);
                             }
                             srl_mine_focus.setRefreshing(false);
