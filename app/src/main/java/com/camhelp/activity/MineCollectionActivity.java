@@ -133,7 +133,7 @@ public class MineCollectionActivity extends AppCompatActivity implements View.On
     private void okhttpMineCollection() {
         srl_mine_collection.setRefreshing(true);
 
-        final String url = CommonUrls.SERVER_COMMONLIST_ALL;
+        final String url = CommonUrls.SERVER_COMMONLIST_ALL;//暂时使用所有列表。。
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
         FormBody body = new FormBody.Builder().build();

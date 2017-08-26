@@ -60,13 +60,13 @@ import okhttp3.Response;
 
 /**
  * 我发布的内容activity
- * */
+ */
 public class MinePublishedActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "MinePublishedActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
-//    User mUser = new User();
+    //    User mUser = new User();
     UserVO mUser = new UserVO();
 
     private CircleImageView cimg_mine_avatar;
@@ -74,7 +74,7 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     MinePublishedAdapter minePublishedAdapter;
     private List<ZLMinePublishedCommonProperty> zlMinePublishedCommonPropertyList;
     private RecyclerView recycler_mine_published;
-    private LinearLayout ll_nodata,ll_recyclerView;
+    private LinearLayout ll_nodata, ll_recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,11 +122,11 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         }
         collapsingToolbar.setTitle(nickname);
 
-        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photoBg)
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + photoBg)
                 .error(R.drawable.mine_bg)
                 .placeholder(R.drawable.mine_bg)
                 .into(fruitImageView);
-        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photoAvatar)
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + photoAvatar)
                 .error(R.drawable.avatar)
                 .placeholder(R.drawable.avatar)
                 .into(cimg_mine_avatar);
@@ -139,16 +139,15 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
 
         recycler_mine_published = (RecyclerView) findViewById(R.id.recycler_mine_published);
 
-        if (zlMinePublishedCommonPropertyList.size()==0){
+        if (zlMinePublishedCommonPropertyList.size() == 0) {
             ll_nodata.setVisibility(View.VISIBLE);
         }
     }
 
-    public void initdata(){
+    public void initdata() {
         zlMinePublishedCommonPropertyList = DataSupport.findAll(ZLMinePublishedCommonProperty.class);
-        if (zlMinePublishedCommonPropertyList.size()==0){//如果本地没有，就从服务器加载
-            okhttpMinePublished(mUser.getUserID());
-        }
+//        if (zlMinePublishedCommonPropertyList.size() == 0)//如果本地没有，就从服务器加载
+        okhttpMinePublished(mUser.getUserID());
     }
 
     @Override
@@ -175,7 +174,7 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
 
     public UserVO getLocalUserVO() {
         String temp = pref.getString(CommonGlobal.userobj, "");
-        L.d(TAG,temp);
+        L.d(TAG, temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
         UserVO userVO = null;
         try {
@@ -196,7 +195,7 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         final String url = CommonUrls.SERVER_USER_PUBLISHED;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
-        FormBody body = new FormBody.Builder().add("userid",""+userid).build();
+        FormBody body = new FormBody.Builder().add("userid", "" + userid).build();
         Request request = new Request.Builder().url(url).post(body).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
@@ -235,7 +234,7 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
 
                 if (code == 0) {
                     final JsonArray dataJson = element.getAsJsonArray("data");
-                    zlMinePublishedCommonPropertyList= gson.fromJson(dataJson, new TypeToken<List<ZLMinePublishedCommonProperty>>() {
+                    zlMinePublishedCommonPropertyList = gson.fromJson(dataJson, new TypeToken<List<ZLMinePublishedCommonProperty>>() {
                     }.getType());
 
                     MinePublishedActivity.this.runOnUiThread(new Runnable() {
@@ -261,15 +260,16 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     }
 
     /*把数据保存本地*/
-    private void saveLocalMinePublished(){
+    private void saveLocalMinePublished() {
         DataSupport.deleteAll(ZLMinePublishedCommonProperty.class);
-        for (int i= 0;i<zlMinePublishedCommonPropertyList.size();i++){
+        for (int i = 0; i < zlMinePublishedCommonPropertyList.size(); i++) {
             zlMinePublishedCommonPropertyList.get(i).save();
         }
 
         minePublishedAdapter.notifyDataSetChanged();
-        L.d(TAG,"保存本地成功");
+        L.d(TAG, "保存本地成功");
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

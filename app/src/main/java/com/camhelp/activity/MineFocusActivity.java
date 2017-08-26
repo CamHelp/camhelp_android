@@ -221,6 +221,8 @@ public class MineFocusActivity extends AppCompatActivity implements View.OnClick
                             if (userVOList.size() == 0) {
                                 ll_mine_focus_nodata.setVisibility(View.VISIBLE);
                                 tv_mine_focus_nodata.setText("你还没有关注任何人");
+                            }else {
+                                ll_mine_focus_nodata.setVisibility(View.GONE);
                             }
                             mLinearLayoutManager = new LinearLayoutManager(MineFocusActivity.this);
                             recycler_mine_focus.setLayoutManager(mLinearLayoutManager);

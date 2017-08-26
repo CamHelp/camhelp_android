@@ -258,16 +258,9 @@ public class HomeOnlyNewFragment extends Fragment {
         }
         homeNewAndFocusAdapter.notifyDataSetChanged();
         srl_home_new.setRefreshing(false);
-//        homeNewAndFocusAdapter.notifyItemRemoved(homeNewAndFocusAdapter.getItemCount());
         tv_loading.setVisibility(View.GONE);
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        homeNewAndFocusAdapter.notifyDataSetChanged();
-    }
 
     /**
      * 请求服务器数据
@@ -334,7 +327,6 @@ public class HomeOnlyNewFragment extends Fragment {
                                 ll_nodata.setVisibility(View.GONE);
                                 saveLocal();//把最新的保存本地
                             }
-//                            onResume();
                             dialogProcess.dismiss();
                             mLinearLayoutManager = new LinearLayoutManager(getActivity());
                             recycler_home_new.setLayoutManager(mLinearLayoutManager);
