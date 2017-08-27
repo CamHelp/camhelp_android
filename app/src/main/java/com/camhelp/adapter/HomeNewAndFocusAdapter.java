@@ -2,6 +2,7 @@ package com.camhelp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.camhelp.common.FindValueForID;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.entity.User;
+import com.camhelp.utils.DateConversionUtils;
 import com.camhelp.utils.LookLargeImg;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +46,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
     List<Boolean> isCollectList = new ArrayList<Boolean>();
 
     String shreText;
+    DateConversionUtils dateConversionUtils = new DateConversionUtils();
 
     public HomeNewAndFocusAdapter(List<CommonPropertyVO> CommonPropertyVOs, Context context) {
         mList = CommonPropertyVOs;
@@ -208,12 +211,12 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         }
 
         public void dataBinding(final CommonPropertyVO mCommonPropertyVO, final int position, Context context) {
+
             String avatar = CommonUrls.SERVER_ADDRESS_PIC+mCommonPropertyVO.getAvatar();
             Glide.with(context).load(avatar).into(item_top_iv_avatar);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             if (mCommonPropertyVO.getCreatetime()!=null){
-                String sCreatetime = sdf.format(mCommonPropertyVO.getCreatetime());
+                String sCreatetime = dateConversionUtils.sdateToString(mCommonPropertyVO.getCreatetime().toString());
                 item_top_tv_createtime.setText(sCreatetime);
             }
 

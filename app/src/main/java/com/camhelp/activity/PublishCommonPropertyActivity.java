@@ -150,6 +150,8 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
             top_title.setText("发布失物");
         } else if (categoryType == 4) {
             top_title.setText("发布捡物");
+        } else if (categoryType == 5) {
+            top_title.setText("发布新鲜事");
         }
         top_return.setOnClickListener(this);
         top_tv_ok = (TextView) findViewById(R.id.top_tv_ok);
@@ -208,6 +210,15 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
             view_proType.setVisibility(View.GONE);
             view_time_start.setVisibility(View.GONE);
             view_time_end.setVisibility(View.GONE);
+        }else if (categoryType == 5) {
+            ll_time_start.setVisibility(View.GONE);
+            ll_time_end.setVisibility(View.GONE);
+            ll_contact.setVisibility(View.GONE);
+            ll_proType.setVisibility(View.GONE);
+            view_time_start.setVisibility(View.GONE);
+            view_time_end.setVisibility(View.GONE);
+            view_contact.setVisibility(View.GONE);
+            view_proType.setVisibility(View.GONE);
         }
     }
 

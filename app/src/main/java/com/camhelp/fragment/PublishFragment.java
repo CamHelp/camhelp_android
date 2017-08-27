@@ -132,7 +132,6 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
         ll_publish_05.setOnClickListener(this);
         ll_publish_06.setOnClickListener(this);
 
-        ll_publish_05.setVisibility(View.INVISIBLE);
         ll_publish_06.setVisibility(View.INVISIBLE);
     }
 
@@ -174,8 +173,9 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
                 startActivity(intentPublish4);
                 break;
             case R.id.ll_publish_05:
-                Intent publishRepair = new Intent(getActivity(), PublishRepairActivity.class);
-                startActivity(publishRepair);
+                Intent intentPublish5 = new Intent(getActivity(), PublishCommonPropertyActivity.class);
+                intentPublish5.putExtra(CommonGlobal.categoryType,CommonGlobal.categoryType_fresh);
+                startActivity(intentPublish5);
                 break;
             case R.id.ll_publish_06:
                 Intent publishElectricity = new Intent(getActivity(), PublishElectricityActivity.class);

@@ -57,7 +57,7 @@ public class CommonPropertyVO extends DataSupport implements Serializable {
     /**图片4*/
     private String commonPic4;
     /**创建时间*/
-    private Date createtime;
+    private String createtime;
     /**关注数*/
     private int praisenum;
 
@@ -141,11 +141,11 @@ public class CommonPropertyVO extends DataSupport implements Serializable {
         this.commonPic4 = commonPic4;
     }
 
-    public Date getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Date createtime) {
+    public void setCreatetime(String createtime) {
         this.createtime = createtime;
     }
 

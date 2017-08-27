@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -165,6 +166,9 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         iv_like = (ImageView) findViewById(R.id.iv_like);
         iv_collect = (ImageView) findViewById(R.id.iv_collect);
 
+        /*设置字体样式*/
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonnts/Microsoft.ttf");
+        item_look_title.setTypeface(typeface);
     }
 
     public void initFirstData() {
@@ -331,8 +335,8 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
                 if (code == 0) {
                     final JsonObject dataJson = element.getAsJsonObject("data");
-                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
-                    L.d(TAG,"详细信息"+dataJson.toString());
+                    commonProperty = gson.fromJson(dataJson.toString(), CommomPropertyDetailsVo.class);
+                    L.d(TAG, "详细信息" + dataJson.toString());
                     ItemLookActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

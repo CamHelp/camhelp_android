@@ -22,6 +22,10 @@ public class FindValueForID {
             sCategoryType = CommonGlobal.sCategoryType_lose;
         }else if (type == CommonGlobal.categoryType_pickup) {
             sCategoryType = CommonGlobal.sCategoryType_pickup;
+        }else if (type == CommonGlobal.categoryType_fresh) {
+            sCategoryType = CommonGlobal.sCategoryType_fresh;
+        }else {
+            sCategoryType = "?";
         }
         return sCategoryType;
     }
