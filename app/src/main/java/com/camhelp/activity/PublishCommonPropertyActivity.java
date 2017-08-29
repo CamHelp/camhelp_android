@@ -43,6 +43,7 @@ import com.camhelp.entity.UserVO;
 import com.camhelp.entity.ZLMinePublishedCommonProperty;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
+import com.camhelp.utils.MyProcessDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -106,6 +107,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     private String photopath1, photopath2, photopath3, photopath4;//照片路径
 
     private int muserid;
+    Dialog dialogProcess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +161,8 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     }
 
     public void initview() {
+        dialogProcess = MyProcessDialog.showDialog(this);
+
         ll_proType = (LinearLayout) findViewById(R.id.ll_proType);
         ll_time_start = (LinearLayout) findViewById(R.id.ll_time_start);
         ll_time_end = (LinearLayout) findViewById(R.id.ll_time_end);
@@ -346,6 +350,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
      * 保存到服务器
      */
     private void okhttpPublish() {
+        dialogProcess.show();
         String startTime, endTime;
         if (startDate != null) {
             startTime = "" + startDate.getTime();
@@ -400,6 +405,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                 PublishCommonPropertyActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        dialogProcess.dismiss();
                         Toast.makeText(PublishCommonPropertyActivity.this, "发布失败", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -431,6 +437,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     PublishCommonPropertyActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            dialogProcess.dismiss();
                             Toast.makeText(PublishCommonPropertyActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -441,6 +448,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     PublishCommonPropertyActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            dialogProcess.dismiss();
                             Toast.makeText(PublishCommonPropertyActivity.this, "发布失败:" + msg, Toast.LENGTH_SHORT).show();
                         }
                     });

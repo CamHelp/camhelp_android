@@ -27,7 +27,7 @@
                 android:id="@+id/ivProgress"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/isloading"
+                android:background="@drawable/loading"
                 android:layout_centerInParent="true"
                 />
         </RelativeLayout>
