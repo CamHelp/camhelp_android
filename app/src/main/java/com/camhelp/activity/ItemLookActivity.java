@@ -177,10 +177,10 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 .into(item_top_iv_avatar);
         item_top_tv_nickname.setText(commonPropertyVO.getNickname());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (commonPropertyVO.getCreatetime() != null) {
-            String sCreatetime = sdf.format(commonPropertyVO.getCreatetime());
-            item_top_tv_createtime.setText(sCreatetime);
+            String sCreatetime = commonPropertyVO.getCreatetime();
+            String formatCreatetime = dateConversionUtils.sdateToString(sCreatetime);
+            item_top_tv_createtime.setText(formatCreatetime);
         }
 
         if (commonPropertyVO.getCategoryType() != null) {
@@ -202,25 +202,25 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         String pic3 = commonPropertyVO.getCommonPic3();
         String pic4 = commonPropertyVO.getCommonPic4();
 
-        if (pic1 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+pic1)
+        if (pic1 != null && !"".equals(pic1)) {
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
                     .placeholder(R.drawable.isloading).into(item_iv_pic1);
         } else {
             item_iv_pic1.setVisibility(View.GONE);
         }
-        if (pic2 != null) {
+        if (pic2 != null && !"".equals(pic2)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2)
                     .placeholder(R.drawable.isloading).into(item_iv_pic2);
         } else {
             item_iv_pic2.setVisibility(View.GONE);
         }
-        if (pic3 != null) {
+        if (pic3 != null && !"".equals(pic3)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3)
                     .placeholder(R.drawable.isloading).into(item_iv_pic3);
         } else {
             item_iv_pic3.setVisibility(View.GONE);
         }
-        if (pic4 != null) {
+        if (pic4 != null && !"".equals(pic4)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
                     .placeholder(R.drawable.isloading).into(item_iv_pic4);
         } else {
@@ -267,23 +267,27 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         String pic3 = commonProperty.getCommonPic3();
         String pic4 = commonProperty.getCommonPic4();
 
-        if (pic1 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1).into(item_iv_pic1);
+        if (pic1 != null && !"".equals(pic1)) {
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic1);
         } else {
             item_iv_pic1.setVisibility(View.GONE);
         }
-        if (pic2 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2).into(item_iv_pic2);
+        if (pic2 != null && !"".equals(pic2)) {
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic2);
         } else {
             item_iv_pic2.setVisibility(View.GONE);
         }
-        if (pic3 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3).into(item_iv_pic3);
+        if (pic3 != null && !"".equals(pic3)) {
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic3);
         } else {
             item_iv_pic3.setVisibility(View.GONE);
         }
-        if (pic4 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4).into(item_iv_pic4);
+        if (pic4 != null && !"".equals(pic4)) {
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic4);
         } else {
             item_iv_pic4.setVisibility(View.GONE);
         }

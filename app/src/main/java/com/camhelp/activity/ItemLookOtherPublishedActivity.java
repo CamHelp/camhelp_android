@@ -187,25 +187,25 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
         String pic3 = zlMinePublishedCommonProperty.getCommonPic3();
         String pic4 = zlMinePublishedCommonProperty.getCommonPic4();
 
-        if (pic1 != null) {
+        if (pic1 != null && !"".equals(pic1)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
                     .placeholder(R.drawable.isloading).into(item_iv_pic1);
         } else {
             item_iv_pic1.setVisibility(View.GONE);
         }
-        if (pic2 != null) {
+        if (pic2 != null && !"".equals(pic2)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2)
                     .placeholder(R.drawable.isloading).into(item_iv_pic2);
         } else {
             item_iv_pic2.setVisibility(View.GONE);
         }
-        if (pic3 != null) {
+        if (pic3 != null && !"".equals(pic3)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3)
                     .placeholder(R.drawable.isloading).into(item_iv_pic3);
         } else {
             item_iv_pic3.setVisibility(View.GONE);
         }
-        if (pic4 != null) {
+        if (pic4 != null && !"".equals(pic4)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
                     .placeholder(R.drawable.isloading).into(item_iv_pic4);
         } else {
@@ -252,23 +252,27 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
         String pic3 = commonProperty.getCommonPic3();
         String pic4 = commonProperty.getCommonPic4();
 
-        if (pic1 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1).into(item_iv_pic1);
+        if (pic1 != null && !"".equals(pic1)) {
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic1);
         } else {
             item_iv_pic1.setVisibility(View.GONE);
         }
-        if (pic2 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2).into(item_iv_pic2);
+        if (pic2 != null && !"".equals(pic2)) {
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic2);
         } else {
             item_iv_pic2.setVisibility(View.GONE);
         }
-        if (pic3 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3).into(item_iv_pic3);
+        if (pic3 != null && !"".equals(pic3)) {
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic3);
         } else {
             item_iv_pic3.setVisibility(View.GONE);
         }
-        if (pic4 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4).into(item_iv_pic4);
+        if (pic4 != null && !"".equals(pic4)) {
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic4);
         } else {
             item_iv_pic4.setVisibility(View.GONE);
         }
@@ -324,7 +328,7 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
 
                 if (code == 0) {
                     final JsonObject dataJson = element.getAsJsonObject("data");
-                    commonProperty = gson.fromJson(dataJson.toString(),CommomPropertyDetailsVo.class);
+                    commonProperty = gson.fromJson(dataJson.toString(), CommomPropertyDetailsVo.class);
 
                     ItemLookOtherPublishedActivity.this.runOnUiThread(new Runnable() {
                         @Override
@@ -365,7 +369,7 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
     }
 
     /*得到用户，暂时模拟得到本地用户*/
-    public UserVO getUserById(int userid){
+    public UserVO getUserById(int userid) {
         return getUserVO();
     }
 

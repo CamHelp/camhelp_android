@@ -54,6 +54,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -346,9 +347,10 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
             Toast.makeText(this, "请填写内容", Toast.LENGTH_SHORT).show();
         } else {
             L.d(TAG, "mCommonProperty::" + mCommonProperty.toString());
-            if (photopath1 != null && !"".equals(photopath1)) {
-                uploadImg(photopath1);
-            }
+//            if (photopath1 != null && !"".equals(photopath1)) {
+//                uploadImg(photopath1);
+//            }
+            okhttpPublish();
         }
     }
 
@@ -407,8 +409,8 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                 if (code == 0) {
                     final JsonObject dataJson = element.getAsJsonObject("data");
                     uploadResult = dataJson.get("avatar").toString();
-                    uploadResult = uploadResult.replace("\"","");
-                    L.d(TAG,"uploadResult:"+uploadResult);
+                    uploadResult = uploadResult.replace("\"", "");
+                    L.d(TAG, "uploadResult:" + uploadResult);
                     resultPhotoURL1 = uploadResult;
                     okhttpPublish();
                 } else {
@@ -428,6 +430,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
      * 保存到服务器
      */
     private void okhttpPublish() {
+        dialogProcess.show();
         String startTime, endTime;
         if (startDate != null) {
             startTime = "" + startDate.getTime();
@@ -443,22 +446,43 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         final String url = CommonUrls.SERVER_PUBLISH;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
-        FormBody body = new FormBody.Builder()
-                .add("categoryType", "" + categoryType)
-                .add("commonTitle", "" + title)
-                .add("commonIntro", "" + intro)
-                .add("commonContent", "" + content)
-                .add("commonPic1", resultPhotoURL1)
-                .add("commonPic2", resultPhotoURL2)
-                .add("commonPic3", resultPhotoURL3)
-                .add("commonPic4", resultPhotoURL4)
-//                .add("expstartTime", startTime)
-//                .add("expendTime", endTime)
-                .add("proType", "" + protype)
-                .add("goodscontact", "" + contact)
-                .add("usermapperid", "" + muserid)
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("id", "" + muserid);
+        if (photopath1 != null && !"".equals(photopath1)) {
+            File f1 = new File(photopath1);
+            builder.addFormDataPart("picture", f1.getName(), RequestBody.create(MEDIA_TYPE_PNG, f1));
+        }
+        if (photopath2 != null && !"".equals(photopath2)) {
+            File f2 = new File(photopath2);
+            builder.addFormDataPart("picture", f2.getName(), RequestBody.create(MEDIA_TYPE_PNG, f2));
+        }
+        if (photopath3 != null && !"".equals(photopath3)) {
+            File f3 = new File(photopath3);
+            builder.addFormDataPart("picture", f3.getName(), RequestBody.create(MEDIA_TYPE_PNG, f3));
+        }
+        if (photopath4 != null && !"".equals(photopath4)) {
+            File f4 = new File(photopath4);
+            builder.addFormDataPart("picture", f4.getName(), RequestBody.create(MEDIA_TYPE_PNG, f4));
+        }
+        builder.addFormDataPart("categoryType", "" + categoryType)
+                .addFormDataPart("commonTitle", "" + title)
+                .addFormDataPart("commonIntro", "" + intro)
+                .addFormDataPart("commonContent", "" + content)
+//                .addFormDataPart("commonPic1", resultPhotoURL1)
+//                .addFormDataPart("commonPic2", resultPhotoURL2)
+//                .addFormDataPart("commonPic3", resultPhotoURL3)
+//                .addFormDataPart("commonPic4", resultPhotoURL4)
+//                .addFormDataPart("expstartTime", startTime)
+//                .addFormDataPart("expendTime", endTime)
+                .addFormDataPart("proType", "" + protype)
+                .addFormDataPart("goodscontact", "" + contact)
+                .addFormDataPart("usermapperid", "" + muserid)
                 .build();
-        Request request = new Request.Builder().url(url).post(body).build();
+        MultipartBody requestBody = builder.build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
@@ -468,7 +492,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     @Override
                     public void run() {
                         dialogProcess.dismiss();
-                        Toast.makeText(PublishCommonPropertyActivity.this, "发布失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PublishCommonPropertyActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
