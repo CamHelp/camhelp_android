@@ -24,6 +24,7 @@ import com.camhelp.adapter.HomeNewAndFocusAdapter;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.CommonPropertyVO;
+import com.camhelp.utils.FullyLinearLayoutManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -191,7 +192,8 @@ public class MineCollectionActivity extends AppCompatActivity implements View.On
                             if (commonPropertyVOList.size() == 0) {
                                 ll_mine_collection_nodata.setVisibility(View.VISIBLE);
                             }
-                            mLinearLayoutManager = new LinearLayoutManager(MineCollectionActivity.this);
+//                            mLinearLayoutManager = new LinearLayoutManager(MineCollectionActivity.this);
+                            mLinearLayoutManager = new FullyLinearLayoutManager(MineCollectionActivity.this, LinearLayoutManager.VERTICAL, false);
                             recycler_mine_collection.setLayoutManager(mLinearLayoutManager);
                             homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, MineCollectionActivity.this);
                             recycler_mine_collection.setAdapter(homeNewAndFocusAdapter);

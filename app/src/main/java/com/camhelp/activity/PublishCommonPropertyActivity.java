@@ -347,9 +347,6 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
             Toast.makeText(this, "请填写内容", Toast.LENGTH_SHORT).show();
         } else {
             L.d(TAG, "mCommonProperty::" + mCommonProperty.toString());
-//            if (photopath1 != null && !"".equals(photopath1)) {
-//                uploadImg(photopath1);
-//            }
             okhttpPublish();
         }
     }
@@ -444,7 +441,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         }
 
         final String url = CommonUrls.SERVER_PUBLISH;
-        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(20000, TimeUnit.MILLISECONDS).build();
 
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("id", "" + muserid);

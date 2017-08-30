@@ -257,7 +257,10 @@ public class HomeOnlyNewFragment extends Fragment {
         for (int i = 0; i < total; i++) {
             commonPropertyVOList.add(commonPropertyVOList.get(i));
         }
-        homeNewAndFocusAdapter.notifyDataSetChanged();
+        if (recycler_home_new.getScrollState() == RecyclerView.SCROLL_STATE_IDLE ||
+                !recycler_home_new.isComputingLayout()) {
+            homeNewAndFocusAdapter.notifyDataSetChanged();
+        }
         srl_home_new.setRefreshing(false);
         tv_loading.setVisibility(View.GONE);
     }

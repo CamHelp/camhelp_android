@@ -209,22 +209,22 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
             item_foot_praisenum.setText(findValueForID.findCategoryType(type));//热度的位置显示类型
             item_foot_praisenum.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
 
-            if (pic1 != null) {
+            if (pic1 != null && !"".equals(pic1)) {
                 Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic1).into(item_iv_pic1);
             } else {
                 item_iv_pic1.setVisibility(View.GONE);
             }
-            if (pic2 != null) {
+            if (pic2 != null && !"".equals(pic2)) {
                 Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic2).into(item_iv_pic2);
             } else {
                 item_iv_pic2.setVisibility(View.GONE);
             }
-            if (pic3 != null) {
+            if (pic3 != null && !"".equals(pic3)) {
                 Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic3).into(item_iv_pic3);
             } else {
                 item_iv_pic3.setVisibility(View.GONE);
             }
-            if (pic4 != null) {
+            if (pic4 != null && !"".equals(pic4)) {
                 Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic4).into(item_iv_pic4);
             } else {
                 item_iv_pic4.setVisibility(View.GONE);

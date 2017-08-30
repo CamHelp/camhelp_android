@@ -86,6 +86,11 @@ public class CategoryEachActivity extends AppCompatActivity implements View.OnCl
         initTitle();
         initview();
         okhttpCategoryEach();
+
+        mLinearLayoutManager = new LinearLayoutManager(CategoryEachActivity.this);
+        recycler_categoryEach.setLayoutManager(mLinearLayoutManager);
+        homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, CategoryEachActivity.this);
+        recycler_categoryEach.setAdapter(homeNewAndFocusAdapter);
     }
 
 
