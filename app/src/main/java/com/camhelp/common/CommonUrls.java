@@ -83,9 +83,18 @@ public class CommonUrls {
      * 发布
      * 方式：post
      * 路径：/classify/publish
-     *
      */
     public static final String SERVER_PUBLISH = SERVER_ADDRESS + "/classify/publish";
+
+    /**
+     * 更新头像
+     * 方式：post
+     * 路径：/user/update/avatar
+     * 参数：
+     *      id：userid
+     *      avatar：picFile
+     */
+    public static final String SERVER_USER_UPDATE_AVATAR = SERVER_ADDRESS + "/user/update/avatar";
 
 
 }

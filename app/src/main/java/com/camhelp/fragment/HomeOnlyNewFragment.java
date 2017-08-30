@@ -46,6 +46,7 @@ import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -319,6 +320,8 @@ public class HomeOnlyNewFragment extends Fragment {
 //                    commonPropertyVOList = GsonUtil.parseJsonArrayWithGson(dataJson.toString(), CommonPropertyVO.class);
                     commonPropertyVOList = gson.fromJson(dataJson, new TypeToken<List<CommonPropertyVO>>() {
                     }.getType());
+
+                    Collections.reverse(commonPropertyVOList); // 倒序排列,按时间顺序
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override

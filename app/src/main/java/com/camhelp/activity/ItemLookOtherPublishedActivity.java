@@ -188,22 +188,26 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
         String pic4 = zlMinePublishedCommonProperty.getCommonPic4();
 
         if (pic1 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1).into(item_iv_pic1);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic1);
         } else {
             item_iv_pic1.setVisibility(View.GONE);
         }
         if (pic2 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2).into(item_iv_pic2);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic2);
         } else {
             item_iv_pic2.setVisibility(View.GONE);
         }
         if (pic3 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3).into(item_iv_pic3);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic3);
         } else {
             item_iv_pic3.setVisibility(View.GONE);
         }
         if (pic4 != null) {
-            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4).into(item_iv_pic4);
+            Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
+                    .placeholder(R.drawable.isloading).into(item_iv_pic4);
         } else {
             item_iv_pic4.setVisibility(View.GONE);
         }

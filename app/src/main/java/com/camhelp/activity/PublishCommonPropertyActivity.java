@@ -61,8 +61,11 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -70,7 +73,7 @@ import okhttp3.Response;
  * 通过类型判断发布的是活动、问题、失物还是捡物
  */
 public class PublishCommonPropertyActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "PublishCommonPropertyActivity";
+    private static final String TAG = "PublishCommonActivity";
     int categoryType;//发布类型
     //    private CommonProperty mCommonProperty = new CommonProperty();
     private ZLMinePublishedCommonProperty mCommonProperty = new ZLMinePublishedCommonProperty();
@@ -108,6 +111,9 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
 
     private int muserid;
     Dialog dialogProcess;
+    private String resultPhotoURL1 = "", resultPhotoURL2 = "", resultPhotoURL3 = "", resultPhotoURL4 = "";//返回服务器图片路径
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+    String uploadResult = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,7 +220,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
             view_proType.setVisibility(View.GONE);
             view_time_start.setVisibility(View.GONE);
             view_time_end.setVisibility(View.GONE);
-        }else if (categoryType == 5) {
+        } else if (categoryType == 5) {
             ll_time_start.setVisibility(View.GONE);
             ll_time_end.setVisibility(View.GONE);
             ll_contact.setVisibility(View.GONE);
@@ -340,17 +346,88 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
             Toast.makeText(this, "请填写内容", Toast.LENGTH_SHORT).show();
         } else {
             L.d(TAG, "mCommonProperty::" + mCommonProperty.toString());
-//            hintKbTwo();
-//            finish();
-            okhttpPublish();
+            if (photopath1 != null && !"".equals(photopath1)) {
+                uploadImg(photopath1);
+            }
         }
+    }
+
+    /**
+     * 上传图片到服务器，返回URL
+     */
+    private String uploadImg(String photopath) {
+        dialogProcess.show();
+        final String url = CommonUrls.SERVER_USER_UPDATE_AVATAR;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
+        File f = new File(photopath);
+
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("id", "" + muserid);
+        builder.addFormDataPart("avatar", f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
+
+        MultipartBody requestBody = builder.build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("上传失败:e.getLocalizedMessage() = " + e.getLocalizedMessage());
+                PublishCommonPropertyActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        uploadResult = "";
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+//                System.out: 上传照片成功：response = {"code":0,"msg":"成功","data":{"avatar":"user/20170830_132011IMG_20170824_211308_642.jpg"}}
+                String result = response.body().string();
+                Log.d("TAG" + "onresponse result:", result);
+
+                Gson gson = new Gson();
+                //  获得 解析者
+                JsonParser parser = new JsonParser();
+                //  获得 根节点元素
+                JsonElement root = parser.parse(result);
+                //  根据 文档判断根节点属于 什么类型的 Gson节点对象
+                // 假如文档 显示 根节点 为对象类型
+                // 获得 根节点 的实际 节点类型
+                JsonObject element = root.getAsJsonObject();
+                //  取得 节点 下 的某个节点的 value
+                // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                final String msg = msgJson.getAsString();
+
+                if (code == 0) {
+                    final JsonObject dataJson = element.getAsJsonObject("data");
+                    uploadResult = dataJson.get("avatar").toString();
+                    uploadResult = uploadResult.replace("\"","");
+                    L.d(TAG,"uploadResult:"+uploadResult);
+                    resultPhotoURL1 = uploadResult;
+                    okhttpPublish();
+                } else {
+                    PublishCommonPropertyActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            uploadResult = "";
+                        }
+                    });
+                }
+            }
+        });
+        return uploadResult;
     }
 
     /**
      * 保存到服务器
      */
     private void okhttpPublish() {
-        dialogProcess.show();
         String startTime, endTime;
         if (startDate != null) {
             startTime = "" + startDate.getTime();
@@ -363,21 +440,6 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
             endTime = "-1";
         }
 
-        /*判断是否选择了图片*/
-        String sPhotopath1="", sPhotopath2="", sPhotopath3="", sPhotopath4="";
-        if (photopath1 != null) {
-            sPhotopath1 = photopath1;
-        }
-        if (photopath2 != null) {
-            sPhotopath2 = photopath1;
-        }
-        if (photopath2 != null) {
-            sPhotopath2 = photopath1;
-        }
-        if (photopath2 != null) {
-            sPhotopath2 = photopath1;
-        }
-
         final String url = CommonUrls.SERVER_PUBLISH;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
@@ -386,10 +448,10 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                 .add("commonTitle", "" + title)
                 .add("commonIntro", "" + intro)
                 .add("commonContent", "" + content)
-                .add("commonPic1", "" + sPhotopath1)
-                .add("commonPic2", "" + sPhotopath2)
-                .add("commonPic3", "" + sPhotopath3)
-                .add("commonPic4", "" + sPhotopath4)
+                .add("commonPic1", resultPhotoURL1)
+                .add("commonPic2", resultPhotoURL2)
+                .add("commonPic3", resultPhotoURL3)
+                .add("commonPic4", resultPhotoURL4)
 //                .add("expstartTime", startTime)
 //                .add("expendTime", endTime)
                 .add("proType", "" + protype)
