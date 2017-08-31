@@ -147,28 +147,28 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         holder.item_iv_pic1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonPropertyVO.getCommonPic1();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic1();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonPropertyVO.getCommonPic2();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic2();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonPropertyVO.getCommonPic3();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic3();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
         holder.item_iv_pic4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imgurl = CommonUrls.SERVER_ADDRESS_PIC+commonPropertyVO.getCommonPic4();
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic4();
                 lookLargeImg.looklargeimg(imgurl, mContext);
             }
         });
@@ -216,10 +216,10 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
         public void dataBinding(final CommonPropertyVO mCommonPropertyVO, final int position, Context context) {
 
-            String avatar = CommonUrls.SERVER_ADDRESS_PIC+mCommonPropertyVO.getAvatar();
+            String avatar = CommonUrls.SERVER_ADDRESS_PIC + mCommonPropertyVO.getAvatar();
             Glide.with(context).load(avatar).into(item_top_iv_avatar);
 
-            if (mCommonPropertyVO.getCreatetime()!=null){
+            if (mCommonPropertyVO.getCreatetime() != null) {
                 String sCreatetime = dateConversionUtils.sdateToString(mCommonPropertyVO.getCreatetime().toString());
                 item_top_tv_createtime.setText(sCreatetime);
             }
@@ -248,7 +248,8 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             if (pic1 != null && !"".equals(pic1)) {
 //                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic1)
 //                        .placeholder(R.drawable.isloading).into(item_iv_pic1);
-                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic1).into(item_iv_pic1);
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
+                        .placeholder(R.drawable.isloading).into(item_iv_pic1);
             } else {
                 item_iv_pic1.setVisibility(View.GONE);
             }

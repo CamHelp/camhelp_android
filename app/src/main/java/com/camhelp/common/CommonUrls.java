@@ -97,6 +97,16 @@ public class CommonUrls {
     public static final String SERVER_USER_UPDATE_AVATAR = SERVER_ADDRESS + "/user/update/avatar";
 
     /**
+     * 更新背景图
+     * 方式：post
+     * 路径：/user/update/bgpicture
+     * 参数：
+     * id：userid
+     * avatar：picFile
+     */
+    public static final String SERVER_USER_UPDATE_BG = SERVER_ADDRESS + "/user/update/bgpicture";
+
+    /**
      * 发布评论
      * 方式：post
      * 路径：/comment/addcomment

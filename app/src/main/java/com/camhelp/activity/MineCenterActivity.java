@@ -5,10 +5,15 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +22,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,16 +52,34 @@ import com.camhelp.fragment.MineFragment;
 import com.camhelp.utils.DateConversionUtils;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
+import com.camhelp.utils.MyProcessDialog;
+import com.camhelp.utils.NativeUtil;
+import com.camhelp.utils.PicCompression;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * 个人资料编辑
@@ -65,7 +89,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
-//    User mUser = new User();
+    //    User mUser = new User();
     UserVO mUser = new UserVO();
 
     final int TAKE_PHOTO = 1;
@@ -91,7 +115,13 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     private RadioButton radiobtn_male, radiobtn_fmale, radiobtn_secret;
     private Button btn_birthday;
 
+    Dialog dialogProcess;
     private DateConversionUtils dateConversionUtils = new DateConversionUtils();
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+    private final String externalStorageDirectory = Environment.getExternalStorageDirectory().getPath()+"/camhelp/";
+    String uploadResult = "";
+    private boolean isUpdateAvatar, isBg;
+    PicCompression picCompression = new PicCompression();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +162,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void initview() {
+        dialogProcess = MyProcessDialog.showDialog(this);
         iv_mine_back = (ImageView) findViewById(R.id.iv_mine_back);
         cimg_mine_avatar = (CircleImageView) findViewById(R.id.cimg_mine_avatar);
         iv_mine_back.setOnClickListener(this);
@@ -161,18 +192,18 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         address = mUser.getAddress();
         birthday = mUser.getBirthday();
 
-        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photo1path)
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + photo1path)
                 .error(R.drawable.mine_bg)
                 .placeholder(R.drawable.mine_bg)
                 .into(iv_mine_back);
-        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+photo2path)
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + photo2path)
                 .error(R.drawable.avatar)
                 .placeholder(R.drawable.avatar)
                 .into(cimg_mine_avatar);
 
-        if (mUser.getSex()==null){
+        if (mUser.getSex() == null) {
             sex = -1;
-        }else {
+        } else {
             sex = mUser.getSex();
         }
 
@@ -198,11 +229,119 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
             radiobtn_male.setChecked(true);
         } else if (sex == 1) {
             radiobtn_fmale.setChecked(true);
-        } else if(sex == -1){
+        } else if (sex == -1) {
             radiobtn_secret.setChecked(true);
         }
 
 
+    }
+
+
+    /**
+     * 上传图片到服务器，返回URL
+     */
+    private void uploadImg() {
+        dialogProcess.show();
+        final String url;
+        File f;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(30000, TimeUnit.MILLISECONDS).build();
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("id", "" + mUser.getUserID());
+        if (!isUpdateAvatar) {
+            url = CommonUrls.SERVER_USER_UPDATE_BG;
+            f = new File(photo2path);
+            Bitmap bitmap= BitmapFactory.decodeFile(photo2path);
+            picCompression.compressImageToFile(bitmap,f);
+            Bitmap bitmap2= BitmapFactory.decodeFile(f.getPath());
+            picCompression.compressBitmapToFile(bitmap2,f);
+            picCompression.compressBitmap(f.getPath(),f);
+
+            builder.addFormDataPart("bgpicture", f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
+        } else {
+            url = CommonUrls.SERVER_USER_UPDATE_AVATAR;
+            f = new File(photo1path);
+            /*压缩图片*/
+//            NativeUtil.compressBitmap(f.getPath(),externalStorageDirectory+"/yasuo.jpg");
+            Bitmap bitmap= BitmapFactory.decodeFile(photo1path);
+            picCompression.compressImageToFile(bitmap,f);
+            Bitmap bitmap2= BitmapFactory.decodeFile(f.getPath());
+            picCompression.compressBitmapToFile(bitmap2,f);
+            picCompression.compressBitmap(f.getPath(),f);
+
+            builder.addFormDataPart("avatar", f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
+        }
+
+        MultipartBody requestBody = builder.build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("上传失败:e.getLocalizedMessage() = " + e.getLocalizedMessage());
+                MineCenterActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MineCenterActivity.this, "上传失败，无法连接到服务器", Toast.LENGTH_SHORT).show();
+                        isUpdateAvatar = false;
+                        dialogProcess.dismiss();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+//                System.out: 上传照片成功：response = {"code":0,"msg":"成功","data":{"avatar":"user/20170830_132011IMG_20170824_211308_642.jpg"}}
+                String result = response.body().string();
+                Log.d("TAG" + "onresponse result:", result);
+
+                Gson gson = new Gson();
+                //  获得 解析者
+                JsonParser parser = new JsonParser();
+                //  获得 根节点元素
+                JsonElement root = parser.parse(result);
+                //  根据 文档判断根节点属于 什么类型的 Gson节点对象
+                // 假如文档 显示 根节点 为对象类型
+                // 获得 根节点 的实际 节点类型
+                JsonObject element = root.getAsJsonObject();
+                //  取得 节点 下 的某个节点的 value
+                // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                final String msg = msgJson.getAsString();
+
+                if (code == 0) {
+                    final JsonObject dataJson = element.getAsJsonObject("data");
+                    if (!isUpdateAvatar) {
+                        uploadResult = dataJson.get("bgpicture").toString();
+                    }else {
+                        uploadResult = dataJson.get("avatar").toString();
+                    }
+                    uploadResult = uploadResult.replace("\"", "");
+                    mUser.setAvatar(uploadResult);
+                    saveUserVO(mUser);
+                    isUpdateAvatar = false;
+                    dialogProcess.dismiss();
+                    MineCenterActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MineCenterActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    MineCenterActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MineCenterActivity.this, "上传失败：" + msg, Toast.LENGTH_SHORT).show();
+                            isUpdateAvatar = false;
+                            dialogProcess.dismiss();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     /**
@@ -228,6 +367,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.cimg_mine_avatar://头像
                 showphotodialg(view);
+                isUpdateAvatar = true;
                 break;
             case R.id.takePhoto:
                 creatFile();
@@ -241,6 +381,8 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.btn_cancel:
                 photodialog.dismiss();
+                BACK = false;
+                isUpdateAvatar = false;
                 break;
             case R.id.btn_birthday://生日
                 Date date = new Date(System.currentTimeMillis());
@@ -262,25 +404,9 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    /*设置用户对象*/
-    public void saveUser(User user) {
-        editor = pref.edit();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(user);
-            String temp = new String(Base64.encode(baos.toByteArray(), Base64.DEFAULT));
-            editor.putString(CommonGlobal.userobj, temp);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        editor.apply();
-    }
-
     public UserVO getUserVO() {
         String temp = pref.getString(CommonGlobal.userobj, "");
-        L.d(TAG,temp);
+        L.d(TAG, temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
         UserVO userVO = null;
         try {
@@ -325,8 +451,8 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         }
         mUser.setNickname(username);
         mUser.setIntro(intro);
-        if (birthdayDate!=null){
-            mUser.setBirthday(""+birthdayDate.getTime());
+        if (birthdayDate != null) {
+            mUser.setBirthday("" + birthdayDate.getTime());
         }
         mUser.setTelephone(phone);
         mUser.setEmail(email);
@@ -373,9 +499,9 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
 
     /*关闭软键盘*/
     private void hintKbTwo() {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm.isActive()&&getCurrentFocus()!=null){
-            if (getCurrentFocus().getWindowToken()!=null) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive() && getCurrentFocus() != null) {
+            if (getCurrentFocus().getWindowToken() != null) {
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
@@ -441,6 +567,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
                     }
                     photo1path = imageUri.getPath();
                     Glide.with(this).load(imageUri).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_mine_back);
+                    uploadImg();//更新头像到服务器
                 }
                 BACK = false;
                 break;
@@ -451,11 +578,11 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
                     }
                     photo2path = imageUri2.getPath();
                     Glide.with(this).load(imageUri2).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(cimg_mine_avatar);
+                    uploadImg();//更新背景到服务器
                 }
                 break;
             case GET_PHOTO:
                 if (resultCode == RESULT_OK && data != null) {
-
                     Uri selectedImage = data.getData();
                     String path = "";
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -468,17 +595,18 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
                             iv_mine_back.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                         Glide.with(this).load(selectedImage).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_mine_back);
-                        imageUri = selectedImage;
-                        photo1path = path;
+                        imageUri2 = selectedImage;
+                        photo2path = path;
                         BACK = false;
                     } else {
                         if (!cimg_mine_avatar.getScaleType().equals(ImageView.ScaleType.CENTER_CROP)) {
                             cimg_mine_avatar.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                         Glide.with(this).load(selectedImage).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(cimg_mine_avatar);
-                        imageUri2 = selectedImage;
-                        photo2path = path;
+                        imageUri = selectedImage;
+                        photo1path = path;
                     }
+                    uploadImg();//更新到服务器
                 }
                 break;
         }

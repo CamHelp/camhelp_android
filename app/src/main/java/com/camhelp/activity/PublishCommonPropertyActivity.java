@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -44,6 +46,7 @@ import com.camhelp.entity.ZLMinePublishedCommonProperty;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
 import com.camhelp.utils.MyProcessDialog;
+import com.camhelp.utils.PicCompression;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -115,6 +118,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     private String resultPhotoURL1 = "", resultPhotoURL2 = "", resultPhotoURL3 = "", resultPhotoURL4 = "";//返回服务器图片路径
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     String uploadResult = "";
+    PicCompression picCompression = new PicCompression();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -451,18 +455,42 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         builder.addFormDataPart("id", "" + muserid);
         if (photopath1 != null && !"".equals(photopath1)) {
             File f1 = new File(photopath1);
+            Bitmap bitmap= BitmapFactory.decodeFile(photopath1);
+            picCompression.compressImageToFile(bitmap,f1);
+            Bitmap bitmap2= BitmapFactory.decodeFile(f1.getPath());
+            picCompression.compressBitmapToFile(bitmap2,f1);
+            picCompression.compressBitmap(f1.getPath(),f1);
+
             builder.addFormDataPart("picture", f1.getName(), RequestBody.create(MEDIA_TYPE_PNG, f1));
         }
         if (photopath2 != null && !"".equals(photopath2)) {
             File f2 = new File(photopath2);
+            Bitmap bitmap= BitmapFactory.decodeFile(photopath2);
+            picCompression.compressImageToFile(bitmap,f2);
+            Bitmap bitmap2= BitmapFactory.decodeFile(f2.getPath());
+            picCompression.compressBitmapToFile(bitmap2,f2);
+            picCompression.compressBitmap(f2.getPath(),f2);
+
             builder.addFormDataPart("picture", f2.getName(), RequestBody.create(MEDIA_TYPE_PNG, f2));
         }
         if (photopath3 != null && !"".equals(photopath3)) {
             File f3 = new File(photopath3);
+            Bitmap bitmap= BitmapFactory.decodeFile(photopath3);
+            picCompression.compressImageToFile(bitmap,f3);
+            Bitmap bitmap2= BitmapFactory.decodeFile(f3.getPath());
+            picCompression.compressBitmapToFile(bitmap2,f3);
+            picCompression.compressBitmap(f3.getPath(),f3);
+
             builder.addFormDataPart("picture", f3.getName(), RequestBody.create(MEDIA_TYPE_PNG, f3));
         }
         if (photopath4 != null && !"".equals(photopath4)) {
             File f4 = new File(photopath4);
+            Bitmap bitmap= BitmapFactory.decodeFile(photopath4);
+            picCompression.compressImageToFile(bitmap,f4);
+            Bitmap bitmap2= BitmapFactory.decodeFile(f4.getPath());
+            picCompression.compressBitmapToFile(bitmap2,f4);
+            picCompression.compressBitmap(f4.getPath(),f4);
+
             builder.addFormDataPart("picture", f4.getName(), RequestBody.create(MEDIA_TYPE_PNG, f4));
         }
         builder.addFormDataPart("categoryType", "" + categoryType)
