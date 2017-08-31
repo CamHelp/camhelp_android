@@ -69,32 +69,31 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
-                            android:padding="4dp"
-                            android:background="@color/translucent">
+                            android:padding="4dp">
 
                             <EditText
                                 android:id="@+id/et_comment_content"
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@color/white"
+                                android:background="@drawable/edit_shape_feedback"
                                 android:hint="立即评论"
                                 android:maxLines="4"
-                                android:paddingLeft="8dp"
-                                android:paddingRight="8dp" />
+                                android:padding="8dp"/>
 
                             <Button
                                 android:id="@+id/btn_sendComment"
                                 android:layout_width="60dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="30dp"
                                 android:layout_margin="6dp"
-                                android:background="@color/cornflowerblue"
-                                android:text="发送" />
+                                android:background="@drawable/btn_login_selector"
+                                android:text="发送"
+                                android:textColor="@color/white"/>
                         </LinearLayout>
 
                         <TextView
@@ -122,7 +121,8 @@
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/recycler_item_look"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="40dp">
 
                             </android.support.v7.widget.RecyclerView>
                         </FrameLayout>

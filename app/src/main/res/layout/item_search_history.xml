@@ -20,6 +20,16 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="搜索记录"/>
+            android:layout_weight="1"
+            android:text="搜索记录"
+            android:textSize="16dp"
+            android:textColor="@color/deepblack"/>
+        <ImageView
+            android:id="@+id/item_iv_delete"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="18dp"
+            android:src="@drawable/item_search_delete"/>
     </LinearLayout>
 </LinearLayout>

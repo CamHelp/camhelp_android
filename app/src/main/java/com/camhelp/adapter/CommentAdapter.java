@@ -118,7 +118,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
 
         public void dataBinding(final Comment comment, final int position, Context context) {
-            Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC + comment.getFromuseravatar()).into(item_commentAvatar);
+            Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC + comment.getFromuseravatar())
+                    .error(R.drawable.avatar).into(item_commentAvatar);
             item_comment_fromNick.setText(comment.getFromnickname() + "  ");
             if (comment.getTonickname() != null && !"".equals(comment.getTonickname())) {
                 item_comment_toNick.setVisibility(View.VISIBLE);

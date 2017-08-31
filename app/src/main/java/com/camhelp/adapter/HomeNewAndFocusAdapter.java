@@ -118,10 +118,12 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             @Override
             public void onClick(View v) {
                 if (isLikedList.get(position)) {
-                    notifyItemChanged(position);//通知该位置的数据发送改变
+//                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    notifyDataSetChanged();
                     isLikedList.set(position, false);
                 } else {
-                    notifyItemChanged(position);//通知该位置的数据发送改变
+//                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    notifyDataSetChanged();
                     isLikedList.set(position, true);
                 }
             }
@@ -131,10 +133,12 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             @Override
             public void onClick(View v) {
                 if (isCollectList.get(position)) {
-                    notifyItemChanged(position);//通知该位置的数据发送改变
+//                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    notifyDataSetChanged();
                     isCollectList.set(position, false);
                 } else {
-                    notifyItemChanged(position);//通知该位置的数据发送改变
+//                    notifyItemChanged(position);//通知该位置的数据发送改变
+                    notifyDataSetChanged();
                     isCollectList.set(position, true);
                 }
             }

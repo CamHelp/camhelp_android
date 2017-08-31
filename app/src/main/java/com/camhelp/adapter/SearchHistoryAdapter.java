@@ -18,6 +18,8 @@ import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.SearchHistory;
 import com.camhelp.entity.UserVO;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.List;
 
 /**
@@ -58,6 +60,15 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
                 mContext.startActivity(intentSearch);
             }
         });
+        /*删除*/
+        holder.item_iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataSupport.deleteAll(SearchHistory.class, "searchContent = ?", searchHistory.getSearchContent());
+                mList.remove(position);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -68,11 +79,13 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
     class ViewHolder extends RecyclerView.ViewHolder {
         View queryItemView;
         TextView item_tv_searchHistoryContent;
+        ImageView item_iv_delete;
 
         public ViewHolder(View itemView) {
             super(itemView);
             queryItemView = itemView;
             item_tv_searchHistoryContent = (TextView) itemView.findViewById(R.id.item_tv_searchHistoryContent);
+            item_iv_delete = (ImageView) itemView.findViewById(R.id.item_iv_delete);
         }
 
         public void dataBinding(final SearchHistory searchHistory, final int position, Context context) {

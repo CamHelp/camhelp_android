@@ -8,9 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.Touch;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -23,13 +29,18 @@ import com.camhelp.entity.SearchHistory;
 
 import org.litepal.crud.DataSupport;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import butterknife.OnTextChanged;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ImageButton imgBtn_search_return,imgBtn_search;
     private EditText et_search_content;
+    private ImageView iv_clear;
     private LinearLayout ll_searchHistory_nodata,ll_delete_searchHistory;
     private RecyclerView recycler_searchHistory;
 
@@ -50,7 +61,30 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         imgBtn_search = (ImageButton) findViewById(R.id.imgBtn_search);
         imgBtn_search_return.setOnClickListener(this);
         imgBtn_search.setOnClickListener(this);
+        iv_clear = (ImageView) findViewById(R.id.iv_clear);
+        iv_clear.setOnClickListener(this);
+        iv_clear.setVisibility(View.GONE);
         et_search_content = (EditText) findViewById(R.id.et_search_content);
+        et_search_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(et_search_content.getText())){
+                    iv_clear.setVisibility(View.GONE);
+                }else {
+                    iv_clear.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         ll_searchHistory_nodata = (LinearLayout) findViewById(R.id.ll_searchHistory_nodata);
         ll_delete_searchHistory = (LinearLayout) findViewById(R.id.ll_delete_searchHistory);
         ll_delete_searchHistory.setOnClickListener(this);
@@ -61,6 +95,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     /**加载历史搜索记录*/
     private void initSearchHistory(){
         searchHistoryList = DataSupport.findAll(SearchHistory.class);
+
+        Collections.reverse(searchHistoryList); // 倒序
+
         if (searchHistoryList.size()>0){
             ll_searchHistory_nodata.setVisibility(View.GONE);
             ll_delete_searchHistory.setVisibility(View.VISIBLE);
@@ -76,6 +113,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()){
             case R.id.imgBtn_search_return:
                 finish();
+                break;
+            case R.id.iv_clear:
+                et_search_content.setText("");
                 break;
             case R.id.imgBtn_search://搜索
                 if ("".equals(et_search_content.getText().toString())){

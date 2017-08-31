@@ -445,7 +445,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         }
 
         final String url = CommonUrls.SERVER_PUBLISH;
-        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(20000, TimeUnit.MILLISECONDS).build();
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(60000, TimeUnit.MILLISECONDS).build();
 
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("id", "" + muserid);
@@ -493,7 +493,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
                     @Override
                     public void run() {
                         dialogProcess.dismiss();
-                        Toast.makeText(PublishCommonPropertyActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PublishCommonPropertyActivity.this, "网络较差，请稍后再试", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
