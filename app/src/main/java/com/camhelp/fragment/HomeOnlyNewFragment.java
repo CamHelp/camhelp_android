@@ -82,12 +82,8 @@ public class HomeOnlyNewFragment extends Fragment {
     //    private List<CommonProperty> commonPropertyList;
     private List<CommonPropertyVO> commonPropertyVOList = new ArrayList<CommonPropertyVO>();
 
-    EndLessOnScrollListener onScrollListener;
-
     private Handler handler = new Handler();
-    private boolean FIRST = true;
     boolean isLoading;
-    boolean isUp = true;
 
     private FrameLayout fl_home_top;
     private TextView tv_loading;
@@ -138,18 +134,6 @@ public class HomeOnlyNewFragment extends Fragment {
         initview();
         initolddata();
         initnewdata();
-//        Handler handler;
-//        handler = new Handler() {
-//            @Override
-//            public void handleMessage(Message msg) {
-//                mLinearLayoutManager = new LinearLayoutManager(getActivity());
-//                recycler_home_new.setLayoutManager(mLinearLayoutManager);
-//                homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
-//                recycler_home_new.setAdapter(homeNewAndFocusAdapter);
-//                Toast.makeText(getActivity(), "加载成功", Toast.LENGTH_SHORT).show();
-//            }
-//        };
-//        handler.sendEmptyMessageDelayed(1, 2000);//handler延迟2秒执行
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         recycler_home_new.setLayoutManager(mLinearLayoutManager);

@@ -171,13 +171,13 @@
                     android:id="@+id/btn_electric"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/publish_power" />
+                    android:background="@drawable/publish_love" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="交电费"
+                    android:text="表白墙"
                     android:textColor="@color/white" />
 
             </LinearLayout>

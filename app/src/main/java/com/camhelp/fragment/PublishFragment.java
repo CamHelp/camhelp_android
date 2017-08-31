@@ -132,7 +132,6 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
         ll_publish_05.setOnClickListener(this);
         ll_publish_06.setOnClickListener(this);
 
-        ll_publish_06.setVisibility(View.INVISIBLE);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -178,8 +177,9 @@ public class PublishFragment extends Fragment implements View.OnClickListener {
                 startActivity(intentPublish5);
                 break;
             case R.id.ll_publish_06:
-                Intent publishElectricity = new Intent(getActivity(), PublishElectricityActivity.class);
-                startActivity(publishElectricity);
+                Intent intentPublish6 = new Intent(getActivity(), PublishCommonPropertyActivity.class);
+                intentPublish6.putExtra(CommonGlobal.categoryType,CommonGlobal.categoryType_unburden);
+                startActivity(intentPublish6);
                 break;
         }
     }
