@@ -84,13 +84,26 @@
                             android:text="发送"/>
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
+                    <FrameLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
-                        android:layout_marginBottom="80dp"
-                        android:text="还没有评论"/>
+                        android:padding="4dp">
+
+                        <TextView
+                            android:id="@+id/tv_comment_nodata"
+                            android:layout_gravity="center|top"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:layout_marginBottom="40dp"
+                            android:text="还没有评论"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_item_look"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        </android.support.v7.widget.RecyclerView>
+                    </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

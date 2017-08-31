@@ -11,6 +11,8 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -24,15 +26,19 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
+import com.camhelp.adapter.CommentAdapter;
+import com.camhelp.adapter.MinePublishedAdapter;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;
 import com.camhelp.common.FindValueForID;
+import com.camhelp.entity.Comment;
 import com.camhelp.entity.CommomPropertyDetailsVo;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.entity.User;
 import com.camhelp.entity.UserVO;
 import com.camhelp.utils.DateConversionUtils;
+import com.camhelp.utils.FullyLinearLayoutManager;
 import com.camhelp.utils.GsonUtil;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MyProcessDialog;
@@ -48,6 +54,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -79,6 +86,9 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private CommonPropertyVO commonPropertyVO = new CommonPropertyVO();
     //    private CommonProperty commonProperty = new CommonProperty();
     private CommomPropertyDetailsVo commonProperty = new CommomPropertyDetailsVo();
+    private List<Comment> commentList = new ArrayList<Comment>();
+    private CommentAdapter commentAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
 
     private boolean isLike, isCollection;
 
@@ -89,6 +99,8 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private TextView item_foot_praisenum, item_foot_browsenum;//热度，浏览量
     private LinearLayout ll_look_share, ll_look_like, ll_look_collect;//分享，喜欢，收藏
     private ImageView iv_like, iv_collect;//喜欢，收藏按钮（点击改变）
+    private TextView tv_comment_nodata;//暂无评论
+    private RecyclerView recycler_item_look;//评论
 
     //    User mUser = new User();//用户
     UserVO mUser = new UserVO();//用户
@@ -165,6 +177,9 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         ll_look_collect.setOnClickListener(this);
         iv_like = (ImageView) findViewById(R.id.iv_like);
         iv_collect = (ImageView) findViewById(R.id.iv_collect);
+
+        tv_comment_nodata = (TextView) findViewById(R.id.tv_comment_nodata);
+        recycler_item_look = (RecyclerView) findViewById(R.id.recycler_item_look);
 
         /*设置字体样式*/
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonnts/Microsoft.ttf");
@@ -293,6 +308,18 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    public void initComment(){
+        if (commentList.size()>0){
+            tv_comment_nodata.setVisibility(View.GONE);
+
+            mLinearLayoutManager = new LinearLayoutManager(this);
+            recycler_item_look.setLayoutManager(mLinearLayoutManager);
+            recycler_item_look.setNestedScrollingEnabled(false);
+            commentAdapter = new CommentAdapter(commentList, this);
+            recycler_item_look.setAdapter(commentAdapter);
+        }
+    }
+
     /**
      * 请求服务器数据
      */
@@ -351,6 +378,8 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                             dialogProcess.dismiss();
                             if (commonProperty.getUserID() != null) {
                                 initdata();
+                                commentList = commonProperty.getCommentList();
+                                initComment();
                             }
                         }
                     });
