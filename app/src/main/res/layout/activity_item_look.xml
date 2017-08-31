@@ -1,112 +1,135 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_base"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ll_base"
     android:orientation="vertical"
     tools:context="com.camhelp.activity.ItemLookActivity">
 
-    <include layout="@layout/top_returnandtitle"/>
+    <include layout="@layout/top_returnandtitle" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_item_look"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <include layout="@layout/item_publish_top"/>
-                    <include layout="@layout/item_look_center_pic"/>
-                    <TextView
-                        android:id="@+id/item_look_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="标题"
-                        android:textSize="18dp"
-                        android:textColor="@color/deepblack"/>
-                    <TextView
-                        android:id="@+id/item_look_intro"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="简介"
-                        android:textSize="16dp"/>
-                    <TextView
-                        android:id="@+id/item_look_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="内容"/>
-                    <include layout="@layout/item_look_foot"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="4dp"
-                        android:background="@color/colorAccent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="评论"/>
 
                     <LinearLayout
-                        android:gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_gravity="bottom"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:padding="4dp">
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:paddingLeft="8dp"
-                            android:paddingRight="8dp"
-                            android:maxLines="4"
-                            android:hint="立即评论"
-                            android:background="@color/white"/>
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:text="发送"/>
-                    </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="4dp">
+                        <include layout="@layout/item_publish_top" />
+
+                        <include layout="@layout/item_look_center_pic" />
 
                         <TextView
-                            android:id="@+id/tv_comment_nodata"
-                            android:layout_gravity="center|top"
+                            android:id="@+id/item_look_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="18dp"
-                            android:layout_marginBottom="40dp"
-                            android:text="还没有评论"/>
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_item_look"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_margin="4dp"
+                            android:text="标题"
+                            android:textColor="@color/deepblack"
+                            android:textSize="18dp" />
 
-                        </android.support.v7.widget.RecyclerView>
-                    </FrameLayout>
+                        <TextView
+                            android:id="@+id/item_look_intro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="简介"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/item_look_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="内容" />
+
+                        <include layout="@layout/item_look_foot" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="@color/colorAccent" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="bottom"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:padding="4dp"
+                            android:background="@color/translucent">
+
+                            <EditText
+                                android:id="@+id/et_comment_content"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/white"
+                                android:hint="立即评论"
+                                android:maxLines="4"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp" />
+
+                            <Button
+                                android:id="@+id/btn_sendComment"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:background="@color/cornflowerblue"
+                                android:text="发送" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_comment_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="评论" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="4dp"
+                            android:paddingBottom="40dp">
+
+                            <TextView
+                                android:id="@+id/tv_comment_nodata"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|top"
+                                android:layout_marginBottom="40dp"
+                                android:layout_marginTop="18dp"
+                                android:text="还没有评论" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_item_look"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            </android.support.v7.widget.RecyclerView>
+                        </FrameLayout>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
+            </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </FrameLayout>
 
 </LinearLayout>

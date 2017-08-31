@@ -8,22 +8,6 @@ import java.util.Date;
  */
 
 public class Comment {
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "commentId=" + commentId +
-                ", commonId=" + commonId +
-                ", fromuserId=" + fromuserId +
-                ", touserId=" + touserId +
-                ", mappercommonid=" + mappercommonid +
-                ", commenttext='" + commenttext + '\'' +
-                ", commentpath='" + commentpath + '\'' +
-                ", tonickname='" + tonickname + '\'' +
-                ", fromnickname='" + fromnickname + '\'' +
-                ", fromuseravatar='" + fromuseravatar + '\'' +
-                ", createtime=" + createtime +
-                '}';
-    }
 
     private Integer commentId;//id
     //事件id
@@ -47,6 +31,10 @@ public class Comment {
     private String fromuseravatar;
 
     private String createtime;
+
+    private String touseravatar;
+
+    private Integer praisenum;
 
     public Comment() {
     }
@@ -137,5 +125,21 @@ public class Comment {
 
     public void setCreatetime(String createtime) {
         this.createtime = createtime;
+    }
+
+    public String getTouseravatar() {
+        return touseravatar;
+    }
+
+    public void setTouseravatar(String touseravatar) {
+        this.touseravatar = touseravatar;
+    }
+
+    public Integer getPraisenum() {
+        return praisenum;
+    }
+
+    public void setPraisenum(Integer praisenum) {
+        this.praisenum = praisenum;
     }
 }

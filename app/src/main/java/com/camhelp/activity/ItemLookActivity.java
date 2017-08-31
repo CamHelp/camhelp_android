@@ -10,14 +10,19 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -92,6 +97,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
     private boolean isLike, isCollection;
 
+    SwipeRefreshLayout srl_item_look;
     private ImageView item_top_iv_avatar;//头像
     private TextView item_top_tv_nickname, item_top_tv_createtime, item_top_iv_type;//顶部用户名，发布时间，类型
     private ImageView item_iv_pic1, item_iv_pic2, item_iv_pic3, item_iv_pic4;//四张照片
@@ -101,6 +107,12 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private ImageView iv_like, iv_collect;//喜欢，收藏按钮（点击改变）
     private TextView tv_comment_nodata;//暂无评论
     private RecyclerView recycler_item_look;//评论
+
+    private EditText et_comment_content;//评论输入框
+    private Button btn_sendComment;//发送评论
+    private TextView tv_comment_num;//评论数
+    private String sCommentContent;//评论内容
+    private Comment mAddComment = new Comment();//添加评论实体
 
     //    User mUser = new User();//用户
     UserVO mUser = new UserVO();//用户
@@ -115,6 +127,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         dialogProcess = MyProcessDialog.showDialog(this);
+        dialogProcess.show();
         commonPropertyID = getIntent().getIntExtra(CommonGlobal.commonPropertyID, -1);
         commonPropertyVO = (CommonPropertyVO) getIntent().getSerializableExtra(CommonGlobal.commonProperty);
 
@@ -181,9 +194,29 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         tv_comment_nodata = (TextView) findViewById(R.id.tv_comment_nodata);
         recycler_item_look = (RecyclerView) findViewById(R.id.recycler_item_look);
 
+        et_comment_content = (EditText) findViewById(R.id.et_comment_content);
+        btn_sendComment = (Button) findViewById(R.id.btn_sendComment);
+        btn_sendComment.setOnClickListener(this);
+        tv_comment_num = (TextView) findViewById(R.id.tv_comment_num);
+
         /*设置字体样式*/
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonnts/Microsoft.ttf");
         item_look_title.setTypeface(typeface);
+
+        srl_item_look = (SwipeRefreshLayout) findViewById(R.id.srl_item_look);
+        srl_item_look.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl_item_look.setRefreshing(true);
+                okhttpLookOne(commonPropertyID);
+            }
+        });
+        //这个是下拉刷新出现的那个圈圈要显示的颜色
+        srl_item_look.setColorSchemeResources(
+                R.color.red,
+                R.color.yellow,
+                R.color.green
+        );
     }
 
     public void initFirstData() {
@@ -311,6 +344,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     public void initComment(){
         if (commentList.size()>0){
             tv_comment_nodata.setVisibility(View.GONE);
+            tv_comment_num.setText("全部 "+commentList.size()+" 条评论");
 
             mLinearLayoutManager = new LinearLayoutManager(this);
             recycler_item_look.setLayoutManager(mLinearLayoutManager);
@@ -324,7 +358,6 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
      * 请求服务器数据
      */
     private void okhttpLookOne(Integer commonid) {
-        dialogProcess.show();
         final String url = CommonUrls.SERVER_COMMONLIST_ONE;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
@@ -342,6 +375,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                     public void run() {
                         Toast.makeText(ItemLookActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
                         dialogProcess.dismiss();
+                        srl_item_look.setRefreshing(false);
                     }
                 });
             }
@@ -376,6 +410,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void run() {
                             dialogProcess.dismiss();
+                            srl_item_look.setRefreshing(false);
                             if (commonProperty.getUserID() != null) {
                                 initdata();
                                 commentList = commonProperty.getCommentList();
@@ -388,7 +423,82 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void run() {
                             dialogProcess.dismiss();
+                            srl_item_look.setRefreshing(false);
                             Toast.makeText(ItemLookActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 添加评论
+     */
+    private void okhttpAddComment(){
+        final String url = CommonUrls.SERVER_COMMENT_ADD;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
+
+        FormBody body = new FormBody.Builder()
+                .add("commenttext", mAddComment.getCommenttext())
+                .add("fromuserid", ""+mAddComment.getFromuserId())
+                .add("commonid", ""+mAddComment.getCommonId())
+                .add("fromnickname", ""+mAddComment.getFromnickname())
+                .add("fromuseravatar", ""+mAddComment.getFromuseravatar())
+                .build();
+        Request request = new Request.Builder().url(url).post(body).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("TAG", "onFailure" + e.toString());
+                ItemLookActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ItemLookActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String result = response.body().string();
+                Log.d("TAG" + "onresponse result:", result);
+
+                Gson gson = new Gson();
+                //  获得 解析者
+                JsonParser parser = new JsonParser();
+                //  获得 根节点元素
+                JsonElement root = parser.parse(result);
+                //  根据 文档判断根节点属于 什么类型的 Gson节点对象
+                // 假如文档 显示 根节点 为对象类型
+                // 获得 根节点 的实际 节点类型
+                JsonObject element = root.getAsJsonObject();
+                //  取得 节点 下 的某个节点的 value
+                // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                final String msg = msgJson.getAsString();
+
+                if (code == 0) {
+                    final JsonObject dataJson = element.getAsJsonObject("data");
+                    commonProperty = gson.fromJson(dataJson.toString(), CommomPropertyDetailsVo.class);
+                    ItemLookActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            et_comment_content.setText("");
+                            commentList.add(mAddComment);
+                            commentList.clear();//清空已发布内容
+                            okhttpLookOne(commonPropertyID);
+                        }
+                    });
+                } else {
+                    ItemLookActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ItemLookActivity.this, "评论失败", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -471,6 +581,19 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 } else {
                     iv_collect.setImageResource(R.drawable.item_foot_collected);
                     addcollection();
+                }
+                break;
+            case R.id.btn_sendComment://评论
+                if (TextUtils.isEmpty(et_comment_content.getText())){
+                    et_comment_content.setHint("请输入评论内容");
+                }else {
+                    sCommentContent = et_comment_content.getText().toString();
+                    mAddComment.setCommenttext(sCommentContent);
+                    mAddComment.setFromuserId(mUser.getUserID());
+                    mAddComment.setFromnickname(mUser.getNickname());
+                    mAddComment.setCommonId(commonPropertyID);
+                    mAddComment.setFromuseravatar(mUser.getAvatar());
+                    okhttpAddComment();
                 }
                 break;
         }

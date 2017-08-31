@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -23,9 +26,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
+import com.camhelp.adapter.CommentAdapter;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;
 import com.camhelp.common.FindValueForID;
+import com.camhelp.entity.Comment;
 import com.camhelp.entity.CommomPropertyDetailsVo;
 import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.entity.User;
@@ -45,7 +50,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -74,9 +81,13 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
     private ZLMinePublishedCommonProperty zlMinePublishedCommonProperty = new ZLMinePublishedCommonProperty();
     //    private CommonProperty commonProperty = new CommonProperty();
     private CommomPropertyDetailsVo commonProperty = new CommomPropertyDetailsVo();
+    private List<Comment> commentList = new ArrayList<Comment>();
+    private CommentAdapter commentAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
 
     private boolean isLike, isCollection;
 
+    SwipeRefreshLayout srl_item_look;
     private ImageView item_top_iv_avatar;//头像
     private TextView item_top_tv_nickname, item_top_tv_createtime, item_top_iv_type;//顶部用户名，发布时间，类型
     private ImageView item_iv_pic1, item_iv_pic2, item_iv_pic3, item_iv_pic4;//四张照片
@@ -84,6 +95,8 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
     private TextView item_foot_praisenum, item_foot_browsenum;//热度，浏览量
     private LinearLayout ll_look_share, ll_look_like, ll_look_collect;//分享，喜欢，收藏
     private ImageView iv_like, iv_collect;//喜欢，收藏按钮（点击改变）
+    private TextView tv_comment_nodata;//暂无评论
+    private RecyclerView recycler_item_look;//评论
 
     //    User mUser = new User();//用户
     UserVO mUser = new UserVO();//用户
@@ -98,6 +111,7 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         dialogProcess = MyProcessDialog.showDialog(this);
+        dialogProcess.show();
         commonPropertyID = getIntent().getIntExtra(CommonGlobal.commonPropertyID, -1);
         zlMinePublishedCommonProperty = (ZLMinePublishedCommonProperty) getIntent().getSerializableExtra(CommonGlobal.commonProperty);
         mUser = getUserVO();
@@ -159,6 +173,23 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
         iv_like = (ImageView) findViewById(R.id.iv_like);
         iv_collect = (ImageView) findViewById(R.id.iv_collect);
 
+        tv_comment_nodata = (TextView) findViewById(R.id.tv_comment_nodata);
+        recycler_item_look = (RecyclerView) findViewById(R.id.recycler_item_look);
+
+        srl_item_look = (SwipeRefreshLayout) findViewById(R.id.srl_item_look);
+        srl_item_look.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl_item_look.setRefreshing(true);
+                okhttpLookOne(commonPropertyID);
+            }
+        });
+        //这个是下拉刷新出现的那个圈圈要显示的颜色
+        srl_item_look.setColorSchemeResources(
+                R.color.red,
+                R.color.yellow,
+                R.color.green
+        );
     }
 
     public void initFirstData() {
@@ -282,11 +313,22 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
         }
     }
 
+    public void initComment(){
+        if (commentList.size()>0){
+            tv_comment_nodata.setVisibility(View.GONE);
+
+            mLinearLayoutManager = new LinearLayoutManager(this);
+            recycler_item_look.setLayoutManager(mLinearLayoutManager);
+            recycler_item_look.setNestedScrollingEnabled(false);
+            commentAdapter = new CommentAdapter(commentList, this);
+            recycler_item_look.setAdapter(commentAdapter);
+        }
+    }
+
     /**
      * 请求服务器数据
      */
     private void okhttpLookOne(Integer commonid) {
-        dialogProcess.show();
         final String url = CommonUrls.SERVER_COMMONLIST_ONE;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
@@ -304,6 +346,7 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
                     public void run() {
                         Toast.makeText(ItemLookMinePublishedActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
                         dialogProcess.dismiss();
+                        srl_item_look.setRefreshing(false);
                     }
                 });
             }
@@ -338,8 +381,11 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
                         @Override
                         public void run() {
                             dialogProcess.dismiss();
+                            srl_item_look.setRefreshing(false);
                             if (commonProperty.getUserID() != null) {
                                 initdata();
+                                commentList = commonProperty.getCommentList();
+                                initComment();
                             }
                         }
                     });
@@ -348,6 +394,7 @@ public class ItemLookMinePublishedActivity extends AppCompatActivity implements 
                         @Override
                         public void run() {
                             dialogProcess.dismiss();
+                            srl_item_look.setRefreshing(false);
                             Toast.makeText(ItemLookMinePublishedActivity.this, msg, Toast.LENGTH_SHORT).show();
                         }
                     });

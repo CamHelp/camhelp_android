@@ -91,10 +91,17 @@ public class CommonUrls {
      * 方式：post
      * 路径：/user/update/avatar
      * 参数：
-     *      id：userid
-     *      avatar：picFile
+     * id：userid
+     * avatar：picFile
      */
     public static final String SERVER_USER_UPDATE_AVATAR = SERVER_ADDRESS + "/user/update/avatar";
 
+    /**
+     * 发布评论
+     * 方式：post
+     * 路径：/comment/addcomment
+     *
+     */
+    public static final String SERVER_COMMENT_ADD = SERVER_ADDRESS + "/comment/addcomment";
 
 }

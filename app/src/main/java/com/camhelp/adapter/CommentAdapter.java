@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.camhelp.R;
@@ -99,8 +100,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder {
         View queryItemView;
         ImageView item_commentAvatar;
-        TextView item_comment_fromNick,item_comment_toNick,item_comment_createtime,item_comment_content;
-        LinearLayout item_ll_like,item_ll_reply;
+        TextView item_comment_fromNick, item_comment_toNick, item_comment_createtime, item_comment_content;
+        LinearLayout item_ll_like, item_ll_reply;
+        TextView item_tv_praisenum;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -112,16 +114,21 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             item_comment_content = (TextView) itemView.findViewById(R.id.item_comment_content);
             item_ll_like = (LinearLayout) itemView.findViewById(R.id.item_ll_like);
             item_ll_reply = (LinearLayout) itemView.findViewById(R.id.item_ll_reply);
+            item_tv_praisenum = (TextView) itemView.findViewById(R.id.item_tv_praisenum);
         }
 
         public void dataBinding(final Comment comment, final int position, Context context) {
-            Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC+comment.getFromuseravatar()).into(item_commentAvatar);
-            item_comment_fromNick.setText(comment.getFromnickname()+"  ");
-            if (comment.getTonickname()!=null && !"".equals(comment.getTonickname())){
-                item_comment_toNick.setText("@"+comment.getTonickname());
+            Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC + comment.getFromuseravatar()).into(item_commentAvatar);
+            item_comment_fromNick.setText(comment.getFromnickname() + "  ");
+            if (comment.getTonickname() != null && !"".equals(comment.getTonickname())) {
+                item_comment_toNick.setVisibility(View.VISIBLE);
+                item_comment_toNick.setText("@" + comment.getTonickname());
             }
             item_comment_createtime.setText(dateConversionUtils.sdateToStringBirthday(comment.getCreatetime()));
             item_comment_content.setText(comment.getCommenttext());
+            if (comment.getPraisenum()>0){
+                item_tv_praisenum.setText("" + comment.getPraisenum());
+            }
         }
     }
 }
