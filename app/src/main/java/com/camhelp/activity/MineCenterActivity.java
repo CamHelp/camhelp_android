@@ -316,11 +316,13 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
                     final JsonObject dataJson = element.getAsJsonObject("data");
                     if (!isUpdateAvatar) {
                         uploadResult = dataJson.get("bgpicture").toString();
+                        uploadResult = uploadResult.replace("\"", "");
+                        mUser.setBgpicture(uploadResult);
                     }else {
                         uploadResult = dataJson.get("avatar").toString();
+                        uploadResult = uploadResult.replace("\"", "");
+                        mUser.setAvatar(uploadResult);
                     }
-                    uploadResult = uploadResult.replace("\"", "");
-                    mUser.setAvatar(uploadResult);
                     saveUserVO(mUser);
                     isUpdateAvatar = false;
                     dialogProcess.dismiss();
@@ -458,8 +460,6 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         mUser.setEmail(email);
         mUser.setAddress(address);
         mUser.setSex(sex);
-        mUser.setBgpicture(photo1path);
-        mUser.setAvatar(photo2path);
         saveUserVO(mUser);
 
         hintKbTwo();
