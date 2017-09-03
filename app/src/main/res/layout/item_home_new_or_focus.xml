@@ -14,7 +14,7 @@
         android:paddingTop="12dp">
         <include layout="@layout/item_publish_top"/>
         <!--<include layout="@layout/item_publish_center_pic"/>-->
-        <include layout="@layout/item_publish_center_pic03"/>
+        <include layout="@layout/item_publish_center_pic04"/>
         <TextView
             android:id="@+id/item_tv_intro"
             android:layout_width="match_parent"

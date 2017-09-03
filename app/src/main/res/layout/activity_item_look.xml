@@ -33,7 +33,8 @@
 
                         <include layout="@layout/item_publish_top" />
 
-                        <include layout="@layout/item_look_center_pic" />
+                        <!--<include layout="@layout/item_look_center_pic" />-->
+                        <include layout="@layout/item_publish_center_pic04" />
 
                         <TextView
                             android:id="@+id/item_look_title"

@@ -46,6 +46,7 @@ import com.camhelp.utils.DateConversionUtils;
 import com.camhelp.utils.FullyLinearLayoutManager;
 import com.camhelp.utils.GsonUtil;
 import com.camhelp.utils.L;
+import com.camhelp.utils.LookLargeImg;
 import com.camhelp.utils.MyProcessDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -119,6 +120,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
 
     Dialog dialogProcess;
     DateConversionUtils dateConversionUtils = new DateConversionUtils();
+    private LookLargeImg lookLargeImg = new LookLargeImg();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +177,11 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         item_iv_pic2 = (ImageView) findViewById(R.id.item_iv_pic2);
         item_iv_pic3 = (ImageView) findViewById(R.id.item_iv_pic3);
         item_iv_pic4 = (ImageView) findViewById(R.id.item_iv_pic4);
+
+        item_iv_pic1.setOnClickListener(this);
+        item_iv_pic2.setOnClickListener(this);
+        item_iv_pic3.setOnClickListener(this);
+        item_iv_pic4.setOnClickListener(this);
 
         item_look_title = (TextView) findViewById(R.id.item_look_title);
         item_look_intro = (TextView) findViewById(R.id.item_look_intro);
@@ -561,6 +568,22 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 intentLookOtherPeople.putExtra(CommonGlobal.userAvatar, commonPropertyVO.getAvatar());//把用户头像传过去
                 intentLookOtherPeople.putExtra(CommonGlobal.userNickname, commonPropertyVO.getNickname());//把用户昵称传过去
                 startActivity(intentLookOtherPeople);
+                break;
+            case R.id.item_iv_pic1:
+                String imgurl = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic1();
+                lookLargeImg.looklargeimg(imgurl, this);
+                break;
+            case R.id.item_iv_pic2:
+                String imgur2 = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic2();
+                lookLargeImg.looklargeimg(imgur2, this);
+                break;
+            case R.id.item_iv_pic3:
+                String imgur3 = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic3();
+                lookLargeImg.looklargeimg(imgur3, this);
+                break;
+            case R.id.item_iv_pic4:
+                String imgur4 = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic4();
+                lookLargeImg.looklargeimg(imgur4, this);
                 break;
             case R.id.ll_look_share://分享
                 Toast.makeText(this, "分享功能待完成", Toast.LENGTH_SHORT).show();

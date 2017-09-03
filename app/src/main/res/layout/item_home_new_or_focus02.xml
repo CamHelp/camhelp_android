@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="12dp">
+        <include layout="@layout/item_publish_top"/>
+        <!--<include layout="@layout/item_publish_center_pic"/>-->
+        <!--<include layout="@layout/item_publish_center_pic04"/>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp">
+            <ImageView
+                android:id="@+id/item04_iv_pic1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/isloading"/>
+            <ImageView
+                android:id="@+id/item04_iv_pic2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_marginLeft="4dp"
+                android:src="@drawable/isloading"/>
+            <ImageView
+                android:id="@+id/item04_iv_pic3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_marginLeft="4dp"
+                android:src="@drawable/isloading"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp">
+            <ImageView
+                android:id="@+id/item04_iv_pic4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/isloading"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_tv_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textColor="@color/deepblack"
+            android:text="简介"
+            android:textSize="18dp"/>
+        <include layout="@layout/item_publish_foot"/>
+    </LinearLayout>
+
+</LinearLayout>

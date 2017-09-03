@@ -57,7 +57,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.item_home_new_or_focus, parent, false);
+                inflate(R.layout.item_home_new_or_focus02, parent, false);
         final HomeNewAndFocusAdapter.ViewHolder holder = new HomeNewAndFocusAdapter.ViewHolder(view);
 
         return holder;
@@ -208,10 +208,14 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             ll_publishfoot_collect = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_collect);
             iv_like = (ImageView) itemView.findViewById(R.id.iv_like);
             iv_collect = (ImageView) itemView.findViewById(R.id.iv_collect);
-            item_iv_pic1 = (ImageView) itemView.findViewById(R.id.item_iv_pic1);
-            item_iv_pic2 = (ImageView) itemView.findViewById(R.id.item_iv_pic2);
-            item_iv_pic3 = (ImageView) itemView.findViewById(R.id.item_iv_pic3);
-            item_iv_pic4 = (ImageView) itemView.findViewById(R.id.item_iv_pic4);
+//            item_iv_pic1 = (ImageView) itemView.findViewById(R.id.item_iv_pic1);
+//            item_iv_pic2 = (ImageView) itemView.findViewById(R.id.item_iv_pic2);
+//            item_iv_pic3 = (ImageView) itemView.findViewById(R.id.item_iv_pic3);
+//            item_iv_pic4 = (ImageView) itemView.findViewById(R.id.item_iv_pic4);
+            item_iv_pic1 = (ImageView) itemView.findViewById(R.id.item04_iv_pic1);
+            item_iv_pic2 = (ImageView) itemView.findViewById(R.id.item04_iv_pic2);
+            item_iv_pic3 = (ImageView) itemView.findViewById(R.id.item04_iv_pic3);
+            item_iv_pic4 = (ImageView) itemView.findViewById(R.id.item04_iv_pic4);
         }
 
         public void dataBinding(final CommonPropertyVO mCommonPropertyVO, final int position, Context context) {
@@ -246,31 +250,31 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             item_top_iv_type.setText(findValueForID.findCategoryType(type));
 
             if (pic1 != null && !"".equals(pic1)) {
-//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic1)
-//                        .placeholder(R.drawable.isloading).into(item_iv_pic1);
                 Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
-                        .placeholder(R.drawable.isloading).into(item_iv_pic1);
+                        .placeholder(R.drawable.isloading)
+                        .crossFade().into(item_iv_pic1);
             } else {
                 item_iv_pic1.setVisibility(View.GONE);
             }
-//            if (pic2 != null && !"".equals(pic2)) {
-//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic2)
-//                        .placeholder(R.drawable.isloading).into(item_iv_pic2);
-//            } else {
-//                item_iv_pic2.setVisibility(View.GONE);
-//            }
-//            if (pic3 != null && !"".equals(pic3)) {
-//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic3)
-//                        .placeholder(R.drawable.isloading).into(item_iv_pic3);
-//            } else {
-//                item_iv_pic3.setVisibility(View.GONE);
-//            }
-//            if (pic4 != null && !"".equals(pic4)) {
-//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic4)
-//                        .placeholder(R.drawable.isloading).into(item_iv_pic4);
-//            } else {
-//                item_iv_pic4.setVisibility(View.GONE);
-//            }
+            if (pic2 != null && !"".equals(pic2)) {
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic2)
+                        .placeholder(R.drawable.isloading).into(item_iv_pic2);
+            } else {
+                item_iv_pic2.setVisibility(View.GONE);
+            }
+            if (pic3 != null && !"".equals(pic3)) {
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic3)
+                        .placeholder(R.drawable.isloading).into(item_iv_pic3);
+            } else {
+                item_iv_pic3.setVisibility(View.GONE);
+            }
+            if (pic4 != null && !"".equals(pic4)) {
+                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
+                        .placeholder(R.drawable.isloading)
+                        .crossFade().into(item_iv_pic4);
+            } else {
+                item_iv_pic4.setVisibility(View.GONE);
+            }
 
             item_foot_praisenum.setText("" + mCommonPropertyVO.getPraisenum() + "条热度");
 
