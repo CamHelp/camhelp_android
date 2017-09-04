@@ -2,8 +2,11 @@ package com.camhelp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.camhelp.R;
 import com.camhelp.activity.ItemLookActivity;
 import com.camhelp.activity.LoginActivity;
@@ -24,8 +29,14 @@ import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.CommonPropertyVO;
 import com.camhelp.entity.User;
 import com.camhelp.utils.DateConversionUtils;
+import com.camhelp.utils.L;
 import com.camhelp.utils.LookLargeImg;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +58,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
     String shreText;
     DateConversionUtils dateConversionUtils = new DateConversionUtils();
+    String url1;
 
     public HomeNewAndFocusAdapter(List<CommonPropertyVO> CommonPropertyVOs, Context context) {
         mList = CommonPropertyVOs;
@@ -68,6 +80,56 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
         final CommonPropertyVO commonPropertyVO = mList.get(position);
         holder.dataBinding(commonPropertyVO, position, mContext);
+
+        /**
+         * 图片加载
+         * 通过设置tag，解决glide错乱问题!!!!
+         * */
+        holder.item_ll_pic.setTag(mList.get(position).getCommonPic1());//setTag
+//        holder.item_iv_pic1.setTag(mList.get(position).getCommonPic1());//setTag
+
+        String tagllPic1 = (String) holder.item_ll_pic.getTag();
+//        String tagPic1 = (String) holder.item_iv_pic1.getTag();
+        L.d("position:"+position+"--tagllPic1:"+tagllPic1);
+//        L.d("position:"+position+"--tagPic1:"+tagPic1);
+        L.d("position:"+position+"--pic1:"+commonPropertyVO.getCommonPic1());
+        String pic1 = commonPropertyVO.getCommonPic1();
+        String pic2 = commonPropertyVO.getCommonPic2();
+        String pic3 = commonPropertyVO.getCommonPic3();
+        String pic4 = commonPropertyVO.getCommonPic4();
+
+        if (!TextUtils.equals(commonPropertyVO.getCommonPic1(), tagllPic1)) {
+            holder.item_ll_pic.setVisibility(View.GONE);
+        }else if (pic1==null||"".equals(pic1)){
+            holder.item_ll_pic.setVisibility(View.GONE);
+        }
+        else {
+            holder.item_ll_pic.setVisibility(View.VISIBLE);
+            Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
+                    .placeholder(R.drawable.isloading2)
+                    .crossFade().into(holder.item_iv_pic1);
+
+            if (pic2 != null && !"".equals(pic2)) {
+                Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC+pic2)
+                        .placeholder(R.drawable.isloading2).into(holder.item_iv_pic2);
+            } else {
+                holder.item_iv_pic2.setVisibility(View.GONE);
+            }
+            if (pic3 != null && !"".equals(pic3)) {
+                Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC+pic3)
+                        .placeholder(R.drawable.isloading2).into(holder.item_iv_pic3);
+            } else {
+                holder.item_iv_pic3.setVisibility(View.GONE);
+            }
+            if (pic4 != null && !"".equals(pic4)) {
+                Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
+                        .placeholder(R.drawable.isloading2)
+                        .crossFade().into(holder.item_iv_pic4);
+            } else {
+                holder.item_iv_pic4.setVisibility(View.GONE);
+            }
+        }
+
 
         /*每一项的点击事件*/
         holder.queryItemView.setOnClickListener(new View.OnClickListener() {
@@ -122,8 +184,8 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
                     notifyDataSetChanged();
                     isLikedList.set(position, false);
                 } else {
-//                    notifyItemChanged(position);//通知该位置的数据发送改变
-                    notifyDataSetChanged();
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+//                    notifyDataSetChanged();
                     isLikedList.set(position, true);
                 }
             }
@@ -137,8 +199,8 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
                     notifyDataSetChanged();
                     isCollectList.set(position, false);
                 } else {
-//                    notifyItemChanged(position);//通知该位置的数据发送改变
-                    notifyDataSetChanged();
+                    notifyItemChanged(position);//通知该位置的数据发送改变
+//                    notifyDataSetChanged();
                     isCollectList.set(position, true);
                 }
             }
@@ -192,6 +254,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
         LinearLayout ll_publishfoot_share, ll_publishfoot_comment, ll_publishfoot_like, ll_publishfoot_collect;
         ImageView iv_like, iv_collect;
         ImageView item_iv_pic1, item_iv_pic2, item_iv_pic3, item_iv_pic4;
+        LinearLayout item_ll_pic;//图片显示
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -208,14 +271,12 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             ll_publishfoot_collect = (LinearLayout) itemView.findViewById(R.id.ll_publishfoot_collect);
             iv_like = (ImageView) itemView.findViewById(R.id.iv_like);
             iv_collect = (ImageView) itemView.findViewById(R.id.iv_collect);
-//            item_iv_pic1 = (ImageView) itemView.findViewById(R.id.item_iv_pic1);
-//            item_iv_pic2 = (ImageView) itemView.findViewById(R.id.item_iv_pic2);
-//            item_iv_pic3 = (ImageView) itemView.findViewById(R.id.item_iv_pic3);
-//            item_iv_pic4 = (ImageView) itemView.findViewById(R.id.item_iv_pic4);
-            item_iv_pic1 = (ImageView) itemView.findViewById(R.id.item04_iv_pic1);
-            item_iv_pic2 = (ImageView) itemView.findViewById(R.id.item04_iv_pic2);
-            item_iv_pic3 = (ImageView) itemView.findViewById(R.id.item04_iv_pic3);
-            item_iv_pic4 = (ImageView) itemView.findViewById(R.id.item04_iv_pic4);
+            item_ll_pic = (LinearLayout) itemView.findViewById(R.id.item_ll_pic);
+            item_iv_pic1 = (ImageView) itemView.findViewById(R.id.item_iv_pic1);
+            item_iv_pic2 = (ImageView) itemView.findViewById(R.id.item_iv_pic2);
+            item_iv_pic3 = (ImageView) itemView.findViewById(R.id.item_iv_pic3);
+            item_iv_pic4 = (ImageView) itemView.findViewById(R.id.item_iv_pic4);
+//            item_iv_pic1 = (ImageView) itemView.findViewById(R.id.item04_iv_pic0);
         }
 
         public void dataBinding(final CommonPropertyVO mCommonPropertyVO, final int position, Context context) {
@@ -249,32 +310,38 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
 
             item_top_iv_type.setText(findValueForID.findCategoryType(type));
 
-            if (pic1 != null && !"".equals(pic1)) {
-                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
-                        .placeholder(R.drawable.isloading)
-                        .crossFade().into(item_iv_pic1);
-            } else {
-                item_iv_pic1.setVisibility(View.GONE);
-            }
-            if (pic2 != null && !"".equals(pic2)) {
-                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic2)
-                        .placeholder(R.drawable.isloading).into(item_iv_pic2);
-            } else {
-                item_iv_pic2.setVisibility(View.GONE);
-            }
-            if (pic3 != null && !"".equals(pic3)) {
-                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic3)
-                        .placeholder(R.drawable.isloading).into(item_iv_pic3);
-            } else {
-                item_iv_pic3.setVisibility(View.GONE);
-            }
-            if (pic4 != null && !"".equals(pic4)) {
-                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
-                        .placeholder(R.drawable.isloading)
-                        .crossFade().into(item_iv_pic4);
-            } else {
-                item_iv_pic4.setVisibility(View.GONE);
-            }
+            /*图片显示*/
+//            L.d("position:"+position+"--pic1:"+pic1);
+//            if (pic1 ==null || "".equals(pic1)){
+//                item_ll_pic.setVisibility(View.GONE);
+//            }
+
+//            if (pic1 != null && !"".equals(pic1)) {
+//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
+//                        .placeholder(R.drawable.isloading)
+//                        .crossFade().into(item_iv_pic1);
+//            } else {
+//                item_iv_pic1.setVisibility(View.GONE);
+//            }
+//            if (pic2 != null && !"".equals(pic2)) {
+//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic2)
+//                        .placeholder(R.drawable.isloading).into(item_iv_pic2);
+//            } else {
+//                item_iv_pic2.setVisibility(View.GONE);
+//            }
+//            if (pic3 != null && !"".equals(pic3)) {
+//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic3)
+//                        .placeholder(R.drawable.isloading).into(item_iv_pic3);
+//            } else {
+//                item_iv_pic3.setVisibility(View.GONE);
+//            }
+//            if (pic4 != null && !"".equals(pic4)) {
+//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
+//                        .placeholder(R.drawable.isloading)
+//                        .crossFade().into(item_iv_pic4);
+//            } else {
+//                item_iv_pic4.setVisibility(View.GONE);
+//            }
 
             item_foot_praisenum.setText("" + mCommonPropertyVO.getPraisenum() + "条热度");
 

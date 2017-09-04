@@ -23,16 +23,17 @@
             android:scaleType="centerCrop"/>
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:layout_marginTop="4dp"
             android:id="@+id/item_iv_pic3"
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
         <ImageView
+            android:layout_marginTop="4dp"
             android:id="@+id/item_iv_pic4"
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
