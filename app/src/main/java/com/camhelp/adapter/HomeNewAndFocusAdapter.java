@@ -109,25 +109,25 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
                     .placeholder(R.drawable.isloading2)
                     .crossFade().into(holder.item_iv_pic1);
 
-            if (pic2 != null && !"".equals(pic2)) {
-                Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC+pic2)
-                        .placeholder(R.drawable.isloading2).into(holder.item_iv_pic2);
-            } else {
-                holder.item_iv_pic2.setVisibility(View.GONE);
-            }
-            if (pic3 != null && !"".equals(pic3)) {
-                Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC+pic3)
-                        .placeholder(R.drawable.isloading2).into(holder.item_iv_pic3);
-            } else {
-                holder.item_iv_pic3.setVisibility(View.GONE);
-            }
-            if (pic4 != null && !"".equals(pic4)) {
-                Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
-                        .placeholder(R.drawable.isloading2)
-                        .crossFade().into(holder.item_iv_pic4);
-            } else {
-                holder.item_iv_pic4.setVisibility(View.GONE);
-            }
+//            if (pic2 != null && !"".equals(pic2)) {
+//                Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC+pic2)
+//                        .placeholder(R.drawable.isloading2).into(holder.item_iv_pic2);
+//            } else {
+//                holder.item_iv_pic2.setVisibility(View.GONE);
+//            }
+//            if (pic3 != null && !"".equals(pic3)) {
+//                Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC+pic3)
+//                        .placeholder(R.drawable.isloading2).into(holder.item_iv_pic3);
+//            } else {
+//                holder.item_iv_pic3.setVisibility(View.GONE);
+//            }
+//            if (pic4 != null && !"".equals(pic4)) {
+//                Glide.with(mContext).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
+//                        .placeholder(R.drawable.isloading2)
+//                        .crossFade().into(holder.item_iv_pic4);
+//            } else {
+//                holder.item_iv_pic4.setVisibility(View.GONE);
+//            }
         }
 
 
@@ -309,41 +309,10 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             shreText = item_tv_intro.getText().toString();
 
             item_top_iv_type.setText(findValueForID.findCategoryType(type));
-
-            /*图片显示*/
-//            L.d("position:"+position+"--pic1:"+pic1);
-//            if (pic1 ==null || "".equals(pic1)){
-//                item_ll_pic.setVisibility(View.GONE);
-//            }
-
-//            if (pic1 != null && !"".equals(pic1)) {
-//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
-//                        .placeholder(R.drawable.isloading)
-//                        .crossFade().into(item_iv_pic1);
-//            } else {
-//                item_iv_pic1.setVisibility(View.GONE);
-//            }
-//            if (pic2 != null && !"".equals(pic2)) {
-//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic2)
-//                        .placeholder(R.drawable.isloading).into(item_iv_pic2);
-//            } else {
-//                item_iv_pic2.setVisibility(View.GONE);
-//            }
-//            if (pic3 != null && !"".equals(pic3)) {
-//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC+pic3)
-//                        .placeholder(R.drawable.isloading).into(item_iv_pic3);
-//            } else {
-//                item_iv_pic3.setVisibility(View.GONE);
-//            }
-//            if (pic4 != null && !"".equals(pic4)) {
-//                Glide.with(context).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
-//                        .placeholder(R.drawable.isloading)
-//                        .crossFade().into(item_iv_pic4);
-//            } else {
-//                item_iv_pic4.setVisibility(View.GONE);
-//            }
-
             item_foot_praisenum.setText("" + mCommonPropertyVO.getPraisenum() + "条热度");
+
+            /*隐藏第二张图片*/
+            item_iv_pic2.setVisibility(View.GONE);
 
             if (isLikedList.get(position)) {
                 iv_like.setImageResource(R.drawable.item_foot_liked);
