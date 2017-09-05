@@ -15,7 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -201,9 +203,29 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         tv_comment_nodata = (TextView) findViewById(R.id.tv_comment_nodata);
         recycler_item_look = (RecyclerView) findViewById(R.id.recycler_item_look);
 
-        et_comment_content = (EditText) findViewById(R.id.et_comment_content);
         btn_sendComment = (Button) findViewById(R.id.btn_sendComment);
         btn_sendComment.setOnClickListener(this);
+        et_comment_content = (EditText) findViewById(R.id.et_comment_content);
+        et_comment_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(et_comment_content.getText())){
+                    btn_sendComment.setBackground(getResources().getDrawable(R.drawable.btn_send_no));
+                }else {
+                    btn_sendComment.setBackground(getResources().getDrawable(R.drawable.btn_login_selector));
+                }
+            }
+        });
         tv_comment_num = (TextView) findViewById(R.id.tv_comment_num);
 
         /*设置字体样式*/

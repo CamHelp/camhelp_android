@@ -132,7 +132,7 @@ public class HomeOnlyNewFragment extends Fragment {
 
         initcolor();
         initview();
-//        initolddata();
+        initolddata();
         initnewdata();
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
@@ -275,7 +275,6 @@ public class HomeOnlyNewFragment extends Fragment {
                         Toast.makeText(getActivity(), "无法连接到服务器", Toast.LENGTH_SHORT).show();
                         srl_home_new.setRefreshing(false);
                         dialogProcess.dismiss();
-                        initolddata();//把上一次的数据加载出来
                     }
                 });
             }

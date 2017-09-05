@@ -11,10 +11,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,6 +38,7 @@ import com.camhelp.entity.UserVO;
 import com.camhelp.entity.ZLMinePublishedCommonProperty;
 import com.camhelp.utils.DateConversionUtils;
 import com.camhelp.utils.L;
+import com.camhelp.utils.LookLargeImg;
 import com.camhelp.utils.MyProcessDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -91,12 +97,19 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
     private TextView tv_comment_nodata;//暂无评论
     private RecyclerView recycler_item_look;//评论
 
+    private EditText et_comment_content;//评论输入框
+    private Button btn_sendComment;//发送评论
+    private TextView tv_comment_num;//评论数
+    private String sCommentContent;//评论内容
+    private Comment mAddComment = new Comment();//添加评论实体
+
     //    User mUser = new User();//用户
     UserVO mUser = new UserVO();//用户
     private int user_id;
 
     Dialog dialogProcess;
     private DateConversionUtils dateConversionUtils = new DateConversionUtils();
+    private LookLargeImg lookLargeImg = new LookLargeImg();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +184,31 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
 
         tv_comment_nodata = (TextView) findViewById(R.id.tv_comment_nodata);
         recycler_item_look = (RecyclerView) findViewById(R.id.recycler_item_look);
+
+        btn_sendComment = (Button) findViewById(R.id.btn_sendComment);
+        btn_sendComment.setOnClickListener(this);
+        et_comment_content = (EditText) findViewById(R.id.et_comment_content);
+        et_comment_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(et_comment_content.getText())){
+                    btn_sendComment.setBackground(getResources().getDrawable(R.drawable.btn_send_no));
+                }else {
+                    btn_sendComment.setBackground(getResources().getDrawable(R.drawable.btn_login_selector));
+                }
+            }
+        });
+        tv_comment_num = (TextView) findViewById(R.id.tv_comment_num);
 
         srl_item_look = (SwipeRefreshLayout) findViewById(R.id.srl_item_look);
         srl_item_look.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -399,6 +437,80 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
         });
     }
 
+    /**
+     * 添加评论
+     */
+    private void okhttpAddComment(){
+        final String url = CommonUrls.SERVER_COMMENT_ADD;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
+
+        FormBody body = new FormBody.Builder()
+                .add("commenttext", mAddComment.getCommenttext())
+                .add("fromuserid", ""+mAddComment.getFromuserId())
+                .add("commonid", ""+mAddComment.getCommonId())
+                .add("fromnickname", ""+mAddComment.getFromnickname())
+                .add("fromuseravatar", ""+mAddComment.getFromuseravatar())
+                .build();
+        Request request = new Request.Builder().url(url).post(body).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("TAG", "onFailure" + e.toString());
+                ItemLookOtherPublishedActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ItemLookOtherPublishedActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String result = response.body().string();
+                Log.d("TAG" + "onresponse result:", result);
+
+                Gson gson = new Gson();
+                //  获得 解析者
+                JsonParser parser = new JsonParser();
+                //  获得 根节点元素
+                JsonElement root = parser.parse(result);
+                //  根据 文档判断根节点属于 什么类型的 Gson节点对象
+                // 假如文档 显示 根节点 为对象类型
+                // 获得 根节点 的实际 节点类型
+                JsonObject element = root.getAsJsonObject();
+                //  取得 节点 下 的某个节点的 value
+                // 获得 name 节点的值，name 节点为基本数据节点
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                final String msg = msgJson.getAsString();
+
+                if (code == 0) {
+                    final JsonObject dataJson = element.getAsJsonObject("data");
+                    commonProperty = gson.fromJson(dataJson.toString(), CommomPropertyDetailsVo.class);
+                    ItemLookOtherPublishedActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            et_comment_content.setText("");
+                            commentList.add(mAddComment);
+                            commentList.clear();//清空已发布内容
+                            okhttpLookOne(commonPropertyID);
+                        }
+                    });
+                } else {
+                    ItemLookOtherPublishedActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ItemLookOtherPublishedActivity.this, "评论失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     public UserVO getUserVO() {
         String temp = pref.getString(CommonGlobal.userobj, "");
         L.d(TAG, temp);
@@ -453,6 +565,19 @@ public class ItemLookOtherPublishedActivity extends AppCompatActivity implements
                 } else {
                     iv_collect.setImageResource(R.drawable.item_foot_collected);
                     addcollection();
+                }
+                break;
+            case R.id.btn_sendComment://评论
+                if (TextUtils.isEmpty(et_comment_content.getText())){
+                    et_comment_content.setHint("请输入评论内容");
+                }else {
+                    sCommentContent = et_comment_content.getText().toString();
+                    mAddComment.setCommenttext(sCommentContent);
+                    mAddComment.setFromuserId(mUser.getUserID());
+                    mAddComment.setFromnickname(mUser.getNickname());
+                    mAddComment.setCommonId(commonPropertyID);
+                    mAddComment.setFromuseravatar(mUser.getAvatar());
+                    okhttpAddComment();
                 }
                 break;
         }

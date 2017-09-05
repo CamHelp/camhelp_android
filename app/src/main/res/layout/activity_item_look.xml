@@ -92,7 +92,7 @@
                                 android:layout_width="60dp"
                                 android:layout_height="30dp"
                                 android:layout_margin="6dp"
-                                android:background="@drawable/btn_login_selector"
+                                android:background="@drawable/btn_send_no"
                                 android:text="发送"
                                 android:textColor="@color/white"/>
                         </LinearLayout>
