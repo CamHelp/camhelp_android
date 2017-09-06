@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -74,7 +75,8 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
     MinePublishedAdapter minePublishedAdapter;
     private List<ZLMinePublishedCommonProperty> zlMinePublishedCommonPropertyList;
     private RecyclerView recycler_mine_published;
-    private LinearLayout ll_nodata, ll_recyclerView;
+    private LinearLayout ll_nodata, ll_recyclerView,ll_process;
+    private TextView tv_minepublished_nodata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +86,8 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
         mUser = getLocalUserVO();
         initcolor();
         inittitle();
-        initdata();
         initview();
+        initdata();
 
         recycler_mine_published.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         recycler_mine_published.setNestedScrollingEnabled(false);
@@ -134,25 +136,32 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
 
     public void initview() {
         ll_nodata = (LinearLayout) findViewById(R.id.ll_nodata);
+        ll_process = (LinearLayout) findViewById(R.id.ll_process);
+        tv_minepublished_nodata = (TextView) findViewById(R.id.tv_minepublished_nodata);
+        ll_nodata.setOnClickListener(this);
         ll_recyclerView = (LinearLayout) findViewById(R.id.ll_recyclerView);
         ll_recyclerView.bringToFront();
 
         recycler_mine_published = (RecyclerView) findViewById(R.id.recycler_mine_published);
 
-        if (zlMinePublishedCommonPropertyList.size() == 0) {
-            ll_nodata.setVisibility(View.VISIBLE);
-        }
     }
 
     public void initdata() {
+        ll_process.setVisibility(View.VISIBLE);
         zlMinePublishedCommonPropertyList = DataSupport.findAll(ZLMinePublishedCommonProperty.class);
 //        if (zlMinePublishedCommonPropertyList.size() == 0)//如果本地没有，就从服务器加载
+        if (zlMinePublishedCommonPropertyList.size() == 0) {
+            ll_nodata.setVisibility(View.VISIBLE);
+        }
         okhttpMinePublished(mUser.getUserID());
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.ll_nodata:
+                initdata();
+                break;
         }
     }
 
@@ -206,6 +215,9 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void run() {
                         Toast.makeText(MinePublishedActivity.this, "无法连接到服务器", Toast.LENGTH_SHORT).show();
+                        ll_process.setVisibility(View.GONE);
+                        ll_nodata.setVisibility(View.VISIBLE);
+                        tv_minepublished_nodata.setText("无法连接到服务器");
                     }
                 });
             }
@@ -241,6 +253,11 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
                         @Override
                         public void run() {
                             saveLocalMinePublished();
+                            ll_process.setVisibility(View.GONE);
+                            if (zlMinePublishedCommonPropertyList.size()>0){
+                                ll_nodata.setVisibility(View.VISIBLE);
+                                tv_minepublished_nodata.setText("还没有发布任何内容");
+                            }
                             recycler_mine_published.setLayoutManager(new FullyLinearLayoutManager(MinePublishedActivity.this, LinearLayoutManager.VERTICAL, true));
                             recycler_mine_published.setNestedScrollingEnabled(false);
                             minePublishedAdapter = new MinePublishedAdapter(zlMinePublishedCommonPropertyList, MinePublishedActivity.this);
@@ -251,7 +268,11 @@ public class MinePublishedActivity extends AppCompatActivity implements View.OnC
                     MinePublishedActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            Toast.makeText(MinePublishedActivity.this, "发生错误:"+msg, Toast.LENGTH_SHORT).show();
+                            ll_process.setVisibility(View.GONE);
                             Toast.makeText(MinePublishedActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            ll_nodata.setVisibility(View.VISIBLE);
+                            tv_minepublished_nodata.setText("发生错误:"+msg+"");
                         }
                     });
                 }

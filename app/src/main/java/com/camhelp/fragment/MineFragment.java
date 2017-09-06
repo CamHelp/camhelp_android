@@ -151,7 +151,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         mine_cimg_avatar.setOnClickListener(this);
         Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + userVO.getAvatar())
                 .error(R.drawable.avatar)
-                .placeholder(R.drawable.avatar)
                 .into(mine_cimg_avatar);
 
         ll_base = (LinearLayout) getActivity().findViewById(R.id.ll_base_mine);

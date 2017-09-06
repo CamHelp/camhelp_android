@@ -592,8 +592,10 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intentLookOtherPeople);
                 break;
             case R.id.item_iv_pic1:
-                String imgurl = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic1();
-                lookLargeImg.looklargeimg(imgurl, this);
+//                String imgurl = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic1();
+//                lookLargeImg.looklargeimg(imgurl, this);
+                Intent lookLargePic = new Intent(this,LookLargePicActivity.class);
+                startActivity(lookLargePic);
                 break;
             case R.id.item_iv_pic2:
                 String imgur2 = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic2();

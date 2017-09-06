@@ -21,6 +21,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.camhelp.R;
 import com.camhelp.activity.ItemLookActivity;
 import com.camhelp.activity.LoginActivity;
+import com.camhelp.activity.LookLargePicActivity;
 import com.camhelp.activity.LookOtherPeopleActivity;
 import com.camhelp.common.CommonGlobal;
 import com.camhelp.common.CommonUrls;

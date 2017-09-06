@@ -236,9 +236,9 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
                 iv_like.setImageResource(R.drawable.ic_action_like);
             }
             if (isCollectList.get(position)) {
-                iv_collect.setImageResource(R.drawable.ic_action_collect);
-            } else {
                 iv_collect.setImageResource(R.drawable.ic_action_collected);
+            } else {
+                iv_collect.setImageResource(R.drawable.ic_action_collect);
             }
         }
     }

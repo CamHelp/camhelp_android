@@ -233,6 +233,9 @@ public class HomeOnlyNewFragment extends Fragment {
      */
     public void initolddata() {
         commonPropertyVOList = DataSupport.findAll(CommonPropertyVO.class);
+        if (commonPropertyVOList.size()>0){
+            ll_nodata.setVisibility(View.GONE);
+        }
     }
 
     /**

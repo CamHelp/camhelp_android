@@ -190,13 +190,11 @@ public class LookOthersDataActivity extends AppCompatActivity implements View.On
             tv_sex.setText("保密");
         }
 
-        Glide.with(this).load(photo1path)
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + photo1path)
                 .error(R.drawable.mine_bg)
-                .placeholder(R.drawable.mine_bg)
                 .into(iv_others_back);
-        Glide.with(this).load(photo2path)
+        Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + photo2path)
                 .error(R.drawable.avatar)
-                .placeholder(R.drawable.avatar)
                 .into(cimg_other_avatar);
     }
 

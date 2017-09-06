@@ -456,7 +456,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         }
 
         final String url = CommonUrls.SERVER_PUBLISH;
-        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(60000, TimeUnit.MILLISECONDS).build();
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(2000, TimeUnit.MILLISECONDS).build();
 
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("id", "" + muserid);

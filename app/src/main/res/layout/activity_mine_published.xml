@@ -63,10 +63,23 @@
                     android:gravity="center">
 
                     <TextView
+                        android:id="@+id/tv_minepublished_nodata"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="还没有发布任何内容"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_process"
+                    android:visibility="gone"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <!--显示列表-->

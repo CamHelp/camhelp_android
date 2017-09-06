@@ -200,7 +200,6 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
                 .into(iv_mine_back);
         Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + photo2path)
                 .error(R.drawable.avatar)
-                .placeholder(R.drawable.avatar)
                 .into(cimg_mine_avatar);
 
         if (mUser.getSex() == null) {
@@ -246,7 +245,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         dialogProcess.show();
         final String url;
         File f;
-        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(30000, TimeUnit.MILLISECONDS).build();
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("id", "" + mUser.getUserID());
         if (!isUpdateAvatar) {

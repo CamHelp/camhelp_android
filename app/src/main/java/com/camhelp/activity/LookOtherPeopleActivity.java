@@ -148,7 +148,6 @@ public class LookOtherPeopleActivity extends AppCompatActivity implements View.O
                 .into(iv_bg);
         Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC+user_avatar)
                 .error(R.drawable.avatar)
-                .placeholder(R.drawable.avatar)
                 .into(cimg_mine_avatar);
     }
 
