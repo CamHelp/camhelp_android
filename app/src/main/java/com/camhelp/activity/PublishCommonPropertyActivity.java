@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -43,6 +44,7 @@ import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.UserVO;
 import com.camhelp.entity.ZLMinePublishedCommonProperty;
+import com.camhelp.utils.CompressionFileUtils;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
 import com.camhelp.utils.MyProcessDialog;
@@ -56,7 +58,10 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -119,6 +124,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     String uploadResult = "";
     PicCompression picCompression = new PicCompression();
+    CompressionFileUtils compressionFileUtils = new CompressionFileUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,9 +171,9 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
             top_title.setText("发布捡物");
         } else if (categoryType == 5) {
             top_title.setText("发布新鲜事");
-        }else if (categoryType == 6) {
+        } else if (categoryType == 6) {
             top_title.setText("发布表白");
-        }else {
+        } else {
             top_title.setText("发布?");
         }
         top_return.setOnClickListener(this);
@@ -431,6 +437,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         return uploadResult;
     }
 
+
     /**
      * 保存到服务器
      */
@@ -454,43 +461,19 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("id", "" + muserid);
         if (photopath1 != null && !"".equals(photopath1)) {
-            File f1 = new File(photopath1);
-            Bitmap bitmap= BitmapFactory.decodeFile(photopath1);
-            picCompression.compressImageToFile(bitmap,f1);
-            Bitmap bitmap2= BitmapFactory.decodeFile(f1.getPath());
-            picCompression.compressBitmapToFile(bitmap2,f1);
-            picCompression.compressBitmap(f1.getPath(),f1);
-
+            File f1 = compressionFileUtils.yasuo(photopath1);
             builder.addFormDataPart("picture", f1.getName(), RequestBody.create(MEDIA_TYPE_PNG, f1));
         }
         if (photopath2 != null && !"".equals(photopath2)) {
-            File f2 = new File(photopath2);
-            Bitmap bitmap= BitmapFactory.decodeFile(photopath2);
-            picCompression.compressImageToFile(bitmap,f2);
-            Bitmap bitmap2= BitmapFactory.decodeFile(f2.getPath());
-            picCompression.compressBitmapToFile(bitmap2,f2);
-            picCompression.compressBitmap(f2.getPath(),f2);
-
+            File f2 = compressionFileUtils.yasuo(photopath2);
             builder.addFormDataPart("picture", f2.getName(), RequestBody.create(MEDIA_TYPE_PNG, f2));
         }
         if (photopath3 != null && !"".equals(photopath3)) {
-            File f3 = new File(photopath3);
-            Bitmap bitmap= BitmapFactory.decodeFile(photopath3);
-            picCompression.compressImageToFile(bitmap,f3);
-            Bitmap bitmap2= BitmapFactory.decodeFile(f3.getPath());
-            picCompression.compressBitmapToFile(bitmap2,f3);
-            picCompression.compressBitmap(f3.getPath(),f3);
-
+            File f3 = compressionFileUtils.yasuo(photopath3);
             builder.addFormDataPart("picture", f3.getName(), RequestBody.create(MEDIA_TYPE_PNG, f3));
         }
         if (photopath4 != null && !"".equals(photopath4)) {
-            File f4 = new File(photopath4);
-            Bitmap bitmap= BitmapFactory.decodeFile(photopath4);
-            picCompression.compressImageToFile(bitmap,f4);
-            Bitmap bitmap2= BitmapFactory.decodeFile(f4.getPath());
-            picCompression.compressBitmapToFile(bitmap2,f4);
-            picCompression.compressBitmap(f4.getPath(),f4);
-
+            File f4 = compressionFileUtils.yasuo(photopath4);
             builder.addFormDataPart("picture", f4.getName(), RequestBody.create(MEDIA_TYPE_PNG, f4));
         }
         builder.addFormDataPart("categoryType", "" + categoryType)

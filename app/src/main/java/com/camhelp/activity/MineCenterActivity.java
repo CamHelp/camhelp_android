@@ -49,6 +49,7 @@ import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.User;
 import com.camhelp.entity.UserVO;
 import com.camhelp.fragment.MineFragment;
+import com.camhelp.utils.CompressionFileUtils;
 import com.camhelp.utils.DateConversionUtils;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
@@ -122,6 +123,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     String uploadResult = "";
     private boolean isUpdateAvatar, isBg;
     PicCompression picCompression = new PicCompression();
+    CompressionFileUtils compressionFileUtils = new CompressionFileUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,25 +251,11 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
         builder.addFormDataPart("id", "" + mUser.getUserID());
         if (!isUpdateAvatar) {
             url = CommonUrls.SERVER_USER_UPDATE_BG;
-            f = new File(photo2path);
-            Bitmap bitmap= BitmapFactory.decodeFile(photo2path);
-            picCompression.compressImageToFile(bitmap,f);
-            Bitmap bitmap2= BitmapFactory.decodeFile(f.getPath());
-            picCompression.compressBitmapToFile(bitmap2,f);
-            picCompression.compressBitmap(f.getPath(),f);
-
+            f = compressionFileUtils.yasuo(photo2path);
             builder.addFormDataPart("bgpicture", f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
         } else {
             url = CommonUrls.SERVER_USER_UPDATE_AVATAR;
-            f = new File(photo1path);
-            /*压缩图片*/
-//            NativeUtil.compressBitmap(f.getPath(),externalStorageDirectory+"/yasuo.jpg");
-            Bitmap bitmap= BitmapFactory.decodeFile(photo1path);
-            picCompression.compressImageToFile(bitmap,f);
-            Bitmap bitmap2= BitmapFactory.decodeFile(f.getPath());
-            picCompression.compressBitmapToFile(bitmap2,f);
-            picCompression.compressBitmap(f.getPath(),f);
-
+            f = compressionFileUtils.yasuo(photo1path);
             builder.addFormDataPart("avatar", f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
         }
 
