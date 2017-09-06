@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:src="@drawable/icon_search03"/>
+            android:src="@drawable/ic_action_searchblack"/>
         <TextView
             android:id="@+id/item_tv_searchHistoryContent"
             android:layout_gravity="center"
@@ -30,6 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="18dp"
-            android:src="@drawable/item_search_delete"/>
+            android:src="@drawable/ic_action_clear2"/>
     </LinearLayout>
 </LinearLayout>

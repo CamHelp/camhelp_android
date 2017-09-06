@@ -30,12 +30,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/ll_item_selector"
-                android:padding="10dp">
+                android:padding="2dp">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/item_foot_share" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_share" />
             </LinearLayout>
 
             <LinearLayout
@@ -43,12 +43,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/ll_item_selector"
-                android:padding="10dp">
+                android:padding="2dp">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/item_foot_comment" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_comment" />
             </LinearLayout>
 
             <LinearLayout
@@ -56,13 +56,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/ll_item_selector"
-                android:padding="10dp">
+                android:padding="2dp">
 
                 <ImageView
                     android:id="@+id/iv_like"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/item_foot_like" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_like" />
             </LinearLayout>
 
             <LinearLayout
@@ -70,13 +70,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/ll_item_selector"
-                android:padding="10dp">
+                android:padding="2dp">
 
                 <ImageView
                     android:id="@+id/iv_collect"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/item_foot_collection" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_collect" />
             </LinearLayout>
             android:background="@drawable/ll_item_selector">
         </LinearLayout>

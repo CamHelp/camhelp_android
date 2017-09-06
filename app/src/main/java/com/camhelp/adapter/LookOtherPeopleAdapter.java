@@ -231,14 +231,14 @@ public class LookOtherPeopleAdapter extends RecyclerView.Adapter<LookOtherPeople
             }
 
             if (isLikedList.get(position)) {
-                iv_like.setImageResource(R.drawable.item_foot_liked);
+                iv_like.setImageResource(R.mipmap.ic_action_liked2);
             } else {
-                iv_like.setImageResource(R.drawable.item_foot_like);
+                iv_like.setImageResource(R.drawable.ic_action_like);
             }
             if (isCollectList.get(position)) {
-                iv_collect.setImageResource(R.drawable.item_foot_collected);
+                iv_collect.setImageResource(R.drawable.ic_action_collect);
             } else {
-                iv_collect.setImageResource(R.drawable.item_foot_collection);
+                iv_collect.setImageResource(R.drawable.ic_action_collected);
             }
         }
     }

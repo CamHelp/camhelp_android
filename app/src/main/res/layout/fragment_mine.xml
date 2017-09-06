@@ -88,7 +88,7 @@
                             android:layout_height="26dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="18dp"
-                            android:src="@drawable/mine_publish" />
+                            android:src="@drawable/ic_action_minepublished" />
 
                         <TextView
                             android:id="@+id/textView2"
@@ -122,7 +122,7 @@
                             android:layout_height="26dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="18dp"
-                            android:src="@drawable/mine_collected" />
+                            android:src="@drawable/ic_action_minecollected" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                             android:layout_height="26dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="18dp"
-                            android:src="@drawable/mine_attention" />
+                            android:src="@drawable/ic_action_minefocus" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -194,7 +194,7 @@
                             android:layout_height="26dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="18dp"
-                            android:src="@drawable/mine_setup" />
+                            android:src="@drawable/ic_action_setup" />
 
                         <TextView
                             android:layout_width="wrap_content"

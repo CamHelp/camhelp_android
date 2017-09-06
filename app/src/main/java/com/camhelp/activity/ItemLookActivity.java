@@ -612,19 +612,19 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.ll_look_like://喜欢
                 if (isLike) {
-                    iv_like.setImageResource(R.drawable.item_foot_like);
+                    iv_like.setImageResource(R.mipmap.ic_action_liked2);
                     deletelike();
                 } else {
-                    iv_like.setImageResource(R.drawable.item_foot_liked);
+                    iv_like.setImageResource(R.drawable.ic_action_liked);
                     addlike();
                 }
                 break;
             case R.id.ll_look_collect://收藏
                 if (isCollection) {
-                    iv_collect.setImageResource(R.drawable.item_foot_collection);
+                    iv_collect.setImageResource(R.drawable.ic_action_collect);
                     deletecollection();
                 } else {
-                    iv_collect.setImageResource(R.drawable.item_foot_collected);
+                    iv_collect.setImageResource(R.drawable.ic_action_collected);
                     addcollection();
                 }
                 break;

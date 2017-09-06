@@ -65,7 +65,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/item_comment_like"/>
+                android:src="@drawable/ic_action_praise"/>
         </LinearLayout>
 
         <TextView
@@ -86,7 +86,7 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/item_comment_reply"/>
+                android:src="@drawable/ic_action_comment"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout

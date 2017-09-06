@@ -22,36 +22,36 @@
             android:id="@+id/ll_minepublish_share"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="10dp"
+            android:padding="2dp"
             android:background="@drawable/ll_item_selector">
             <ImageView
-                android:layout_width="24dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/item_foot_share" />
+                android:src="@drawable/ic_action_share" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_minepublish_comment"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="10dp"
+            android:padding="2dp"
             android:background="@drawable/ll_item_selector">
             <ImageView
-                android:layout_width="24dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/item_foot_comment" />
+                android:src="@drawable/ic_action_comment" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_minepublish_delete"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="10dp"
+            android:padding="2dp"
             android:background="@drawable/ll_item_selector">
             <ImageView
-                android:layout_width="24dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/item_foot_delete" />
+                android:src="@drawable/ic_action_deleteblack" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

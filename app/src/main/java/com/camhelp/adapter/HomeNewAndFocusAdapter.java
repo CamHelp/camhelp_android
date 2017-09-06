@@ -285,7 +285,7 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             Glide.with(context).load(avatar).into(item_top_iv_avatar);
 
             if (mCommonPropertyVO.getCreatetime() != null) {
-                String sCreatetime = dateConversionUtils.sdateToString(mCommonPropertyVO.getCreatetime().toString());
+                String sCreatetime = dateConversionUtils.sdateToString2(mCommonPropertyVO.getCreatetime().toString());
                 item_top_tv_createtime.setText(sCreatetime);
             }
 
@@ -315,14 +315,14 @@ public class HomeNewAndFocusAdapter extends RecyclerView.Adapter<HomeNewAndFocus
             item_iv_pic2.setVisibility(View.GONE);
 
             if (isLikedList.get(position)) {
-                iv_like.setImageResource(R.drawable.item_foot_liked);
+                iv_like.setImageResource(R.mipmap.ic_action_liked2);
             } else {
-                iv_like.setImageResource(R.drawable.item_foot_like);
+                iv_like.setImageResource(R.drawable.ic_action_like);
             }
             if (isCollectList.get(position)) {
-                iv_collect.setImageResource(R.drawable.item_foot_collected);
+                iv_collect.setImageResource(R.drawable.ic_action_collected);
             } else {
-                iv_collect.setImageResource(R.drawable.item_foot_collection);
+                iv_collect.setImageResource(R.drawable.ic_action_collect);
             }
         }
     }
