@@ -48,11 +48,11 @@ public class LookLargePicActivity extends AppCompatActivity implements View.OnCl
 
     private void initData() {
 
-//        Intent intent = getIntent();
-//        currentPosition = intent.getIntExtra("currentPosition", 0);
-//        HomeQuestionListModel.DataBeanX DataBean = ((HomeQuestionListModel.DataBeanX) intent.getSerializableExtra("questionlistdataBean"));
-//
-//        Urls = DataBean.getAttach().getImage().getOri();
+        Intent intent = getIntent();
+        currentPosition = intent.getIntExtra("currentPosition", 0);
+        HomeQuestionListModel.DataBeanX DataBean = ((HomeQuestionListModel.DataBeanX) intent.getSerializableExtra("questionlistdataBean"));
+
+        Urls = DataBean.getAttach().getImage().getOri();
         Urls.add("http://www.stormstone8.cn/assets/img/storm_left.png");
 
         adapter = new LookLargePicAdapter(Urls, this);
