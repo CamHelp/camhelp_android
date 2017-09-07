@@ -11,7 +11,7 @@ import java.util.List;
  * 查看具体详情实体类
  */
 
-public class CommomPropertyDetailsVo{
+public class CommomPropertyDetailsVo implements Serializable{
 
     @Override
     public String toString() {

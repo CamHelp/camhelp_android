@@ -44,11 +44,11 @@ import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.CommonProperty;
 import com.camhelp.entity.UserVO;
 import com.camhelp.entity.ZLMinePublishedCommonProperty;
-import com.camhelp.utils.CompressionFileUtils;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
 import com.camhelp.utils.MyProcessDialog;
 import com.camhelp.utils.PicCompression;
+import com.camhelp.utils.PicCompressionImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -124,7 +124,7 @@ public class PublishCommonPropertyActivity extends AppCompatActivity implements 
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     String uploadResult = "";
     PicCompression picCompression = new PicCompression();
-    CompressionFileUtils compressionFileUtils = new CompressionFileUtils();
+    PicCompressionImpl compressionFileUtils = new PicCompressionImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

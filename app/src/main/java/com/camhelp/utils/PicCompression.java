@@ -36,6 +36,21 @@ public class PicCompression {
         }
     }
 
+    // options: 0-100 100为不压缩
+    public static void compressImageToFile2(Bitmap bmp, File file,int options) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // 把压缩后的数据存放到baos中
+        bmp.compress(Bitmap.CompressFormat.JPEG, options, baos);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 通过缩放图片像素来减少图片占用内存大小
      */

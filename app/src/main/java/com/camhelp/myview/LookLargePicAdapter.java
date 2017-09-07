@@ -37,7 +37,7 @@ public class LookLargePicAdapter extends PagerAdapter {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: ");
-                activity.finish();
+//                activity.finish();
             }
         });
         return photoView;

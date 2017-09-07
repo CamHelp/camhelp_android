@@ -15,8 +15,8 @@ import java.util.Date;
  * 调用PicCompression实现压缩
  */
 
-public class CompressionFileUtils {
-    private String TAG = "CompressionFileUtils";
+public class PicCompressionImpl {
+    private String TAG = "PicCompressionImpl";
     PicCompression picCompression = new PicCompression();
     /**
      * 复制单个文件
@@ -67,18 +67,18 @@ public class CompressionFileUtils {
             return f;
         } else if (f.length() / 1000.0 < 1000) {//小于1000k
             Bitmap bitmap = BitmapFactory.decodeFile(f.getPath());
-            picCompression.compressImageToFile(bitmap, savelocalFile);
+            picCompression.compressImageToFile2(bitmap, savelocalFile,70);
+            L.d(TAG, "上传图片大小：" + savelocalFile.length());
+            return savelocalFile;
+        } else if (f.length() / 1000.0 > 4000) {//大于4000k
+            Bitmap bitmap = BitmapFactory.decodeFile(f.getPath());
+            picCompression.compressImageToFile2(bitmap, savelocalFile,50);
             L.d(TAG, "上传图片大小：" + savelocalFile.length());
             return savelocalFile;
         } else {
             Bitmap bitmap = BitmapFactory.decodeFile(f.getPath());
-            picCompression.compressImageToFile(bitmap, savelocalFile);
+            picCompression.compressImageToFile2(bitmap, savelocalFile,60);
             L.d(TAG, "上传图片压缩1次大小：" + savelocalFile.length());
-            Bitmap bitmap2 = BitmapFactory.decodeFile(savelocalFile.getPath());
-            picCompression.compressBitmapToFile(bitmap2, savelocalFile);
-            L.d(TAG, "上传图片压缩2次大小：" + savelocalFile.length());
-            picCompression.compressBitmap(savelocalFile.getPath(), savelocalFile);
-            L.d(TAG, "上传图片压缩3次大小：" + savelocalFile.length());
             L.d(TAG, "上传图片大小：" + savelocalFile.length());
             return savelocalFile;
         }

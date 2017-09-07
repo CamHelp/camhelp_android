@@ -93,8 +93,9 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
     private int commonPropertyID;
     private CommonPropertyVO commonPropertyVO = new CommonPropertyVO();
     //    private CommonProperty commonProperty = new CommonProperty();
-    private CommomPropertyDetailsVo commonProperty = new CommomPropertyDetailsVo();
+    public CommomPropertyDetailsVo commonProperty = new CommomPropertyDetailsVo();
     private List<Comment> commentList = new ArrayList<Comment>();
+    private ArrayList<String> listURL = new ArrayList<String >();//图片列表，查看大图时传递过去
     private CommentAdapter commentAdapter;
     private LinearLayoutManager mLinearLayoutManager;
 
@@ -282,24 +283,28 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         if (pic1 != null && !"".equals(pic1)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic1)
                     .placeholder(R.drawable.isloading).into(item_iv_pic1);
+            listURL.add(CommonUrls.SERVER_ADDRESS_PIC + pic1);
         } else {
             item_iv_pic1.setVisibility(View.GONE);
         }
         if (pic2 != null && !"".equals(pic2)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic2)
                     .placeholder(R.drawable.isloading).into(item_iv_pic2);
+            listURL.add(CommonUrls.SERVER_ADDRESS_PIC + pic2);
         } else {
             item_iv_pic2.setVisibility(View.GONE);
         }
         if (pic3 != null && !"".equals(pic3)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic3)
                     .placeholder(R.drawable.isloading).into(item_iv_pic3);
+            listURL.add(CommonUrls.SERVER_ADDRESS_PIC + pic3);
         } else {
             item_iv_pic3.setVisibility(View.GONE);
         }
         if (pic4 != null && !"".equals(pic4)) {
             Glide.with(this).load(CommonUrls.SERVER_ADDRESS_PIC + pic4)
                     .placeholder(R.drawable.isloading).into(item_iv_pic4);
+            listURL.add(CommonUrls.SERVER_ADDRESS_PIC + pic4);
         } else {
             item_iv_pic4.setVisibility(View.GONE);
         }
@@ -594,20 +599,29 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
             case R.id.item_iv_pic1:
 //                String imgurl = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic1();
 //                lookLargeImg.looklargeimg(imgurl, this);
+
                 Intent lookLargePic = new Intent(this,LookLargePicActivity.class);
+                lookLargePic.putExtra("currentPosition", 0);
+                lookLargePic.putStringArrayListExtra("listURL", listURL);//图片urllist
                 startActivity(lookLargePic);
                 break;
             case R.id.item_iv_pic2:
-                String imgur2 = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic2();
-                lookLargeImg.looklargeimg(imgur2, this);
+                Intent lookLargePic2 = new Intent(this,LookLargePicActivity.class);
+                lookLargePic2.putExtra("currentPosition", 1);
+                lookLargePic2.putStringArrayListExtra("listURL", listURL);//图片urllist
+                startActivity(lookLargePic2);
                 break;
             case R.id.item_iv_pic3:
-                String imgur3 = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic3();
-                lookLargeImg.looklargeimg(imgur3, this);
+                Intent lookLargePic3 = new Intent(this,LookLargePicActivity.class);
+                lookLargePic3.putExtra("currentPosition", 2);
+                lookLargePic3.putStringArrayListExtra("listURL", listURL);//图片urllist
+                startActivity(lookLargePic3);
                 break;
             case R.id.item_iv_pic4:
-                String imgur4 = CommonUrls.SERVER_ADDRESS_PIC + commonPropertyVO.getCommonPic4();
-                lookLargeImg.looklargeimg(imgur4, this);
+                Intent lookLargePic4 = new Intent(this,LookLargePicActivity.class);
+                lookLargePic4.putExtra("currentPosition", 3);
+                lookLargePic4.putStringArrayListExtra("listURL", listURL);//图片urllist
+                startActivity(lookLargePic4);
                 break;
             case R.id.ll_look_share://分享
                 Toast.makeText(this, "分享功能待完成", Toast.LENGTH_SHORT).show();

@@ -49,13 +49,13 @@ import com.camhelp.common.CommonUrls;
 import com.camhelp.entity.User;
 import com.camhelp.entity.UserVO;
 import com.camhelp.fragment.MineFragment;
-import com.camhelp.utils.CompressionFileUtils;
 import com.camhelp.utils.DateConversionUtils;
 import com.camhelp.utils.L;
 import com.camhelp.utils.MiPictureHelper;
 import com.camhelp.utils.MyProcessDialog;
 import com.camhelp.utils.NativeUtil;
 import com.camhelp.utils.PicCompression;
+import com.camhelp.utils.PicCompressionImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -123,7 +123,7 @@ public class MineCenterActivity extends AppCompatActivity implements View.OnClic
     String uploadResult = "";
     private boolean isUpdateAvatar, isBg;
     PicCompression picCompression = new PicCompression();
-    CompressionFileUtils compressionFileUtils = new CompressionFileUtils();
+    PicCompressionImpl compressionFileUtils = new PicCompressionImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
