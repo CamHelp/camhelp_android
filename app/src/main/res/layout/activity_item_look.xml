@@ -41,7 +41,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="标题"
                             android:textColor="@color/deepblack"
                             android:textSize="18dp" />
 
@@ -50,15 +49,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="简介"
                             android:textSize="16dp" />
 
                         <TextView
                             android:id="@+id/item_look_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:text="内容" />
+                            android:layout_margin="4dp"/>
 
                         <include layout="@layout/item_look_foot" />
 

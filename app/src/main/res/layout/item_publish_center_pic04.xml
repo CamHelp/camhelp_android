@@ -11,22 +11,19 @@
             android:id="@+id/item_iv_pic1"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/avatar"/>
+            android:scaleType="centerCrop"/>
         <ImageView
             android:id="@+id/item_iv_pic2"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:layout_marginLeft="4dp"
-            android:src="@drawable/avatar"/>
+            android:layout_marginLeft="4dp"/>
         <ImageView
             android:id="@+id/item_iv_pic3"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:layout_marginLeft="4dp"
-            android:src="@drawable/avatar"/>
+            android:layout_marginLeft="4dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="4dp"
@@ -36,7 +33,6 @@
             android:id="@+id/item_iv_pic4"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/avatar"/>
+            android:scaleType="centerCrop"/>
     </LinearLayout>
 </LinearLayout>

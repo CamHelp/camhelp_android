@@ -141,7 +141,6 @@ public class HomeOnlyNewFragment extends Fragment {
         recycler_home_new.setLayoutManager(mLinearLayoutManager);
         homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
         recycler_home_new.setAdapter(homeNewAndFocusAdapter);
-        srl_home_new.setRefreshing(false);
     }
 
 
@@ -260,7 +259,8 @@ public class HomeOnlyNewFragment extends Fragment {
      */
     private void okhttpHomeNew() {
         if (firstComming) {
-            dialogProcess.show();
+//            dialogProcess.show();
+            srl_home_new.setRefreshing(true);
             firstComming = false;
         }
 
@@ -323,11 +323,11 @@ public class HomeOnlyNewFragment extends Fragment {
                                 saveLocal();//把最新的保存本地
                             }
                             dialogProcess.dismiss();
+                            srl_home_new.setRefreshing(false);
                             mLinearLayoutManager = new LinearLayoutManager(getActivity());
                             recycler_home_new.setLayoutManager(mLinearLayoutManager);
                             homeNewAndFocusAdapter = new HomeNewAndFocusAdapter(commonPropertyVOList, getActivity());
                             recycler_home_new.setAdapter(homeNewAndFocusAdapter);
-                            srl_home_new.setRefreshing(false);
                         }
                     });
                 } else {
@@ -336,6 +336,7 @@ public class HomeOnlyNewFragment extends Fragment {
                         public void run() {
                             Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                             dialogProcess.dismiss();
+                            srl_home_new.setRefreshing(false);
                         }
                     });
                 }

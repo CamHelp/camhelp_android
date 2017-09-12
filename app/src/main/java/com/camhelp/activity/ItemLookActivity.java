@@ -132,7 +132,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         dialogProcess = MyProcessDialog.showDialog(this);
-        dialogProcess.show();
+//        dialogProcess.show();
         commonPropertyID = getIntent().getIntExtra(CommonGlobal.commonPropertyID, -1);
         commonPropertyVO = (CommonPropertyVO) getIntent().getSerializableExtra(CommonGlobal.commonProperty);
 
@@ -392,6 +392,7 @@ public class ItemLookActivity extends AppCompatActivity implements View.OnClickL
      * 请求服务器数据
      */
     private void okhttpLookOne(Integer commonid) {
+        srl_item_look.setRefreshing(true);
         final String url = CommonUrls.SERVER_COMMONLIST_ONE;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 

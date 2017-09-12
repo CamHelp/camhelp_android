@@ -44,7 +44,6 @@
             android:layout_height="26dp"
             android:layout_marginRight="18dp"
             android:background="@color/exitRed"
-            android:text="类型"
             android:textSize="12dp"
             android:textColor="@color/white"/>
     </LinearLayout>

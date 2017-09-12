@@ -114,4 +114,20 @@ public class CommonUrls {
      */
     public static final String SERVER_COMMENT_ADD = SERVER_ADDRESS + "/comment/addcomment";
 
+    /**
+     * 得到用户头像
+     * 方式：get
+     * 路径：/user/getavatar2/{id}
+     */
+    public static final String SERVER_USER_AVATAR = SERVER_ADDRESS + "/user/getavatar2/";
+
+    /**
+     * 得到用户背景图
+     * 方式：get
+     * 路径：/user/showbg/{id}
+     */
+    public static final String SERVER_USER_BG = SERVER_ADDRESS + "/user/showbg/";
+
+
+
 }
