@@ -52,4 +52,8 @@ public class CommonGlobal {
 
     /*搜索内容*/
     public static final String searchContent = "searchContent";
+
+    /*每一页显示数据量size*/
+    public static final int PAGE_SIZE = 3;
+
 }

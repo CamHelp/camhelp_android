@@ -117,9 +117,9 @@ public class CommonUrls {
     /**
      * 得到用户头像
      * 方式：get
-     * 路径：/user/getavatar2/{id}
+     * 路径：/img/getuseravatar/{id}
      */
-    public static final String SERVER_USER_AVATAR = SERVER_ADDRESS + "/user/getavatar2/";
+    public static final String SERVER_USER_AVATAR = SERVER_ADDRESS + "/img/getuseravatar/";
 
     /**
      * 得到用户背景图
@@ -129,5 +129,38 @@ public class CommonUrls {
     public static final String SERVER_USER_BG = SERVER_ADDRESS + "/user/showbg/";
 
 
+    /*分类获取*/
+    /**
+     * 分类获取列表
+     * 方式：post
+     * 采用分页显示 传参数 page:第几页   size：每一页的大小
+     * 路径：
+     *      关注：search/attentionuserpublish
+     *      最新：search/thenews
+     *      最热：search/thehotest
+     *      活动：search/activity
+     *      问题：search/problem
+     *      失物：search/lostthing
+     *      捡物：search/findthing
+     *      新鲜事：search/freshthings
+     *      表白墙：search/wall
+     * */
+    public static final String SERVER_CATEGORY_FOCUS = SERVER_ADDRESS + "/search/attentionuserpublish/";
+    public static final String SERVER_CATEGORY_THENEWS = SERVER_ADDRESS + "/search/thenews/";
+    public static final String SERVER_CATEGORY_THEHOTEST = SERVER_ADDRESS + "/search/thehotest/";
+    public static final String SERVER_CATEGORY_ACTIVITY = SERVER_ADDRESS + "/search/activity/";
+    public static final String SERVER_CATEGORY_PROBLEM = SERVER_ADDRESS + "/search/problem/";
+    public static final String SERVER_CATEGORY_LOSTTHING = SERVER_ADDRESS + "/search/lostthing/";
+    public static final String SERVER_CATEGORY_FINDTHING = SERVER_ADDRESS + "/search/findthing/";
+    public static final String SERVER_CATEGORY_FRESHTHINGS = SERVER_ADDRESS + "/search/freshthings/";
+    public static final String SERVER_CATEGORY_WALL = SERVER_ADDRESS + "/search/wall/";
+
+    /**
+     * 搜索
+     * 方式：post
+     * 采用分页显示 传参数 page:第几页   size：每一页的大小
+     * 路径：search/data
+     */
+    public static final String SERVER_SEARCH = SERVER_ADDRESS + "/search/data/";
 
 }

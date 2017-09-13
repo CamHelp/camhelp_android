@@ -51,28 +51,32 @@ import okhttp3.Response;
  * 分类各项浏览activity
  * 暂时全部使用最新列表
  */
-public class CategoryEachActivity extends AppCompatActivity implements View.OnClickListener{
+public class CategoryEachActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String colorPrimary, colorPrimaryBlew, colorPrimaryDark, colorAccent;
 
     private LinearLayout top_ll_title_search;
-    private ImageButton top_return,top_imgbtn_search;
+    private ImageButton top_return, top_imgbtn_search;
     private TextView top_title;
 
-    String sCategoryType,eachUrl;//类型，服务器地址
+    String sCategoryType, eachUrl;//类型，服务器地址
 
     private LinearLayout ll_categoryeach_nodata;
     private TextView tv_categoryEach_nodata;
     private SwipeRefreshLayout srl_categoryEach;
     private RecyclerView recycler_categoryEach;
+    private TextView tv_loading_category;
 
     private Handler handler = new Handler();
     boolean isLoading;
     private LinearLayoutManager mLinearLayoutManager;
     private HomeNewAndFocusAdapter homeNewAndFocusAdapter;
     private List<CommonPropertyVO> commonPropertyVOList = new ArrayList<CommonPropertyVO>();
+    private List<CommonPropertyVO> commonPropertyVOListMore = new ArrayList<CommonPropertyVO>();
+
+    private int page = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,7 @@ public class CategoryEachActivity extends AppCompatActivity implements View.OnCl
         initEachUrl();
         initTitle();
         initview();
+        srl_categoryEach.setRefreshing(true);
         okhttpCategoryEach();
 
         mLinearLayoutManager = new LinearLayoutManager(CategoryEachActivity.this);
@@ -107,7 +112,7 @@ public class CategoryEachActivity extends AppCompatActivity implements View.OnCl
         colorAccent = pref.getString(CommonGlobal.colorAccent, defaultColorAccent);
     }
 
-    private void initTitle(){
+    private void initTitle() {
         top_ll_title_search = (LinearLayout) findViewById(R.id.top_ll_title_search);
         top_ll_title_search.setBackgroundColor(Color.parseColor(colorPrimary));
         top_return = (ImageButton) findViewById(R.id.top_return);
@@ -115,43 +120,45 @@ public class CategoryEachActivity extends AppCompatActivity implements View.OnCl
         top_imgbtn_search = (ImageButton) findViewById(R.id.top_imgbtn_search);
         top_imgbtn_search.setVisibility(View.GONE);
         top_title = (TextView) findViewById(R.id.top_title);
-        top_title.setText(sCategoryType+"（暂时使用最新列表）");
+        top_title.setText(sCategoryType);
     }
 
     /*根据类型确定服务器获取地址*/
-    private void initEachUrl(){//待确定，暂时都使用获取所有地址
-        if (CommonGlobal.sCategoryType_focus.equals(sCategoryType)){
-            eachUrl = CommonUrls.SERVER_COMMONLIST_ALL;
-        }else if (CommonGlobal.sCategoryType_new.equals(sCategoryType)){
-            eachUrl = CommonUrls.SERVER_COMMONLIST_ALL;
-        }else if (CommonGlobal.sCategoryType_hot.equals(sCategoryType)){
-            eachUrl = CommonUrls.SERVER_COMMONLIST_ALL;
-        }else if (CommonGlobal.sCategoryType_fresh.equals(sCategoryType)){
-            eachUrl = CommonUrls.SERVER_COMMONLIST_ALL;
-        }else if (CommonGlobal.sCategoryType_experience.equals(sCategoryType)){
-            eachUrl = CommonUrls.SERVER_COMMONLIST_ALL;
-        }else if (CommonGlobal.sCategoryType_lose.equals(sCategoryType)){
-            eachUrl = CommonUrls.SERVER_COMMONLIST_ALL;
-        }else if (CommonGlobal.sCategoryType_pickup.equals(sCategoryType)){
-            eachUrl = CommonUrls.SERVER_COMMONLIST_ALL;
-        }else if (CommonGlobal.sCategoryType_problem.equals(sCategoryType)){
-            eachUrl = CommonUrls.SERVER_COMMONLIST_ALL;
-        }else if (CommonGlobal.sCategoryType_unburden.equals(sCategoryType)){
-            eachUrl = CommonUrls.SERVER_COMMONLIST_ALL;
+    private void initEachUrl() {
+        if (CommonGlobal.sCategoryType_focus.equals(sCategoryType)) {
+            eachUrl = CommonUrls.SERVER_CATEGORY_FOCUS;//关注
+        } else if (CommonGlobal.sCategoryType_new.equals(sCategoryType)) {
+            eachUrl = CommonUrls.SERVER_CATEGORY_THENEWS;//最新
+        } else if (CommonGlobal.sCategoryType_hot.equals(sCategoryType)) {
+            eachUrl = CommonUrls.SERVER_CATEGORY_THEHOTEST;//最热
+        } else if (CommonGlobal.sCategoryType_fresh.equals(sCategoryType)) {
+            eachUrl = CommonUrls.SERVER_CATEGORY_FRESHTHINGS;//新鲜事
+        } else if (CommonGlobal.sCategoryType_experience.equals(sCategoryType)) {
+            eachUrl = CommonUrls.SERVER_CATEGORY_ACTIVITY;//活动
+        } else if (CommonGlobal.sCategoryType_lose.equals(sCategoryType)) {
+            eachUrl = CommonUrls.SERVER_CATEGORY_LOSTTHING;//失物
+        } else if (CommonGlobal.sCategoryType_pickup.equals(sCategoryType)) {
+            eachUrl = CommonUrls.SERVER_CATEGORY_FINDTHING;//捡物
+        } else if (CommonGlobal.sCategoryType_problem.equals(sCategoryType)) {
+            eachUrl = CommonUrls.SERVER_CATEGORY_PROBLEM;//问题
+        } else if (CommonGlobal.sCategoryType_unburden.equals(sCategoryType)) {
+            eachUrl = CommonUrls.SERVER_CATEGORY_WALL;//表白墙
         }
     }
 
-    private void initview(){
+    private void initview() {
         ll_categoryeach_nodata = (LinearLayout) findViewById(R.id.ll_categoryeach_nodata);
         ll_categoryeach_nodata.setVisibility(View.GONE);
         tv_categoryEach_nodata = (TextView) findViewById(R.id.tv_categoryEach_nodata);
         recycler_categoryEach = (RecyclerView) findViewById(R.id.recycler_categoryEach);
+        tv_loading_category = (TextView) findViewById(R.id.tv_loading_category);
 
         srl_categoryEach = (SwipeRefreshLayout) findViewById(R.id.srl_categoryEach);
         srl_categoryEach.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 srl_categoryEach.setRefreshing(true);
+                page = 0;//页数恢复为0
                 okhttpCategoryEach();
             }
         });
@@ -181,14 +188,15 @@ public class CategoryEachActivity extends AppCompatActivity implements View.OnCl
                     }
                     if (!isLoading) {
                         isLoading = true;
-                        ll_categoryeach_nodata.setVisibility(View.VISIBLE);
+                        tv_loading_category.setVisibility(View.VISIBLE);
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                page = page + 1;//加载更多，页数加一
                                 loadmoredata();
                                 isLoading = false;
                             }
-                        }, 2000);
+                        }, 500);
                     }
                 }
             }
@@ -199,26 +207,13 @@ public class CategoryEachActivity extends AppCompatActivity implements View.OnCl
      * 加载更多
      */
     public void loadmoredata() {
-        int total = commonPropertyVOList.size();
-        for (int i = 0; i < total; i++) {
-            commonPropertyVOList.add(commonPropertyVOList.get(i));
-        }
-        homeNewAndFocusAdapter.notifyDataSetChanged();
-        srl_categoryEach.setRefreshing(false);
-        ll_categoryeach_nodata.setVisibility(View.GONE);
-    }
-
-    /**
-     * 请求服务器数据
-     */
-    private void okhttpCategoryEach() {
-        srl_categoryEach.setRefreshing(true);
-
         final String url = eachUrl;
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
 
-        FormBody body = new FormBody.Builder().build();
-        Request request = new Request.Builder().url(url).get().build();
+        FormBody body = new FormBody.Builder()
+                .add("page", "" + page)
+                .add("size", "" + CommonGlobal.PAGE_SIZE).build();
+        Request request = new Request.Builder().url(url).post(body).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
@@ -227,10 +222,84 @@ public class CategoryEachActivity extends AppCompatActivity implements View.OnCl
                 CategoryEachActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (commonPropertyVOList.size() == 0){
+                        Toast.makeText(CategoryEachActivity.this, "加载更多失败", Toast.LENGTH_SHORT).show();
+                        tv_loading_category.setVisibility(View.GONE);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String result = response.body().string();
+                Log.d("TAG" + "onresponse result:", result);
+
+                Gson gson = new Gson();
+                JsonParser parser = new JsonParser();
+                JsonElement root = parser.parse(result);
+                JsonObject element = root.getAsJsonObject();
+                JsonPrimitive codeJson = element.getAsJsonPrimitive("code");
+                int code = codeJson.getAsInt();
+                JsonPrimitive msgJson = element.getAsJsonPrimitive("msg");
+                final String msg = msgJson.getAsString();
+
+                if (code == 0) {
+                    commonPropertyVOListMore.clear();//得到新数据把旧数据清空
+                    final JsonArray dataJson = element.getAsJsonArray("data");
+                    commonPropertyVOListMore = gson.fromJson(dataJson, new TypeToken<List<CommonPropertyVO>>() {
+                    }.getType());
+
+                    CategoryEachActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < commonPropertyVOListMore.size(); i++) {//把更多数据添加进列表
+                                commonPropertyVOList.add(commonPropertyVOListMore.get(i));
+                            }
+                            if (commonPropertyVOList.size() > 0) {
+                                ll_categoryeach_nodata.setVisibility(View.GONE);
+                            }
+                            homeNewAndFocusAdapter.notifyDataSetChanged();
+                            tv_loading_category.setVisibility(View.GONE);
+                        }
+                    });
+                } else {
+                    CategoryEachActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tv_loading_category.setVisibility(View.GONE);
+//                            Toast.makeText(CategoryEachActivity.this, "已加载全部" , Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 请求服务器数据
+     */
+    private void okhttpCategoryEach() {
+
+        final String url = eachUrl;
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(3000, TimeUnit.MILLISECONDS).build();
+
+        FormBody body = new FormBody.Builder()
+                .add("page", "" + page)
+                .add("size", "" + CommonGlobal.PAGE_SIZE).build();
+        Request request = new Request.Builder().url(url).post(body).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("TAG", "onFailure" + e.toString());
+                CategoryEachActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (commonPropertyVOList.size() == 0) {
                             ll_categoryeach_nodata.setVisibility(View.VISIBLE);
                             tv_categoryEach_nodata.setText("无法连接到服务器");
-                        }else {
+                        } else {
                             ll_categoryeach_nodata.setVisibility(View.GONE);
                         }
                         srl_categoryEach.setRefreshing(false);
@@ -283,10 +352,10 @@ public class CategoryEachActivity extends AppCompatActivity implements View.OnCl
                     CategoryEachActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (commonPropertyVOList.size() == 0){
+                            if (commonPropertyVOList.size() == 0) {
                                 ll_categoryeach_nodata.setVisibility(View.VISIBLE);
                                 tv_categoryEach_nodata.setText(msg);
-                            }else {
+                            } else {
                                 ll_categoryeach_nodata.setVisibility(View.GONE);
                             }
                         }
@@ -298,7 +367,7 @@ public class CategoryEachActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.top_return:
                 finish();
                 break;
